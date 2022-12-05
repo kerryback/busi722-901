@@ -9,10 +9,11 @@ project:
   
 website:
   title: ""
+  search: false
 
   navbar:
     title: BUSI 722
-    search: true
+    search: false
     right:
 
       - text: Slide Decks
