@@ -3,36 +3,35 @@ project:
   output-dir: docs
   render:
     - index.qmd
-    - demo.qmd
+    - slides.qmd
+    - assignments.qmd
     
   
 website:
   title: ""
 
   navbar:
-    background: "#00205B"
+    title: BUSI 722
     search: true
-    left:
+    right:
 
-      - text: "Home"
+      - text: Slide Decks
+        file: slides.qmd
+
+      - text: Code Binder
+        href: https://mybinder.org/v2/gh/kerryback/2023-722-binder.git/HEAD
+
+      - text: Assignments
+        file: assignments.qmd
+
+      - text: Home
         file: index.qmd
 
-      - text: "Demo"
-        file: demo.qmd
-
-
-      
-
-
-            
-          
-    
-     
 format: 
   html:
-    theme: cyborg
+    theme: cosmo
     scss: styles.css
-    # toc: true
+      
 
 
 

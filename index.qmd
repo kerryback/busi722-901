@@ -1,10 +1,6 @@
-## BUSI 722<br>Data Driven Finance II<br>Rice University<br>Spring 2023
+## Data Driven Finance II<br>Rice University<br>Spring 2023
 
-[BBCX Investments Library](https://bbcx-investments.com)
 
-[Modern Investments: Theory, Data, and Practice](https://mi.bbcx-investments.com/index.html)
-
-[Course Code Binder](https://mybinder.org/v2/gh/kerryback/2023-722-binder.git/HEAD)
 
 
 
