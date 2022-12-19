@@ -23,7 +23,7 @@ Schedule:
     Week 6: Introduction to futures
     Week 7: Risk management examples
 
-Grades will be based on weekly assignments and a take-home final exam.
+Grades will be based on six individual assignments (10% each) and a take-home final exam (40%).  The assignments are due each Monday, beginning January 17.
 
 #### Honor Code
 
