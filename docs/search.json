@@ -12,5 +12,47 @@
     "title": "",
     "section": "",
     "text": "Kerry Back  J. Howard Creekmore Professor of Finance and Professor of Economics kerryback@gmail.com\n\n\n\nWe’ll cover three topics in this course: options, futures, and quantitative equity investing. Options and futures are important instruments for risk management and also for investing. We’ll explain what the securities are and how they trade, how they are used in risk management and investments, and how to value them. Quantitative equity investing is using quantifiable signals to select stocks via algorithms. We’ll explore machine learning methods to predict returns and classify stocks as Buy/Hold/Sell. We’ll backtest trading strategies based on the signals. And, we will analyze the results: Sharpe ratios, alphas, information ratios, and attribution analysis. We’ll do a real-world implementation of our algorithms using daily updated company financials and market data from a SQL database and with paper trading via the python API at Alpaca Brokerage.\nSchedule:\nWeek 1: Factor investing and machine learning\nWeek 2: Backtesting and return analysis\nWeek 3: Trading costs and implementation\nWeek 4: Introduction to options\nWeek 5: Option valuation\nWeek 6: Introduction to futures\nWeek 7: Risk management examples\nGrades will be based on weekly assignments and a take-home final exam.\n\n\n\nThe Rice University honor code applies to all work in this course. Each student must do his or her own assignments, but it is allowed and in fact encouraged for students to seek advice from each other.\n\n\n\nAny student with a documented disability requiring accommodations in this course is encouraged to contact me outside of class. All discussions will remain confidential. Any adjustments or accommodations regarding assignments or the final exam must be made in advance. Students with disabilities should also contact Disability Support Services in the Allen Center."
+  },
+  {
+    "objectID": "slides.html",
+    "href": "slides.html",
+    "title": "",
+    "section": "",
+    "text": "1. Factor Investing\n2. Application\n3. SQL\n4. Return Target\n5. Features\n6. Cross Validation"
+  },
+  {
+    "objectID": "slides.html#backtesting-and-return-analysis",
+    "href": "slides.html#backtesting-and-return-analysis",
+    "title": "",
+    "section": "Backtesting and Return Analysis",
+    "text": "Backtesting and Return Analysis"
+  },
+  {
+    "objectID": "slides.html#trading-costs-and-implementation",
+    "href": "slides.html#trading-costs-and-implementation",
+    "title": "",
+    "section": "Trading Costs and Implementation",
+    "text": "Trading Costs and Implementation"
+  },
+  {
+    "objectID": "slides.html#introduction-to-options",
+    "href": "slides.html#introduction-to-options",
+    "title": "",
+    "section": "Introduction to Options",
+    "text": "Introduction to Options"
+  },
+  {
+    "objectID": "slides.html#valuation-of-options",
+    "href": "slides.html#valuation-of-options",
+    "title": "",
+    "section": "Valuation of Options",
+    "text": "Valuation of Options"
+  },
+  {
+    "objectID": "slides.html#introduction-to-futures",
+    "href": "slides.html#introduction-to-futures",
+    "title": "",
+    "section": "Introduction to Futures",
+    "text": "Introduction to Futures"
   }
 ]
