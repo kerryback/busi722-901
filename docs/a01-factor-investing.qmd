@@ -1,6 +1,7 @@
 ---
 title:  "Factor Investing"
-author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=120>
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+output-dir: docs
 execute:
   echo: false
   jupyter: python3
@@ -8,17 +9,15 @@ format:
   revealjs:
     highlight-style: monokai
     code-fold: true
-    code-copy: hover
     scrollable: true
     slide-number: true
     preview-links: true
     self-contained: true
     controls: true
     transition: fade
-    theme: white
+    theme: [solarized, 721.scss]
     incremental: true
 ---
-
 
 ## Factors
 
