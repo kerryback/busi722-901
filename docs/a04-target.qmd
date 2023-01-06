@@ -1,0 +1,146 @@
+---
+title:  "Return Target"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=120>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [white, 722.scss]
+    incremental: true
+---
+
+
+## What to forecast?
+
+- Difficult to predict whether the market will be up or down
+- Don't need to predict the market to beat the market.  Just need to predict which stocks will beat others.
+- Use return minus mean return for each month as the target.
+- There will be outliers.  Should probably transform to minimize outliers.
+- Example: scikit-learn QuantileTransformer with output_distribution="normal".
+
+## Example data
+
+- Connect to SQL database as before. Then ...
+
+. . .
+
+```{.p code-line-numbers="1-8|9|1-9"}
+df = pd.read_sql(
+    """
+    select date, ticker, ret, roeq, mom12m
+    from data
+    where date>='2010-01' and data<='2017-12'
+    """, 
+    conn
+)
+df = df.dropna()
+```
+
+```{python}
+from sqlalchemy import create_engine
+import pymssql
+import pandas as pd
+
+server = "mssql-82792-0.cloudclusters.net:16272"
+username = "user"
+password = "RiceOwls1912" 
+database = "ghz"
+string = "mssql+pymssql://" + username + ":" + password + "@" + server + "/" + database
+conn = create_engine(string).connect()
+
+df = pd.read_sql(
+    """
+    select date, ticker, ret, roeq, mom12m
+    from data
+    where date>='2010-01' and date<='2017-12'
+    """, 
+    conn
+)
+df = df.dropna()
+df = df.set_index("date")
+
+```
+
+## Market return
+
+. . .
+
+```{.p code-line-numbers="1-8|9|10|11|13|1-13"}
+from pandas_datareader import DataReader as pdr
+
+mkt = pdr(
+  "F-F_Research_Data_Factors",
+  "famafrench",
+  start="2010-01",
+  end="2017-12"
+)
+mkt = mkt[0] / 100
+mkt.index = mkt.index.astype(str)
+mkt["mkt"] = mkt["Mkt-RF"] + mkt["RF"]
+
+df = df.join(mkt, how="left")
+```
+
+```{python}
+from pandas_datareader import DataReader as pdr
+
+mkt = pdr(
+  "F-F_Research_Data_Factors",
+  "famafrench",
+  start="2010-01",
+  end="2017-12"
+)
+mkt = mkt[0] / 100
+mkt.index = mkt.index.astype(str)
+mkt["mkt"] = mkt["Mkt-RF"] + mkt["RF"]
+
+df = df.join(mkt, how="left")
+```
+
+## Transform and fit
+
+. . .
+
+```{.p code-line-numbers="1-2|3|5-10|12-13|14|1-14"}
+from sklearn.preprocessing import QuantileTransformer
+from sklearn.compose import TransformedTargetRegressor
+from sklearn.linear_model import LinearRegression
+
+model = TransformedTargetRegressor(
+    transformer=QuantileTransformer(
+      output_distribution="normal"
+    ),
+    regressor=LinearRegression
+)
+
+X = df[["roeq", "mom12m"]]
+y = df.ret - df.mkt
+model.fit(X, y)
+```
+
+```{python}
+from sklearn.preprocessing import QuantileTransformer
+from sklearn.compose import TransformedTargetRegressor
+from sklearn.linear_model import LinearRegression
+
+model = TransformedTargetRegressor(
+    transformer=QuantileTransformer(
+      output_distribution="normal"
+    ),
+    regressor=LinearRegression()
+)
+
+X = df[["roeq", "mom12m"]]
+y = df.ret - df.mkt
+_ = model.fit(X, y)
+```

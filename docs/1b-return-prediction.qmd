@@ -1,0 +1,74 @@
+---
+title:  "Machine Learning in Finance"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: white
+    incremental: true
+---
+
+## Applications of machine learning in finance
+
+- Fraud detection
+- Credit analysis
+- Return prediction
+
+## Features for return prediction
+
+- Past prices and returns
+  - Short-term, medium-term, and long-term returns
+  - Current price versus moving averages
+  - Technical patterns: support, resistance, ...
+- Company financials
+  - Ratios (common sizing)
+  - Growth rates
+- Earnings surprises and analyst forecast revisions
+
+# 
+
+- Other corporate press releases or filings
+- Trades
+  - Corporate insiders
+  - Funds
+  - Retail order flow
+  - Short sales
+- Macroeconomic data and forecasts
+- Social media
+- Sales/traffic data
+
+## Target variable
+
+- Numerical
+  - Return
+  - Return in excess of mean or median
+  - Transformed/scaled
+
+- Classification
+ - High, medium, or low
+ - Decile or ...
+
+
+## Some models
+
+- Forests
+  - Random forests
+  - Boosting
+- Neural networks
+- Linear regression and variants
+
+## A study
+
+[Gu, Kelly, and Xiu, 2020](https://www.dropbox.com/s/mmg4del1r0g18li/Gu_Kelly_Xiu_RFS_2020%20Asset%20Pricing%20via%20Machine%20Learning.pdf?dl=1)
+

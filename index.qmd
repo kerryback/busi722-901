@@ -1,4 +1,48 @@
-## Data Driven Finance II<br>Rice University<br>Spring 2023
+## Data Driven Finance II<br>Spring 2023<br><br>![](RiceBusiness-transparent-logo-sm.png){height="60"}
+
+
+
+#### Instructor
+
+[Kerry Back](http://kerryback.com)
+<br>
+J. Howard Creekmore Professor of Finance and Professor of Economics<br>
+<a href="mailto:kerryback@gmail.com">kerryback@gmail.com</a>
+
+#### Course Description
+
+We'll cover three topics in this course: options, futures, and quantitative equity investing.  Options and futures are important instruments for risk management and also for investing.  We'll explain what the securities are and how they trade, how they are used in risk management and investments, and how to value them.  Quantitative equity investing is using quantifiable signals to select stocks via algorithms.  We'll explore machine learning methods to predict returns and classify stocks as Buy/Hold/Sell.  We'll backtest trading strategies based on the signals.  And, we will analyze the results: Sharpe ratios, alphas, information ratios, and attribution analysis.  We'll do a real-world implementation of our algorithms using daily updated company financials and market data from a SQL database and with paper trading via the python API at Alpaca Brokerage.
+
+Schedule:
+
+    Week 1: Factor investing and machine learning
+    Week 2: Backtesting and return analysis
+    Week 3: Trading costs and implementation
+    Week 4: Introduction to options
+    Week 5: Option valuation
+    Week 6: Introduction to futures
+    Week 7: Risk management examples
+
+Grades will be based on six individual assignments (10% each) and a take-home final exam (40%).  The assignments are due each Monday, beginning January 17.
+
+#### Honor Code
+
+The Rice University honor code applies to all work in this course.  Each student must do his or her own assignments, but it is allowed and in fact encouraged for students to seek advice from each other. 
+
+#### Disability Accommodations
+
+Any student with a documented disability requiring accommodations in this course is encouraged to
+contact me outside of class. All discussions will remain confidential. Any adjustments or accommodations
+regarding assignments or the final exam must be made in advance. Students with disabilities
+should also contact Disability Support Services in the Allen Center.
+
+
+
+
+
+
+
+
 
 
 

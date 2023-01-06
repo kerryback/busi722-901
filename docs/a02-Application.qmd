@@ -1,0 +1,82 @@
+---
+title:  "Factor Investing Application"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=120>
+execute:
+  echo: false
+  jupyter: python3
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: white
+    incremental: true
+---
+
+## Monthly returns and characteristics
+
+- We'll use monthly data 2000-2021.
+- Monthly returns
+- 100+ stock characteristics known at the beginning of each month from
+  - past prices
+  - company financials
+  - analyst forecasts
+  - earnings announcements
+
+#
+
+- Mimic trading monthly
+  - Form portfolio at beginning of month
+  - Observe returns 
+  - Form new portfolio based on updated characteristics, ...
+- Data is on a SQL server at CloudClusters.net
+- [Variable definitions](ghz.pdf)
+
+## Backtesting loop
+
+- Need a prediction model: characteristics $\rightarrow$ returns
+- Must choose model parameters and hyperparameters based on past data
+- Each month,
+  - choose model parameters and hyperparameters based on past data
+  - predict returns and form a portfolio
+  - compute portfolio return for the month
+
+
+
+## Portfolio construction
+
+- In addition to testing a prediction model, we should also test a portfolio strategy.
+- Many ways to form a portfolio from return predictions
+  - How many stocks to hold?
+  - Over-weight higher ranked stocks?
+  - Diversify across industries?  Or estimate and minimize risks?
+
+
+## Trading
+
+- We should also test a trading strategy.
+- Trading is costly because of bid-ask spread: lose spread on round trip
+  - So strategy should be to minimize trading while still not deviating too far from optimal portfolio
+  - Percentage spreads are smaller for larger cap stocks, so may want to invest less or nothing in small or micro-cap stocks
+
+
+## Short sales
+
+- Do we want to short?  How much?  150/50?
+- Can use different models for longs and shorts
+- Incorporate stock borrowing fee -- larger for smaller cap stocks
+- To avoid margin loan, could do part of long as index futures
+
+## Getting started
+
+- A simplified version of backtesting loop is to train just once
+- Use data prior to some date $t$ to choose model, hyperparameters, and parameters
+- Use model, hyperparameters, and parameters to predict returns and form portfolios at $t$, $t+1$, $t+2$, $\ldots$
+- Long portfolio = top $n$ stocks equally weighted
+- Short portfolio = bottom $n$ stocks equally weighted
