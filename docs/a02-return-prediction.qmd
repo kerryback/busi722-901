@@ -1,0 +1,83 @@
+---
+title:  "Panel Data"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=120>
+execute:
+  echo: false
+  jupyter: python3
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: white
+    incremental: true
+---
+
+## 
+
+## Relative performance
+
+- If we're trying to pick the best stocks, we need to predict relative performance.
+- Use return in excess of the market return as the target variable.
+- Should transform to minimize outliers.
+- Transform separately at each date
+## Data
+
+- We'll use monthly data 2000-2021.
+- Monthly returns
+- 100+ stock characteristics known at the beginning of each month from
+  - past prices
+  - company financials
+  - earnings forecasts and announcements
+- Create a model to predict returns from characteristics
+
+
+## Portfolios and returns
+
+- Mimic trading monthly
+  - Form portfolio at beginning of month
+  - Observe returns 
+  - Form new portfolio based on updated characteristics, ...
+- Data is on a SQL server at CloudClusters.net
+- [Variable definitions](ghz.pdf)
+
+## Costs of trading
+
+- Commission should be zero.
+- Bid-ask spread
+- For short sales:
+  - Stock borrowing fee
+  - Reduced interest on proceeds (short interest rebate)
+  - Cannot use proceeds to buy stocks
+- Margin loan rate
+
+## Long-short portfolios
+
+- Fed Reg T caps total absolute positions at 200%
+- Can go 100% long and 100% short but then no market exposure
+- To go more than 100% long, have to use margin loan (or stock index futures).
+
+## 150/50 example
+
+- 150% long and 50% short.  Return is
+$$ r_L + 0.5 \times (r_L - r_S + \text{sir} - \text{sbc}  - \text{mlr})$$
+  - sir = short-interest rebate
+  - sbc = stock borrowing cost
+  - mlr = margin loan rate
+
+## Portfolio construction
+
+- Many ways to form a portfolio from return predictions
+  - How many stocks to hold?
+  - How much shorting?
+  - Over-weight higher ranked stocks?
+  - Diversify across industries?  Or estimate and minimize risks?
+  - Minimize bid-ask spread and stock borrowing costs?
+
+

@@ -1,4 +1,4 @@
-## Factor Investing and Machine Learning
+## Quantitative Investing
 
 [1. Factor Investing](a01-factor-investing.html)
 
