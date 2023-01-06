@@ -15,7 +15,7 @@ format:
     self-contained: true
     controls: true
     transition: fade
-    theme: [solarized, 721.scss]
+    theme: [solarized, 2023.scss]
     incremental: true
 ---
 
