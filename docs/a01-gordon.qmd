@@ -1,5 +1,5 @@
 ---
-title:  "Quantitative Investing"
+title:  "Gordon Growth Model"
 author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=120>
 execute:
   echo: false
@@ -19,6 +19,46 @@ format:
     incremental: true
 ---
 
+$$P = \frac{Payout}{r-g}$$
+
+k = payout rate = Payout/Earnings
+
+ROE = Earnings / Equity
+
+Market-to-Book = P / Equity
+
+$$P = \frac{k \times Earnings}{r-g}$$
+
+$$P = \frac{k \times ROE \times Equity}{r-g}$$
+
+$$Market-to-Book = \frac{k \times ROE}{r-g}$$
+
+$$ \Delta Equity = Earnings - Payout = (1-k)Earnings = (1-k) \times ROE \times LagEquity $$
+
+$$ g = (1-k) \times ROE$$
+
+
+
+
+$$ \Delta Equity = (1-k) \times ROE \times (1+g) \times LagEquity$$
+$$g = (1-k)\times ROE \times (1+g)$$
+
+$$[1-(1-k)\times ROE] g = (1-k)\times ROE$$
+
+$$g = \frac{(1-k)ROE}{1-(1-k)ROE}
+$$y - x = ay$$
+$$x = (1-a)y$$
+$$(y-x)/x = a / (1-a)$$
+
+$$a = (1-k)ROE$$
+$$1-a = 
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 ## Factors
 

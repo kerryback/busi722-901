@@ -1,5 +1,5 @@
 ---
-title:  "Factor Investing Application"
+title:  "Panel Data"
 author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=120>
 execute:
   echo: false
@@ -19,6 +19,14 @@ format:
     incremental: true
 ---
 
+## 
+
+## Relative performance
+
+- If we're trying to pick the best stocks, we need to predict relative performance.
+- Use return in excess of the market return as the target variable.
+- Should transform to minimize outliers.
+- Transform separately at each date
 ## Data
 
 - We'll use monthly data 2000-2021.
