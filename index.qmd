@@ -13,17 +13,27 @@ J. Howard Creekmore Professor of Finance and Professor of Economics<br>
 
 We'll cover three topics in this course: options, futures, and quantitative equity investing.  Options and futures are important instruments for risk management and also for investing.  We'll explain what the securities are and how they trade, how they are used in risk management and investments, and how to value them.  Quantitative equity investing is using quantifiable signals to select stocks via algorithms.  We'll explore machine learning methods to predict returns and classify stocks as Buy/Hold/Sell.  We'll backtest trading strategies based on the signals.  And, we will analyze the results in the way that endowments and other institutions evaluate investment managers.  We'll do a real-world implementation of our algorithms using daily updated company financials and market data from a SQL database and with paper trading via the python API at Alpaca Brokerage.
 
-Schedule:
+#### Assignments and Grading
 
-    Week 1: Factor investing and machine learning
-    Week 2: Backtesting and return analysis
-    Week 3: Trading costs and implementation
-    Week 4: Introduction to options
-    Week 5: Option valuation
-    Week 6: Introduction to futures
-    Week 7: Risk management examples
+Grades will be based on a group project and a final exam.  They will be count equally towards the course grade.  The group project is about quantitative equity investing.  The final exam will cover options and futures.  
 
-Grades will be based on six individual assignments (10% each) and a take-home final exam (40%).  The assignments are due each Monday, beginning January 17.
+#### Tentative Schedule
+
+- Weeks 1-3: Factor investing 
+- Week 4: Introduction to options
+- Week 5: Option valuation
+- Week 6: Introduction to futures
+- Week 7: Risk management examples
+
+#### Group project
+
+Groups should consist of two or three students.  There are two deliverables.  The first is due on the last day of class (Thursday, February 23).  Each group should submit a pdf describing
+
+- an investment strategy
+- the results of backtesting the strategy
+- the results of backtesting other strategies that were investigated
+
+The second part of the project is due Friday, April 21.  Each group should submit a pdf describing how they implemented their strategy  (how often they traded and how they decided what trades to make) with paper trading at Alpaca and what the results were.
 
 #### Honor Code
 

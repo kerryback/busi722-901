@@ -13,6 +13,7 @@ website:
 
   navbar:
     title: BUSI 722
+    link-external-newwindow: true
     search: false
     right:
 
