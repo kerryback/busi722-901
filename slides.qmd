@@ -1,1 +1,1 @@
-[1. Stock Picking Basics](1-stock-picking.html)
+[1. Stock Picking Basics](1-stock-picking.html){target="_blank"}
