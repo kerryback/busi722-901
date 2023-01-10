@@ -9,6 +9,11 @@
 J. Howard Creekmore Professor of Finance and Professor of Economics<br>
 <a href="mailto:kerryback@gmail.com">kerryback@gmail.com</a>
 
+#### Class Meeting
+
+TTh, 10:50-12:05<br>
+Room 217, McNair Hall
+
 #### Course Description
 
 We'll cover three topics in this course: options, futures, and quantitative equity investing.  Options and futures are important instruments for risk management and also for investing.  We'll explain what the securities are and how they trade, how they are used in risk management and investments, and how to value them.  Quantitative equity investing is using quantifiable signals to select stocks via algorithms.  We'll explore machine learning methods to predict returns and classify stocks as Buy/Hold/Sell.  We'll backtest trading strategies based on the signals.  And, we will analyze the results in the way that endowments and other institutions evaluate investment managers.  We'll do a real-world implementation of our algorithms using daily updated company financials and market data from a SQL database and with paper trading via the python API at Alpaca Brokerage.
