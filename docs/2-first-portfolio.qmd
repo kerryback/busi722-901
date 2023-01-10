@@ -53,6 +53,20 @@ string = "mssql+pymssql://" + username + ":" + password + "@" + server + "/" + d
 conn = create_engine(string).connect()
 ```
 
+## SQL queries
+
+. . .
+
+```.p
+SELECT column_name(s)
+FROM table_name
+JOIN table_name ON column_name
+WHERE condition
+GROUP BY column_name(s)
+HAVING condition
+ORDER BY column_name(s);
+```
+
 ## Grab some data from quarterly reports
 
 . . .
