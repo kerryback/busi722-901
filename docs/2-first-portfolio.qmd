@@ -299,6 +299,26 @@ data_client = StockHistoricalDataClient(KEY, SECRET_KEY)
 trading_client = TradingClient(KEY, SECRET_KEY, paper=True)
 ```
 
+## Get current positions
+
+. . .
+
+```.p
+positions = trading_client.get_all_positions()
+sers = [pd.Series(dict(x)) for x in positions]
+df = pd.concat(sers, axis=1)
+df.T
+```
+
+. . .
+
+```{python}
+positions = trading_client.get_all_positions()
+sers = [pd.Series(dict(x)) for x in positions]
+df = pd.concat(sers, axis=1)
+df.T
+```
+
 ## Get current quotes
 
 . . .
