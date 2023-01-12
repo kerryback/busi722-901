@@ -266,7 +266,7 @@ len(ticks)
 ## Install alpaca-py
 
 - The module alpaca-trade-api is deprecated.  Install alpaca-py instead. 
-- The docs are at [https://alpaca.markets/docs/python-sdk/getting_started.html](ttps://alpaca.markets/docs/python-sdk/getting_started.html).    
+- The docs are at [https://alpaca.markets/docs/python-sdk/getting_started.html](https://alpaca.markets/docs/python-sdk/getting_started.html).    
 
 ## Connect to alpaca
 
