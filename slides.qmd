@@ -1,3 +1,13 @@
 [1. Stock Picking Basics](1-stock-picking.html){target="_blank"}
 
 [2. A First Portfolio](2-first-portfolio.html){target="_blank"}
+
+[3a. Alpaca](3a-alpaca.html)
+
+[3b. Rice Database](3b-rice-database.html)
+
+[3c. GHZ Database](3c-ghz-database.html)
+
+[3d. Today Table](3d-today.html)
+
+[4a. Simple Backtest](4a-simple-backtest.html)

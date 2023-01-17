@@ -1,5 +1,5 @@
 ---
-title:  "Today Table"
+title:  "A Simple Backtest"
 author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
 execute:
   echo: false
@@ -20,8 +20,7 @@ format:
     incremental: true
 ---
 
-
-## Connect to the GHZ database
+## Linear regression from scikit-learn
 
 . . .
 
@@ -31,6 +30,14 @@ import pymssql
 import pandas as pd
 from scikit-learn.linear_model import LinearRegression
 
+model = LinearRegression()
+```
+
+## Connect to the GHZ database
+
+. . .
+
+```.p
 server = "mssql-82792-0.cloudclusters.net:16272"
 username = "user"
 password = "RiceOwls1912" 
@@ -56,6 +63,7 @@ df = pd.read_sql(
     conn
   )
 df = df.dropna()
+df = df.set_index(["date", "ticker"])
 ```
 
 ## Split into train and test
@@ -82,8 +90,7 @@ predictors = [
 Xtrain = train[predictors]
 ytrain = train["ret"]
 
-model = LinearRegression()
-_ = model.fit(Xtrain, ytrain)
+model.fit(Xtrain, ytrain)
 ```
 
 ## Regression coefficients
@@ -91,7 +98,7 @@ _ = model.fit(Xtrain, ytrain)
 . . .
 
 ```.p
-print(model.intercept_)
+print("intercept =", model.intercept_)
 
 coefs = pd.Series(model.coef_, index=predictors)
 coefs
@@ -104,6 +111,9 @@ coefs
 import pandas as pd
 import pymssql
 from sqlalchemy import create_engine
+from sklearn.linear_model import LinearRegression
+
+model = LinearRegression()
 
 server = "mssql-82792-0.cloudclusters.net:16272"
 username = "user"
@@ -123,6 +133,8 @@ df = pd.read_sql(
     conn
   )
 df = df.dropna()
+df = df.set_index(["date", "ticker"])
+
 later = df.index.get_level_values("date")>="2010-01"
 
 train = df[~later]
@@ -136,11 +148,59 @@ predictors = [
 Xtrain = train[predictors]
 ytrain = train["ret"]
 
-model = LinearRegression()
-_ = model.fit(Xtrain, ytrain)
+model.fit(Xtrain, ytrain)
 
-print(model.intercept_)
+print("intercept =", model.intercept_)
 
 coefs = pd.Series(model.coef_, index=predictors)
 coefs
+```
+
+## Predict
+
+```.p
+Xtest = test[predictors]
+
+ypredict = model.predict(Xtest)
+ypredict = pd.Series(ypredict, index=test.index)
+```
+
+## Sort
+
+```.p
+cut = lambda x: pd.qcut(x, 5, labels=range(1, 6))
+quintiles = ypredict.groupby("date", group_keys=False).apply(cut)
+quintiles.name = "quintile"
+```
+
+## Compute returns
+
+```.p
+test = test.join(quintiles)
+
+rets = test.reset_index().groupby(["date", "quintile"]).ret.mean()
+rets = rets.unstack()
+print(rets.head())
+print(rets.mean())
+```
+
+. . .
+
+```{python}
+Xtest = test[predictors]
+
+ypredict = model.predict(Xtest)
+ypredict = pd.Series(ypredict, index=test.index)
+
+cut = lambda x: pd.qcut(x, 5, labels=range(1, 6))
+quintiles = ypredict.groupby("date", group_keys=False).apply(cut)
+quintiles.name = "quintile"
+
+test = test.join(quintiles)
+
+rets = test.reset_index().groupby(["date", "quintile"]).ret.mean()
+rets = rets.unstack()
+
+print(rets.head())
+print(rets.mean())
 ```
