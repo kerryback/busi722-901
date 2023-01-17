@@ -116,5 +116,17 @@ account = trading_client.get_account()
 account
 ```
 
+## Portfolio value
 
+. . .
+
+```.p
+account.equity
+```
+
+. . .
+
+```{python}
+account.equity
+```
 
