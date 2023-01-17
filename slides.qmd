@@ -2,12 +2,12 @@
 
 [2. A First Portfolio](2-first-portfolio.html){target="_blank"}
 
-[3a. Alpaca](3a-alpaca.html)
+[3a. Alpaca](3a-alpaca.html){target="_blank"}
 
-[3b. Rice Database](3b-rice-database.html)
+[3b. Rice Database](3b-rice-database.html){target="_blank"}
 
-[3c. GHZ Database](3c-ghz-database.html)
+[3c. GHZ Database](3c-ghz-database.html){target="_blank"}
 
-[3d. Today Table](3d-today.html)
+[3d. Today Table](3d-today.html){target="_blank"}
 
-[4a. Simple Backtest](4a-simple-backtest.html)
+[4a. Simple Backtest](4a-simple-backtest.html){target="_blank"}
