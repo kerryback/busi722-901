@@ -4,6 +4,7 @@ project:
   render:
     - index.qmd
     - slides.qmd    
+    - project.qmd
   
 website:
   title: ""
@@ -13,14 +14,17 @@ website:
     title: BUSI 722
     link-external-newwindow: true
     search: false
-    right:
+    right:   
+
+      - text: Group Project
+        file: project.qmd
 
       - text: Code Binder
         href: https://mybinder.org/v2/gh/kerryback/2023-722-binder.git/HEAD
 
       - text: Slide Decks
         file: slides.qmd
-    
+
       - text: Home
         file: index.qmd
 
