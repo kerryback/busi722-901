@@ -1,0 +1,70 @@
+---
+title:  "Quantitative Investing"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+##  Security analysts
+
+- Sell-side analysts work for brokerage firms and provide research to brokerage clients.  
+  - They are a cost center and research is provided free to generate business (= commissions or advising fees).
+- Buy-side analysts work for investment funds who use the research to pick stocks.
+
+## Technical versus fundamental
+
+- Fundamental analysts forecast important ratios and growth rates to produce earnings forecasts and price targets as in Gordon/Dupont.
+- Technical analysts use past prices to generate recommendations.
+
+## Technical analysis examples
+
+  - Support and resistance levels. 
+    - Previous minimum (support) and maximum (resistance) stock prices are regarded as difficult to breach.  
+    - But if breached, the trend is expected to continue.
+  - Moving averages: buy when price rises above moving average and sell when it falls below.
+  - Chart patterns (head and shoulders, ...)
+
+# Quantitative Investing {background-color="#657b83" color="#fdf6e3"}
+
+##
+
+- Quantitative investing means using quantifiable signals to pick stocks and/or to time the market.
+- Signals can include ratios and growth rates used by fundamental analysts and price signals used by technical analysts.
+- Signals can also include 
+  - insider trades, short interest, ...
+  - sentiment analysis of social media, traditional media, and company announcements
+  - satellite and drone image data, and ...
+
+
+# Efficient Markets Hypothesis {background-color="#657b83" color="#fdf6e3"}
+
+##
+
+- All relevant information is already impounded into prices.
+  - Fundamental analysis is futile.
+  - Technical analysis is futile.
+- Higher expected returns come only with higher risks: arket risk (beta) and/or other types of risks (oil price, ...)
+
+## Counter-argument
+
+- Not all investors are smart
+- Smart investors may not scoop up all opportunities
+  - Limited capital 
+  - Costs of trading
+  - For example, an investor who shorts risks running out of capital from margin calls before being eventually right.
+- More likely to be opportunities among smaller stocks, which are difficult for large investors to trade.
+

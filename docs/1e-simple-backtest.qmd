@@ -1,0 +1,198 @@
+---
+title:  "A Simple Backtest"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+## Linear regression from scikit-learn
+
+. . .
+
+```.p
+from sqlalchemy import create_engine
+import pymssql
+import pandas as pd
+from scikit-learn.linear_model import LinearRegression
+
+model = LinearRegression()
+```
+
+## Connect to the GHZ database
+
+. . .
+
+```.p
+server = "mssql-82792-0.cloudclusters.net:16272"
+username = "user"
+password = "RiceOwls1912" 
+database = "ghz"
+string = "mssql+pymssql://" + username + ":" + password + "@" + server + "/" + database
+
+conn = create_engine(string).connect()
+```
+
+
+## Get data
+
+. . .
+
+```{.p }
+df = pd.read_sql(
+    """
+    select date, ticker, bm, roeq, ret
+    from data
+    order by date, ticker
+    """,
+    conn
+  )
+df = df.dropna()
+df = df.set_index(["date", "ticker"])
+```
+
+## Split into train and test
+
+. . .
+
+```.p
+later = df.index.get_level_values("date")>="2010-01"
+
+train = df[~later]
+test = df[later]
+```
+
+## Train linear model
+
+. . .
+
+```.p
+features = ["bm", "roeq"]
+
+Xtrain = train[features]
+ytrain = train["ret"]
+
+model.fit(Xtrain, ytrain)
+```
+
+## Regression coefficients
+
+. . .
+
+```.p
+print("intercept =", model.intercept_)
+
+coefs = pd.Series(model.coef_, index=features)
+coefs
+```
+
+
+. . .
+
+```{python}
+import pandas as pd
+import pymssql
+from sqlalchemy import create_engine
+from sklearn.linear_model import LinearRegression
+
+model = LinearRegression()
+
+server = "mssql-82792-0.cloudclusters.net:16272"
+username = "user"
+password = "RiceOwls1912" 
+database = "ghz"
+string = "mssql+pymssql://" + username + ":" + password + "@" + server + "/" + database
+
+conn = create_engine(string).connect()
+
+df = pd.read_sql(
+    """
+    select date, ticker, bm, roeq, ret
+    from data
+    order by date, ticker
+    """,
+    conn
+  )
+df = df.dropna()
+df = df.set_index(["date", "ticker"])
+
+later = df.index.get_level_values("date")>="2010-01"
+
+train = df[~later]
+test = df[later]
+
+features = ["bm", "roeq"]
+
+Xtrain = train[features]
+ytrain = train["ret"]
+
+model.fit(Xtrain, ytrain)
+
+print("intercept =", model.intercept_)
+
+coefs = pd.Series(model.coef_, index=features)
+coefs
+```
+
+## Predict
+
+```.p
+Xtest = test[features]
+
+ypredict = model.predict(Xtest)
+ypredict = pd.Series(ypredict, index=test.index)
+```
+
+## Sort
+
+```.p
+cut = lambda x: pd.qcut(x, 5, labels=range(1, 6))
+quintiles = ypredict.groupby("date", group_keys=False).apply(cut)
+quintiles.name = "quintile"
+```
+
+## Compute returns
+
+```.p
+test = test.join(quintiles)
+
+rets = test.reset_index().groupby(["date", "quintile"]).ret.mean()
+rets = rets.unstack()
+print(rets.head())
+print(rets.mean())
+```
+
+. . .
+
+```{python}
+Xtest = test[features]
+
+ypredict = model.predict(Xtest)
+ypredict = pd.Series(ypredict, index=test.index)
+
+cut = lambda x: pd.qcut(x, 5, labels=range(1, 6))
+quintiles = ypredict.groupby("date", group_keys=False).apply(cut)
+quintiles.name = "quintile"
+
+test = test.join(quintiles)
+
+rets = test.reset_index().groupby(["date", "quintile"]).ret.mean()
+rets = rets.unstack()
+
+print(rets.head())
+print(rets.mean())
+```

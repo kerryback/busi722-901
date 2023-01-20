@@ -1,0 +1,65 @@
+---
+title:  "Factors"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+##
+
+- Groups of stocks with certain characteristics seem to have higher expected returns.
+- These stocks also usually tend to move together.
+- Maybe they are exposed to some risk that some investors regard as undesirable.
+- Maybe you want to take on that risk to get the return.
+
+## 
+  
+  - The return of the group of stocks is called a factor.
+  - Investing in the factor means you will be correlated with the factor.
+    - So, if we regress your return on the factor, you will have a positive slope coefficient (beta).
+    - Hence the name "smart beta." 
+  - Example: Fama-French factors: Small Minus Big, High book-to-market Minus Low book-to-market, Conservative Minus Agressive, Robust Minus Weak.
+
+##
+
+- The "exposed to some risk" story is a way to reconcile factor investing with the efficient markets hypothesis.
+- It is also possible that stocks are just mispriced in systematic ways.
+- For example, there is evidence that analysts recognize that "quality" stocks are worth more than "junk" stocks, but they underestimate how much more.
+
+## Industry examples
+
+<br><br>
+
+[Factor investing at BlackRock](https://www.blackrock.com/us/individual/investment-ideas/what-is-factor-investing){.external target="_blank"}
+
+<br>
+
+[Factor investing at AQR](https://www.aqr.com/Learning-Center/Systematic-Equities/Systematic-Equities-A-Closer-Look?gclid=Cj0KCQiA_8OPBhDtARIsAKQu0gZS3uj9A0fdCN5eB_P-uUfY0VWr2uY9MW503bgPnO7DbQeVr2_WlxkaAlwhEALw_wcB){.external target="_blank"}
+
+## Some data <a href=http://bbcx-investments.com/risk/geometric"><img src="images/Rice_Owl.jpg"  style="width:.65in;" align="right"></a>
+
+- Sort into quintiles each month.
+- Value weighted return of each group
+- Re-sort at the beginning of the next period and continue.
+
+## Factor investing with machine learning
+
+- Find factors worth investing in.
+- Decide how to optimally combine them.
+- Using ML, we can in principle throw in lots of characteristics and let the machine decide which are useful, but preprocessing is usually useful.
+- Need to backtest, which is a variation of the usual ML train-and-test.
+- [Gu, Kelly, and Xiu, 2020](https://www.dropbox.com/s/mmg4del1r0g18li/Gu_Kelly_Xiu_RFS_2020%20Asset%20Pricing%20via%20Machine%20Learning.pdf?dl=1)

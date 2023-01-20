@@ -5,13 +5,13 @@ project:
     - index.qmd
     - slides.qmd    
     - project.qmd
-  
+      
 website:
   title: ""
   search: false
 
   navbar:
-    title: BUSI 722
+    title: BUSI 722-901
     link-external-newwindow: true
     search: false
     right:   
@@ -20,7 +20,7 @@ website:
         file: project.qmd
 
       - text: Code Binder
-        href: https://mybinder.org/v2/gh/kerryback/2023-722-binder.git/HEAD
+        href: https://mybinder.org/v2/gh/kerryback/2023-722-901-binder.git/HEAD
 
       - text: Slide Decks
         file: slides.qmd
