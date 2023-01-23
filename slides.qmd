@@ -10,3 +10,14 @@
 
 [1f. Alpaca](1f-alpaca.html){target="_blank"}
 
+[2a. Issues with our Simple Backtest](2a-issues-second-backtest.html){target="_blank"}
+
+[2b. A Second Backtest](2b-second-backtest.html){target="_blank"}
+
+[2c. Evaluating Backtested Returns: Part 1](2c-evaluating-returns-part1.html){target="_blank"}
+
+[2d. Evaluating Backtested Returns: Part 2](2d-evaluating-returns-part2.html){target="_blank"}
+
+[2e. Analyzing Predictions and Portfolios](2e-analyzing-portfolios.html){target="_blank"}
+
+[2f. Industries](2f-industries.html){target="_blank"}
