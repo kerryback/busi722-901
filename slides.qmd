@@ -10,7 +10,7 @@
 
 [1f. Alpaca](1f-alpaca.html){target="_blank"}
 
-[2a. Issues with our Simple Backtest](2a-issues-second-backtest.html){target="_blank"}
+[2a. Issues with our Simple Backtest](2a-issues.html){target="_blank"}
 
 [2b. A Second Backtest](2b-second-backtest.html){target="_blank"}
 
