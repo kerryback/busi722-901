@@ -17,8 +17,8 @@
 
 [2c. Additional Considerations](2c-additional.html){target="_blank"}
 
-[2d. Evaluating Returns: Part 1](2d-evaluate1.html){target="_blank"}
+[2d. Evaluate Returns: Part 1](2d-evaluate1.html){target="_blank"}
 
-[2e. Evaluating Returns: Part 2](2e-evaluate2.html){target="_blank"}
+[2e. Evaluate Returns: Market Benchmark](2e-evaluate2.html){target="_blank"}
 
-[2f. Analyzing Predictions](2f-analyze-predictions.html){target="_blank"}
+[2f. Evaluate Returns: Fama-French Benchmark](2f-evaluate3.html){target="_blank"}

@@ -1,0 +1,37 @@
+---
+title:  "Evaluate Returns: Market Benchmark"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+## Beta-adjusted market benchmark
+
+- We estimate the market (CAPM) beta by running this regression:
+
+. . .
+
+$$r - r_f = \alpha + \beta (r_m-r_f) + \varepsilon$$
+
+- We can rearrange this as
+
+. . .
+
+$$ r - [\beta r_m + (1-\beta)r_f] = \alpha + \varepsilon$$
+
+- The return $\beta r_m + (1-\beta)r_f$ is a portfolio of the market with saving or borrowing that has the same amount of market risk as the return being analyzed.

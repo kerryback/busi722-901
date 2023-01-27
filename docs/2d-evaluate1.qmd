@@ -28,17 +28,6 @@ format:
     - Compare to the market on a beta-adjusted basis
     - Compare to the market and other factors (attribution analysis)
 
-## Example returns
-
-- Best 200 stocks each month, equally weighted
-- Worst 200 stocks each month, equally weighted
-- 150/50 portfolio = 1.5 $\times$ best - 0.5 $\times$ worst
-- Market return from French's data library
-
-## Accumulation plots
-
-- (1+ret).cumprod()
-- Also on log scale
 
 ## Drawdowns
 
@@ -52,4 +41,32 @@ format:
 - annualize std dev by $\times$ sqrt(12)
 - compute monthly excess returns (in excess of T-bill rate), mean and std dev and Sharpe ratio = mean / std dev
 - annualize Sharpe ratio by $\times$ sqrt(12)
+
+## Example accumulation plot
+
+. . .
+
+```.p
+(1+ret).cumprod().plot()
+(1+mkt).cumprod().plot()
+```
+
+. . .
+
+![](accumulation.png)
+
+## Example drawdown plot
+
+```.p
+accum = (1+ret).cumprod()
+accum_max = accum.expanding().max()
+drawdown = accum/accum_max - 1
+```
+. . .
+
+![](drawdown.png)
+
+
+
+
 
