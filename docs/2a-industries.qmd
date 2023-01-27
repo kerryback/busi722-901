@@ -109,8 +109,9 @@ from sklearn.linear_model import LinearRegression
 d = pd.get_dummies(df.industry)
 ind_names = d.columns.to_list()
 features = ["bm", "roeq"] + ind_names
-
 df2 = df.join(d)
+
+model = LinearRegression(fit_intercept=False)
 model.fit(df2[features], df2["ret"])
 pd.Series(model.coef_, index=features)
 ```
