@@ -1,5 +1,5 @@
 ---
-title:  "Evaluate Returns: Market Benchmark"
+title:  "Evaluate Returns: Fama-French Benchmark"
 author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
 execute:
   echo: false
@@ -20,37 +20,54 @@ format:
     incremental: true
 ---
 
-## Beta-adjusted market benchmark
+## Fama-French Factors
 
-- We estimate the market (CAPM) beta by regressing
+- The Fama-French factors are
+  - Mkt-RF
+  - SMB = small minus big
+  - HML = high book-to-market minus low book-to-market
+  - CMA = conservative (low asset growth) minus aggressive (high asset growth)
+  - RMW = robust (high profitability) minus weak (low profitability)
+
+## Fama-French Regression
+
+- We run the regression
 
 . . .
 
-$$r - r_f = \alpha + \beta (r_m-r_f) + \varepsilon$$
+$$r - r_f = \alpha + \beta_1 (r_m-r_f) + \beta_2 SMB + \beta_3 HML$$
 
-- We can rearrange this as
+$$  + \beta_4 CMA + \beta_5 RMW + \varepsilon$$
+
+- We can rearrange as
 
 . . .
 
-$$ r - [\beta r_m + (1-\beta)r_f] = \alpha + \varepsilon$$
+$$ r - \text{benchmark} = \alpha + \varepsilon$$
 
-- The return $\beta r_m + (1-\beta)r_f$ is a benchmark return.
+##
 
-## Alpha and the information ratio <a href="https://bbcx-investments.com/capm/alphas-mve"><img src="images/Rice_Owl.jpg" style="width:.65in;" align=right></a>
+- where the benchmark is
 
-- The return $r - [\beta r_m + (1-\beta)r_f]$ is called the active return.
-- Its mean is $\alpha$.  Hence, "seeking alpha."
-- Its risk is the risk of the regression residual $\varepsilon$.
-- The ratio $\alpha / \text{stdev}(\varepsilon)$ is the Sharpe ratio of the active return.
-- It is called the information ratio.
+. . .
 
-## Compounding active and market returns
+$$ \beta_1 r_m + (1-\beta_1)r_f + \beta_2 SMB$$
+
+$$ + \beta_3 HML + \beta_4 CMA + \beta_5 RMW$$
+
+## Alpha and information ratio
+
+- The return in excess of the benchmark is again the active return.
+- The mean active return $\alpha$ is the average return in excess of what we should expect to earn given market and other risk exposures.
+- The ratio $\alpha /\text{stdev}(\varepsilon)$ is again an information ratio.
+
+## Compounding  returns
 
 - To see visually how much the active return is adding to performance, compound  
-  - the benchmark return $\beta r_m + (1-\beta)r_f$
-  - the active return $\alpha + \varepsilon$
+  - the market return $\beta_1 r_m + (1-\beta_1)r_f$
+  - each of the other factor returns, e.g., $\beta_2 SMB$
   - and the total return $r$.
 
 ## Example
 
-![](market.png)
+![](ff.png)
