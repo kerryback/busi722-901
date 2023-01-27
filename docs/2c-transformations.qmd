@@ -1,0 +1,103 @@
+---
+title:  "Transforming Features and Target"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  jupyter-cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+## Example of untransformed data
+
+- Same data as in last session (roeq and ret in 2020-01)
+
+. . .
+
+```{python}
+import plotly.express as px
+import pandas as pd
+import pymssql
+from sqlalchemy import create_engine
+server = "mssql-82792-0.cloudclusters.net:16272"
+username = "user"
+password = "RiceOwls1912" 
+database = "ghz"
+string = "mssql+pymssql://" + username + ":" + password + "@" + server + "/" + database
+
+conn = create_engine(string).connect()
+
+df = pd.read_sql(
+    """
+    select date, ticker, bm, roeq, ret, siccd
+    from data
+    where date='2020-01'
+    order by date, ticker
+    """,
+    conn
+  )
+df = df.dropna()
+df = df.set_index(["date", "ticker"])
+```
+
+```{python}
+fig = px.scatter_matrix(
+    df[["roeq", "ret"]],
+    width=1000,
+    height=500)
+fig.show()
+```
+
+## Scikit-learn transformers
+
+- StandardScaler: y = (x-x.mean())/x.std()
+- PowerTransformer: nonlinear transformations to generate approximate normal distribution
+- QuantileTransformer
+  - uniform maps data to [0,1]
+  - normal maps to standard normal distribution
+
+## Normal quantile transformer example
+
+. . .
+
+```.p
+from sklearn.preprocessing import QuantileTransformer
+qt = QuantileTransformer(output_distribution="normal")
+d = qt.fit_transform(df[["roeq", "ret"]])
+d = pd.DataFrame(d, columns=["roeq", "ret"])
+px.scatter_matrix(d)
+```
+
+. . .
+
+```{python}
+from sklearn.preprocessing import QuantileTransformer
+qt = QuantileTransformer(output_distribution="normal")
+d = qt.fit_transform(df[["roeq", "ret"]])
+d = pd.DataFrame(d, columns=["roeq", "ret"])
+
+fig = px.scatter_matrix(
+    d,
+    width=1000,
+    height=400)
+fig.show()
+```
+
+## Transforming cross sections
+
+- We should probably transform each cross-section separately
+- Transform returns each month separately to remove the effect of the market being up or down
+- Transform features each month separately to remove time trends in the features
+- Can transform each month separately by applying the fit_transform method within a groupby.

@@ -1,0 +1,55 @@
+---
+title:  "Evaluate Returns: Part 1"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+## Overview
+
+- Suppose we've run a backtest and saved the portfolio returns.
+- Evaluate raw returns: accumulation, drawdowns, mean, std dev, Sharpe ratio
+- Evaluate relative to benchmarks
+    - Compare to the market on a beta-adjusted basis
+    - Compare to the market and other factors (attribution analysis)
+
+## Example returns
+
+- Best 200 stocks each month, equally weighted
+- Worst 200 stocks each month, equally weighted
+- 150/50 portfolio = 1.5 $\times$ best - 0.5 $\times$ worst
+- Market return from French's data library
+
+## Accumulation plots
+
+- (1+ret).cumprod()
+- Also on log scale
+
+## Drawdowns
+
+- A drawdown occurs whenever your portfolio value is not as high as it once was
+- The percent drawdown is (current value - prior max) / prior max.
+
+## Statistics
+
+- mean and std dev of monthly returns
+- annualize mean by $\times$ 12
+- annualize std dev by $\times$ sqrt(12)
+- compute monthly excess returns (in excess of T-bill rate), mean and std dev and Sharpe ratio = mean / std dev
+- annualize Sharpe ratio by $\times$ sqrt(12)
+
