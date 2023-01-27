@@ -22,7 +22,7 @@ format:
 
 ## Beta-adjusted market benchmark
 
-- We estimate the market (CAPM) beta by running this regression:
+- We estimate the market (CAPM) beta by regressing
 
 . . .
 
@@ -34,4 +34,23 @@ $$r - r_f = \alpha + \beta (r_m-r_f) + \varepsilon$$
 
 $$ r - [\beta r_m + (1-\beta)r_f] = \alpha + \varepsilon$$
 
-- The return $\beta r_m + (1-\beta)r_f$ is a portfolio of the market with saving or borrowing that has the same amount of market risk as the return being analyzed.
+- The return $\beta r_m + (1-\beta)r_f$ is a benchmark return.
+
+## Alpha and the information ratio <a href="https://bbcx-investments.com/capm/alphas-mve"><img src="images/Rice_Owl.jpg" style="width:.65in;" align=right></a>
+
+- The return $r - [\beta r_m + (1-\beta)r_f]$ is called the active return.
+- Its mean is $\alpha$.  Hence, "seeking alpha."
+- Its risk is the risk of the regression residual $\varepsilon$.
+- The ratio $\alpha / \text{stdev}(\varepsilon)$ is the Sharpe ratio of the active return.
+- It is called the information ratio.
+
+## Compounding active and market returns
+
+- To see visually how much the active return is adding to performance, compound  
+  - the benchmark return $\beta r_m + (1-\beta)r_f$
+  - the active return $\alpha + \varepsilon$
+  - and the total return $r$.
+
+## Example
+
+![](market.png)

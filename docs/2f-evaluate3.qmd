@@ -1,0 +1,56 @@
+---
+title:  "Evaluate Returns: Market Benchmark"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+## Beta-adjusted market benchmark
+
+- We estimate the market (CAPM) beta by regressing
+
+. . .
+
+$$r - r_f = \alpha + \beta (r_m-r_f) + \varepsilon$$
+
+- We can rearrange this as
+
+. . .
+
+$$ r - [\beta r_m + (1-\beta)r_f] = \alpha + \varepsilon$$
+
+- The return $\beta r_m + (1-\beta)r_f$ is a benchmark return.
+
+## Alpha and the information ratio <a href="https://bbcx-investments.com/capm/alphas-mve"><img src="images/Rice_Owl.jpg" style="width:.65in;" align=right></a>
+
+- The return $r - [\beta r_m + (1-\beta)r_f]$ is called the active return.
+- Its mean is $\alpha$.  Hence, "seeking alpha."
+- Its risk is the risk of the regression residual $\varepsilon$.
+- The ratio $\alpha / \text{stdev}(\varepsilon)$ is the Sharpe ratio of the active return.
+- It is called the information ratio.
+
+## Compounding active and market returns
+
+- To see visually how much the active return is adding to performance, compound  
+  - the benchmark return $\beta r_m + (1-\beta)r_f$
+  - the active return $\alpha + \varepsilon$
+  - and the total return $r$.
+
+## Example
+
+![](market.png)
