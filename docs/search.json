@@ -18,7 +18,7 @@
     "href": "slides.html",
     "title": "",
     "section": "",
-    "text": "1b. Quantitative Investing\n1c. Factors\n1d. Green-Hand-Zhang SQL Database\n1e. A Simple Backtest\n1f. Alpaca\n2a. Issues with our Simple Backtest\n2b. A Second Backtest\n2c. Evaluating Backtested Returns: Part 1\n2d. Evaluating Backtested Returns: Part 2\n2e. Analyzing Predictions and Portfolios\n2f. Industries"
+    "text": "1b. Quantitative Investing\n1c. Factors\n1d. Green-Hand-Zhang SQL Database\n1e. A Simple Backtest\n1f. Alpaca\n2a. Industries\n2b. Transforming Features and Target\n2c. Additional Considerations\n2d. Evaluating Returns: Part 1\n2e. Evaluating Returns: Part 2\n2f. Analyzing Predictions"
   },
   {
     "objectID": "slides.html#backtesting-and-return-analysis",
