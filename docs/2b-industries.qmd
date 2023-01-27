@@ -1,0 +1,49 @@
+---
+title:  "Industries"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+## Definition of Industries
+
+- Industry groupings are usually built on SIC codes
+- We'll use a couple of examples: Fama-French 12 industries and Fama-French 48 industries
+- The mapping SIC code $\mapsto$ industry can be found on French's website
+- Here are the 12 industries:
+
+. . .
+
+```{python}
+import pandas as pd
+df = pd.read_csv("Siccodes12.csv", index_col="industry")
+df
+```
+
+## Dummy variables
+
+- We can use categorical variables in numerical models by creating dummy variables.
+- We create a dummy variable for each industry defined as: =1 if the firm is in the industry and =0 otherwise.
+- If we include dummy variables in a linear regression, we allow each industry to have a different intercept.
+
+## Example
+
+. . .
+
+```{python}
+
+
