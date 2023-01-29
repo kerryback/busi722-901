@@ -30,15 +30,20 @@ Grades will be based on a project and a final exam.  They will be count equally 
 - Week 6: Introduction to futures
 - Week 7: Risk management examples
 
-#### Group project
+#### Project Description
 
-Groups should consist of two or three students.  There are two deliverables.  The first is due on the last day of class (Thursday, February 23).  Each group should submit a pdf describing
+The project requires conducting backtests of strategies and implementing a strategy on Alpaca.  The strategy that is implemented should be a 150/50 strategy, meaning 150% long and 50% short.  The strategy should be implemented on Alpaca no later than the opening of trading on ..., and the analysis should include results through at least the close of trading on ....  Each group should submit a pdf containing the following elements.  It is due on ....
 
-- an investment strategy
-- the results of backtesting the strategy
-- the results of backtesting other strategies that were investigated
+ - Descriptions of at least two strategies and their results in backtests.
+ - An explanation of a choice of a particular strategy to implement.
+ - A description of the trading process:
+   - What were the target portfolio weights?
+   - How frequently were trades made?
+   - What were the criteria for trading out of positions?
+   - What were the criteria for putting on new positions?
+   - How often and to what extent were positions rebalanced to target weights?
+- An evaluation of the weekly returns of the Alpaca strategy.
 
-The second part of the project is due Friday, April 21.  Each group should submit a pdf describing how they implemented their strategy  (how often they traded and how they decided what trades to make) with paper trading at Alpaca and what the results were.
 
 #### Honor Code
 
