@@ -20,7 +20,7 @@ We'll cover three topics in this course: options, futures, and quantitative equi
 
 #### Assignments and Grading
 
-Grades will be based on a group project and a final exam.  They will be count equally towards the course grade.  The group project is about quantitative equity investing.  The final exam will cover options and futures.  
+Grades will be based on a project and a final exam.  They will be count equally towards the course grade.  The project is about quantitative equity investing.  The final exam will cover options and futures.  
 
 #### Tentative Schedule
 

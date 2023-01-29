@@ -1,10 +1,10 @@
-#### Group Project
+####  Project Description
 
-Groups should consist of no more than three people.  The project requires conducting backtests of strategies and implementing a strategy on Alpaca.  The strategy that is implemented should be a 130/30 strategy, meaning 130% long and 30% short.  The strategy should be implemented on Alpaca no later than the opening of trading on Monday, February 27, and the analysis should include results through at least the close of trading on Friday, April 7.  Each group should submit a pdf containing the following elements.  It is due on Friday, April 21.
+The project requires conducting backtests of strategies and implementing a strategy on Alpaca.  The strategy that is implemented should be a 150/50 strategy, meaning 150% long and 50% short.  The strategy should be implemented on Alpaca no later than the opening of trading on ..., and the analysis should include results through at least the close of trading on ....  Each group should submit a pdf containing the following elements.  It is due on ....
 
  - Descriptions of at least two strategies and their results in backtests.
- - An explanation of the team's choice of a particular strategy to implement.
- - A description of the team's trading process:
+ - An explanation of a choice of a particular strategy to implement.
+ - A description of the trading process:
    - What were the target portfolio weights?
    - How frequently were trades made?
    - What were the criteria for trading out of positions?

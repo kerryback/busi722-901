@@ -16,7 +16,7 @@ website:
     search: false
     right:   
 
-      - text: Group Project
+      - text: Project
         file: project.qmd
 
       - text: Code Binder

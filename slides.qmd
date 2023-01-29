@@ -1,3 +1,12 @@
+## Slide Decks<br>BUSI 722-901<br>Data Driven Finance II<br><br>![](RiceBusiness-transparent-logo-sm.png){height="60"}<br>
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+### 1. Intro to Quant Investing
+
+
 [1a. Valuation Fundamentals](1a-valuation-fundamentals.html){target="_blank"}
 
 [1b. Quantitative Investing](1b-quant-investing.html){target="_blank"}
@@ -9,6 +18,9 @@
 [1e. A Simple Backtest](1e-simple-backtest.html){target="_blank"}
 
 [1f. Alpaca](1f-alpaca.html){target="_blank"}
+
+### 2: Designing and Evaluating Backtests
+
 
 
 [2a. Industries](2a-industries.html){target="_blank"}
@@ -22,3 +34,54 @@
 [2e. Market Benchmark](2e-evaluate2.html){target="_blank"}
 
 [2f. Fama-French Benchmark](2f-evaluate3.html){target="_blank"}
+
+### 3. ML and Strategy Implementation
+
+
+[3a. Trees](3a-trees.html){target="_blank"}
+
+[3b. Neural Nets](3b-nets.html){target="_blank"}
+
+[3c. Hyperparameters and Cross Validation](3c-cv.html){target="_blank"}
+
+[3d. A Complete Backtest](3d-backtest.html){target="_blank"}
+
+[3e. Today's Rankings](3e-rankings.html){target="_blank"}
+
+[3f. Submit Trades to Alpaca](3d-backtest.html){target="_blank"}
+
+:::
+
+::: {.column width="50%"}
+
+### 4. Options
+
+[4a. Introduction to Options](4a-intro-options.html){target="_blank"}
+
+[4b. Option Premia and Returns](4b-option-premia.html){target="_blank"}
+
+[4c. Hedging and Speculating with Options](4c-hedging-speculating.html){target="_blank"}
+
+[4d. Put-Call Parity](4b-option-premia.html){target="_blank"}
+
+[4e. Trading Volatility](4e-trading-vol.html)
+
+[4f. Maxum Petroleum](4b-option-premia.html){target="_blank"}
+
+### 5. Valuing Options
+
+[5a. Deltas in Binomial Models](4b-option-premia.html){target="_blank"}
+
+[5b. Risk-Neutral Probabilities](4b-option-premia.html){target="_blank"}
+
+[5c. Binomial Trees](4b-option-premia.html){target="_blank"}
+
+[5d. Black-Scholes](4b-option-premia.html){target="_blank"}
+
+[5e. Deltas in Black-Scholes](4b-option-premia.html){target="_blank"}
+
+[5f. Implied Volatilities](4b-option-premia.html){target="_blank"}
+
+:::
+
+::::

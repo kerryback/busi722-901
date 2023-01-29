@@ -1,0 +1,187 @@
+---
+title:  "Introduction to Options"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+## Options and Open Interest
+
+- A financial option is a right to buy or sell  a financial security.
+    
+- The right trades separately from the (underlying) security and usually even on a different exchange.
+    
+- The rights are not (usually) issued by the companies who issue the underlying securities.  
+  - Instead, the rights are created when someone buys one from someone else.  
+  - Open interest is the number that exist at any time.
+
+## Example
+
+- When a contract is first opened for trading, open interest is zero.
+- Suppose Andy buys a contract from Brooke and Chloe buys a contract from David.
+  - Longs = Andy and Chloe
+  - Shorts = Brooke and David
+  - Open interest = 2
+
+## 
+
+- Suppose Andy then sells a contract to David.
+  - Andy: long + short = no position
+  - David: short + long = no position
+  - Longs = Chloe 
+  - Shorts = Brooke
+  - Open interest = 1
+    
+
+## Clearinghouse
+
+- The long party has an option.  The short party has an obligation.
+- After a trade is made, the option clearinghouse steps in the middle and becomes the counterparty to both sides.
+
+## Hedging, speculation, and income
+
+- You pay upfront to acquire an option.  
+  - The amount you pay is called the option premium.  
+  - It is not part of the contract but instead is determined in the market (like a stock price).
+- You buy options to hedge or to speculate.  You sell options for income.
+- Sellers of options need to have sufficient equity in their accounts (margin).  A buyer needs enough cash to pay the premium but no more (like buying a stock).
+
+##  Calls, puts, and strikes
+
+- A call option gives the holder the right to buy an asset at a pre-specified price.
+
+- A put option gives the holder the right to sell an asset at a pre-specified price.
+
+- The pre-specified price is called the exercise price or strike price.  
+
+
+ 
+
+
+## American and European
+
+- An option is valid for a specified period of time, the end of which is called its expiration date or maturity date.
+
+- Most financial options can be exercised at any time the owner wishes, prior to maturity.  Such options are called American.
+    
+- There are some options that can only be exercised on the maturity date.  They are called European.  Both types are traded on both continents.
+      
+## Moneyness
+
+- Borrowing language from horse racing, we say a call is
+  - in the money if the underlying price is above the strike,
+  - at the money if the underlying price equals the strike
+  - out of the money if the underlying price is below the strike
+- The reverse for puts
+ 
+- Also, "deep in the money" and "deep out of the money"
+
+## Value of a call at maturity
+
+- At maturity, the value of a call is
+
+. . .
+
+$$\begin{cases} 0 & \text{if underlying < strike}\\
+ \text{underlying} - \text{strike} & \text{if underlying > strike}
+ \end{cases}
+ $$
+
+- Equivalently, the value of a call is 
+
+. . .
+
+$$\max(\text{underlying price}-\text{strike}, 0)$$
+
+## Value of a call at maturity
+
+With strike = 50,
+
+. . .
+
+
+```{python}
+import numpy as np
+import plotly.express as px
+
+strike = 50
+underlying = np.linspace(0, 100, 100)
+call = np.maximum(underlying-strike, 0)
+
+fig = px.line(x=underlying, y=call)
+fig.update_traces(
+    hovertemplate="Underlying = $%{x:.2f}<br>Call = $%{y:.2f}<extra></extra>"
+)
+fig.update_layout(
+    xaxis_title="Underlying Price",
+    yaxis_title="Call Option Value",
+    xaxis_title_font = {"size":20},
+    yaxis_title_font =  {"size":20},
+    template="plotly_white"
+)
+fig.show()
+```
+
+## Value of a put at maturity
+
+- At maturity, the value of a put is
+
+. . .
+
+$$\begin{cases} \text{strike} - \text{underlying} & \text{if underlying < strike}\\
+ 0 & \text{if underlying > strike}
+ \end{cases}
+ $$
+
+- Equivalently, the value of a put is 
+
+. . .
+
+$$\max(\text{strike}-\text{underlying price}, 0)$$
+
+## Value of a put at maturity
+
+With strike = 50,
+
+. . .
+
+
+```{python}
+import numpy as np
+import plotly.express as px
+
+strike = 50
+underlying = np.linspace(0, 100, 100)
+put = np.maximum(strike-underlying, 0)
+
+fig = px.line(x=underlying, y=put)
+fig.update_traces(
+    hovertemplate="Underlying = $%{x:.2f}<br>Put = $%{y:.2f}<extra></extra>"
+)
+fig.update_layout(
+    xaxis_title="Underlying Price",
+    yaxis_title="Put Option Value",
+    xaxis_title_font = {"size":20},
+    yaxis_title_font =  {"size":20},
+    template="plotly_white"
+)
+fig.show()
+```
+
+
+
