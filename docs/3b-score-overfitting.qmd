@@ -1,0 +1,211 @@
+---
+title:  "Scoring and Overfitting"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+
+
+
+
+
+
+
+```{python}
+from sqlalchemy import create_engine
+import pymssql
+import pandas as pd
+
+server = "mssql-82792-0.cloudclusters.net:16272"
+username = "user"
+password = "RiceOwls1912" # paste password between quote marks
+database = "ghz"
+
+string = "mssql+pymssql://" + username + ":" + password + "@" + server + "/" + database
+
+conn = create_engine(string).connect()
+
+df = pd.read_sql(
+    """
+    select ticker, date, ret, roeq, mom12m
+    from data
+    where date in ('2021-12', '2022-01')
+    """, 
+    conn
+)
+df = df.dropna()
+```
+
+
+
+```{python}
+from sklearn.preprocessing import QuantileTransformer
+qt = QuantileTransformer(output_distribution="normal")
+def qtxs(d):
+    x = qt.fit_transform(d)
+    return pd.DataFrame(x, columns=d.columns, index=d.index)
+
+df[["roeq", "mom12m", "ret"]] = df.groupby(
+  "date", 
+  group_keys=False
+)[["roeq", "mom12m", "ret"]].apply(qtxs)
+```
+
+## Fit a regression tree
+
+. . .
+
+```{.p code-line-numbers="1|3-4|6-9|10"}
+from sklearn.tree import DecisionTreeRegressor
+
+Xtrain = df[df.date=='2021-12'][["roeq", "mom12m"]]
+ytrain = df[df.date=='2021-12']["ret"]
+
+model = DecisionTreeRegressor(
+  max_depth=2,
+  random_state=0
+)
+model.fit(Xtrain, ytrain)
+```
+
+```{python}
+from sklearn.tree import DecisionTreeRegressor
+
+Xtrain = df[df.date=='2021-12'][["roeq", "mom12m"]]
+ytrain = df[df.date=='2021-12']["ret"]
+
+model = DecisionTreeRegressor(
+  max_depth=2,
+  random_state=0
+)
+_=model.fit(Xtrain, ytrain)
+```
+
+## View the regression tree
+
+. . .
+
+```p
+from sklearn.tree import plot_tree
+_ = plot_tree(model)
+```
+
+. . .
+
+```{python}
+import matplotlib as mpl
+from sklearn.tree import plot_tree
+import matplotlib.pyplot as plt
+
+mpl.rcParams["figure.figsize"] = (16,5)
+
+_ = plot_tree(model)
+```
+
+## Feature importance
+
+- What fraction of the splitting is each feature responsible for?
+
+. . .
+
+```p
+pd.Series(model.feature_importances_, index=Xtrain.columns)
+```
+
+. . .
+
+```{python}
+pd.Series(model.feature_importances_, index=Xtrain.columns)
+```
+
+## Model score
+
+- The default scoring method for regression models is R-squared.
+- Equals 1 - MSE / mean squared deviation from mean
+  - MSE = mean squared error
+  - So we compare MSE from the model to MSE using the mean to predict
+- Max R-squared is 1 and can be negative
+
+##
+
+- R-squared on training data
+
+. . .
+
+```.p
+model.score(Xtrain, ytrain)
+```
+. . .
+
+```{python}
+model.score(Xtrain, ytrain)
+```
+
+- R-squared on test data
+
+. . .
+
+```.p
+Xtest = df[df.date=='2022-01'][["roeq", "mom12m"]]
+ytest = df[df.date=='2022-01']["ret"]
+model.score(Xtest, ytest)
+```
+
+. . .
+
+```{python}
+Xtest = df[df.date=='2022-01'][["roeq", "mom12m"]]
+ytest = df[df.date=='2022-01']["ret"]
+model.score(Xtest, ytest)
+```
+
+## Depth and overfitting
+
+- If we make a model more complex (more parameters), it will fit the training data better but may make worse predictions on new data.
+- This is called overfitting.
+- We can make a tree more complex by increasing its depth.
+
+## Overfitting our tree
+
+. . .
+
+```{python}
+import seaborn as sns
+sns.set_style("whitegrid")
+train_scores = []
+test_scores = []
+import numpy as np
+grid = np.arange(2, 22, 2)
+for depth in grid:
+  model = DecisionTreeRegressor(
+  max_depth=depth,
+  random_state=0
+  )
+  _=model.fit(Xtrain, ytrain)
+  train_scores.append(model.score(Xtrain, ytrain))
+  test_scores.append(model.score(Xtest, ytest))
+```
+
+```{python}
+plt.plot(grid, train_scores, label="train")
+plt.plot(grid, test_scores, label="test")
+plt.xlabel("Depth", fontsize=16)
+plt.ylabel("Score", fontsize=16)
+_ = plt.legend(fontsize=16)
+```
