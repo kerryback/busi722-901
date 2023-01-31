@@ -1,5 +1,5 @@
 ---
-title:  "Scoring and Overfitting"
+title:  "Cross Validation"
 author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
 execute:
   echo: false
@@ -20,46 +20,56 @@ format:
     incremental: true
 ---
 
+##
 
-## Decision Trees
+- Cross-validation (CV) is a way to choose optimal hyperparameters using the training data
+- Split the training data into subsets, e.g., A, B, C, D, E
+- Define a finite set of hyperparemeter combinations to choose from (the grid)
+  - Example: depth, learning rate = [[4, 0.1], [4, 0.5], [6, 0.1], [6, 0.5]]
+  - Example: hidden layer sizes = [[4, 2], [8, 4, 2], [16, 8, 4]]]
 
+## 
 
-- Split data sequentially into subsets based on the value of a single feature
-  - Above a threshold into one group
-  - Below the threshold into the other
-- Prediction in each subset is the plurality class (for classification) or the cell mean (for regression).
-- Try to minimize impurity in classification and (usually) mean squared error in regression.
+- Use one of the subsets (e.g., A) as the validation set
+- Train with each of the hyperparameter combinations on the union of the remaining subsets (e.g., B $\cup$ C $\cup$ D $\cup$ E)
+- Compute the trained model scores on A
+- Repeat with B as the validation set, etc.
+- For each hyperparameter combination, end up with as many validation scores as there are subsets
 
-## Example
+##
 
-. . .
+- Average the validation scores to get a single score for each hyperparameter combination
+- Choose the hyperparameters with the highest average score
+- All of this together is "search over the grid using cross-validation to find the best hyperparameters"
+- It is implemented by scikit-learn's GridSearchCV function
 
-![](decision-tree.png){height=440}
+## Custom scoring function
 
+- If we want to use predictions to sort stocks into "good" and "bad", then MSE is a poor scoring method.
+- Example: if you buy a stock because the predicted return is 40% and the actual return turns out to be 100%, is that really an error?
+- We want higher predictions to correspond to higher actual returns, so rank correlation would be a reasonable scoring method.
 
-## Another example
-
-. . .
-
-![](decision-tree-partition.png){height=560}
-
-
-## Example: train from 2021-12, predict for 2022-01
-
-- Get data from the SQL database as before
+## Coding a custom scoring function
 
 . . .
 
 ```.p
-df = pd.read_sql(
-    """
-    select ticker, date, ret, roeq, mom12m
-    from data
-    where date in ('2021-12', '2022-01')
-    """, 
-    conn
-)
+from scipy.stats import spearmanr
+from sklearn.metrics import make_scorer
+score = make_scorer(spearmanr, greater_is_better=True)
 ```
+
+- We can pass this to GridSearchCV to choose the best hyperparameters.
+
+## Example
+
+- Same data as in 3a-trees
+  - roeq and mom12m
+  - training data = 2021-12
+  - test data = 2022-01
+- Quantile transform features and ret in each cross-section
+
+
 
 ```{python}
 from sqlalchemy import create_engine
