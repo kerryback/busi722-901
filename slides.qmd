@@ -40,7 +40,7 @@
 
 [3c. Forests](3c-forests.html){target="_blank"}
 
-[3d. Neural Nets](3d-nets.html){target="_blank"}
+[3d. Neural Nets](3d-neuralnets.html){target="_blank"}
 
 [3e. Cross Validation](3e2-validation.html){target="_blank"}
 
