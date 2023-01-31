@@ -42,9 +42,9 @@
 
 [3d. Neural Nets](3d-nets.html){target="_blank"}
 
-[3e. Cross Validation](3e-validation.html){target="_blank"}
+[3e. Cross Validation](3e2-validation.html){target="_blank"}
 
-[3f. Complete Backtest](3d-backtest.html){target="_blank"}
+[3f. Complete Backtest](3e-complete-backtest.html){target="_blank"}
 
 :::
 
