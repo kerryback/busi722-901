@@ -4,8 +4,7 @@
 
 ::: {.column width="50%"}
 
-### 1. Intro to Quant Investing
-
+### 1. Quant Investing
 
 [1a. Valuation Fundamentals](1a-valuation-fundamentals.html){target="_blank"}
 
@@ -19,9 +18,7 @@
 
 [1f. Alpaca](1f-alpaca.html){target="_blank"}
 
-### 2: Designing and Evaluating Backtests
-
-
+### 2: Backtests
 
 [2a. Industries](2a-industries.html){target="_blank"}
 
@@ -35,20 +32,19 @@
 
 [2f. Fama-French Benchmark](2f-evaluate3.html){target="_blank"}
 
-### 3. ML and Strategy Implementation
-
+### 3. Backtesting ML Models
 
 [3a. Trees](3a-trees.html){target="_blank"}
 
-[3b. Neural Nets](3b-nets.html){target="_blank"}
+[3b. Scoring and Complexity](3b-scoring.html){target="_blank"}
 
-[3c. Hyperparameters and Cross Validation](3c-cv.html){target="_blank"}
+[3c. Forests](3c-forests.html){target="_blank"}
 
-[3d. A Complete Backtest](3d-backtest.html){target="_blank"}
+[3d. Neural Nets](3d-nets.html){target="_blank"}
 
-[3e. Today's Rankings](3e-rankings.html){target="_blank"}
+[3e. Cross Validation](3e-validation.html){target="_blank"}
 
-[3f. Submit Trades to Alpaca](3d-backtest.html){target="_blank"}
+[3f. Complete Backtest](3d-backtest.html){target="_blank"}
 
 :::
 

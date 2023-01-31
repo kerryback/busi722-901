@@ -18,7 +18,7 @@
     "href": "slides.html",
     "title": "",
     "section": "",
-    "text": "1a. Valuation Fundamentals\n1b. Quantitative Investing\n1c. Factors\n1d. Green-Hand-Zhang SQL Database\n1e. A Simple Backtest\n1f. Alpaca\n\n\n\n2a. Industries\n2b. Transforming Features and Target\n2c. Additional Considerations\n2d. Evaluate Returns\n2e. Market Benchmark\n2f. Fama-French Benchmark\n\n\n\n3a. Trees\n3b. Neural Nets\n3c. Hyperparameters and Cross Validation\n3d. A Complete Backtest\n3e. Today’s Rankings\n3f. Submit Trades to Alpaca\n\n\n\n\n4a. Introduction to Options\n4b. Option Premia and Returns\n4c. Hedging and Speculating with Options\n4d. Put-Call Parity\n4e. Trading Volatility\n4f. Maxum Petroleum\n\n\n\n5a. Deltas in Binomial Models\n5b. Risk-Neutral Probabilities\n5c. Binomial Trees\n5d. Black-Scholes\n5e. Deltas in Black-Scholes\n5f. Implied Volatilities"
+    "text": "1a. Valuation Fundamentals\n1b. Quantitative Investing\n1c. Factors\n1d. Green-Hand-Zhang SQL Database\n1e. A Simple Backtest\n1f. Alpaca\n\n\n\n2a. Industries\n2b. Transforming Features and Target\n2c. Additional Considerations\n2d. Evaluate Returns\n2e. Market Benchmark\n2f. Fama-French Benchmark\n\n\n\n3a. Trees\n3b. Scoring and Complexity\n3c. Forests\n3d. Neural Nets\n3e. Cross Validation\n3f. Complete Backtest\n\n\n\n\n4a. Introduction to Options\n4b. Option Premia and Returns\n4c. Hedging and Speculating with Options\n4d. Put-Call Parity\n4e. Trading Volatility\n4f. Maxum Petroleum\n\n\n\n5a. Deltas in Binomial Models\n5b. Risk-Neutral Probabilities\n5c. Binomial Trees\n5d. Black-Scholes\n5e. Deltas in Black-Scholes\n5f. Implied Volatilities"
   },
   {
     "objectID": "slides.html#backtesting-and-return-analysis",

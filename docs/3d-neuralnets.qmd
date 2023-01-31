@@ -1,5 +1,5 @@
 ---
-title:  "Scoring and Overfitting"
+title:  "Neural Nets"
 author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
 execute:
   echo: false
@@ -21,45 +21,95 @@ format:
 ---
 
 
-## Decision Trees
+## Multi-layer perceptrons
+
+* A multi-layer perceptron (MLP) consists of "neurons" arranged in layers.
+* A neuron is a mathematical function.  It takes inputs $x_1, \ldots, x_n$, calculates a function $y=f(x_1, \ldots, x_n)$ and passes $y$ to the neurons in the next level.
+* The inputs in the first layer are the features.
+* The inputs in successive layers are the calculations from the prior level. 
+* The last layer is a single neuron that produces the output.
+
+## Illustration
+
+. . .
+
+::: {layout="[70, 30]"}
+
+![](neuralnet.png)
+
+* inputs $x_1, x_2, x_3, x_4$
+* variables $y_1, \ldots, y_5$  are calculated in hidden layer
+* output depends on $y_1, \ldots, y_5$
+
+:::
 
 
-- Split data sequentially into subsets based on the value of a single feature
-  - Above a threshold into one group
-  - Below the threshold into the other
-- Prediction in each subset is the plurality class (for classification) or the cell mean (for regression).
-- Try to minimize impurity in classification and (usually) mean squared error in regression.
+
+
+
+
+
+## Rectified linear units
+
+- The usual function for the neurons (except in the last layer) is 
+
+. . .
+
+$$ y = \max(0,b+w_1x_1 + \cdots + w_nx_n)$$
+
+- Parameters $b$ (called bias) and $w_1, \ldots w_n$ (called weights) are different for different neurons. 
+- This function is called a rectified linear unit (RLU).  
+
+
+## Analogy to neurons firing
+
+- If $w_i>0$ then $y>0$ only when $x_i$ are large enough. 
+- A neuron  fires when it is sufficiently stimulated by signals from other neurons (in prior layer).
+
+## Output function
+
+- The output doesn't have a truncation, so it can be negative.
+- For regression problems, it is linear:
+
+. . .
+
+$$z = b+w_1y_1 + \cdots + w_ny_n$$ 
+
+- For classification, there is a linear function for each class and the prediction is the class with the largest value.
+
+## Deep versus shallow learning
+
+- Deep learning means a neural network with  many layers.  It is behind facial recognition, self-driving cars, ...
+- Shallow learning seems to work better for return prediction
+- Probably due to high noise to signal ratio
+
 
 ## Example
 
-. . .
+- Same data as in 3a-trees
+  - roeq and mom12m
+  - training data = 2021-12
+  - test data = 2022-01
+- Quantile transform features and ret in each cross-section
 
-![](decision-tree.png){height=440}
-
-
-## Another example
-
-. . .
-
-![](decision-tree-partition.png){height=560}
-
-
-## Example: train from 2021-12, predict for 2022-01
-
-- Get data from the SQL database as before
+## Fitting a neural network
 
 . . .
 
-```.p
-df = pd.read_sql(
-    """
-    select ticker, date, ret, roeq, mom12m
-    from data
-    where date in ('2021-12', '2022-01')
-    """, 
-    conn
+
+```{.p code-line-numbers="1|3-4|6-9|10"}
+from sklearn.neural_network import MLPRegressor
+
+Xtrain = df[df.date=='2021-12'][["roeq", "mom12m"]]
+ytrain = df[df.date=='2021-12']["ret"]
+
+model = MLPRegressor(
+  hidden_layer_sizes=(4, 2),
+  random_state=0
 )
+model.fit(X, y)
 ```
+
 
 ```{python}
 from sqlalchemy import create_engine
@@ -86,26 +136,11 @@ df = pd.read_sql(
 df = df.dropna()
 ```
 
-## Transform each cross-section
 
-. . .
-
-```.p
-from sklearn.preprocessing import QuantileTransformer
-qt = QuantileTransformer(output_distribution="normal")
-
-def qtxs(d):
-    x = qt.fit_transform(d)
-    return pd.DataFrame(x, columns=d.columns, index=d.index)
-
-df[["roeq", "mom12m", "ret"]] = df.groupby(
-  "date", 
-  group_keys=False
-)[["roeq", "mom12m", "ret"]].apply(qtxs)
-```
 
 ```{python}
 from sklearn.preprocessing import QuantileTransformer
+from sklearn.neural_network import MLPRegressor
 qt = QuantileTransformer(output_distribution="normal")
 def qtxs(d):
     x = qt.fit_transform(d)
@@ -115,137 +150,25 @@ df[["roeq", "mom12m", "ret"]] = df.groupby(
   "date", 
   group_keys=False
 )[["roeq", "mom12m", "ret"]].apply(qtxs)
-```
-
-## Fit a regression tree
-
-. . .
-
-```{.p code-line-numbers="1|3-4|6-9|10"}
-from sklearn.tree import DecisionTreeRegressor
 
 Xtrain = df[df.date=='2021-12'][["roeq", "mom12m"]]
 ytrain = df[df.date=='2021-12']["ret"]
 
-model = DecisionTreeRegressor(
-  max_depth=2,
-  random_state=0
-)
-model.fit(Xtrain, ytrain)
-```
-
-```{python}
-from sklearn.tree import DecisionTreeRegressor
-
-Xtrain = df[df.date=='2021-12'][["roeq", "mom12m"]]
-ytrain = df[df.date=='2021-12']["ret"]
-
-model = DecisionTreeRegressor(
-  max_depth=2,
-  random_state=0
-)
-_=model.fit(Xtrain, ytrain)
-```
-
-## View the regression tree
-
-. . .
-
-```p
-from sklearn.tree import plot_tree
-_ = plot_tree(model)
-```
-
-. . .
-
-```{python}
-import matplotlib as mpl
-from sklearn.tree import plot_tree
-import matplotlib.pyplot as plt
-
-mpl.rcParams["figure.figsize"] = (16,5)
-
-_ = plot_tree(model)
-```
-
-## Feature importance
-
-- What fraction of the splitting is each feature responsible for?
-
-. . .
-
-```p
-pd.Series(model.feature_importances_, index=Xtrain.columns)
-```
-
-. . .
-
-```{python}
-pd.Series(model.feature_importances_, index=Xtrain.columns)
-```
-
-## Model score
-
-- The default scoring method for regression models is R-squared.
-- Equals 1 - MSE / mean squared deviation from mean
-  - MSE = mean squared error
-  - So we compare MSE from the model to MSE using the mean to predict
-- Max R-squared is 1 and can be negative
-
-##
-
-- R-squared on training data
-
-. . .
-
-```.p
-model.score(Xtrain, ytrain)
-```
-. . .
-
-```{python}
-model.score(Xtrain, ytrain)
-```
-
-- R-squared on test data
-
-. . .
-
-```.p
 Xtest = df[df.date=='2022-01'][["roeq", "mom12m"]]
 ytest = df[df.date=='2022-01']["ret"]
-model.score(Xtest, ytest)
 ```
 
-. . .
+## Complexity and scores
 
 ```{python}
-Xtest = df[df.date=='2022-01'][["roeq", "mom12m"]]
-ytest = df[df.date=='2022-01']["ret"]
-model.score(Xtest, ytest)
-```
-
-## Depth and overfitting
-
-- If we make a model more complex (more parameters), it will fit the training data better but may make worse predictions on new data.
-- This is called overfitting.
-- We can make a tree more complex by increasing its depth.
-
-## Overfitting our tree
-
-. . .
-
-```{python}
-import seaborn as sns
-sns.set_style("whitegrid")
 train_scores = []
 test_scores = []
-import numpy as np
-grid = np.arange(2, 22, 2)
-for depth in grid:
-  model = DecisionTreeRegressor(
-  max_depth=depth,
-  random_state=0
+
+x = [[4, 2], [8, 4, 2], [8, 4], [16, 8, 4, 2], [32, 16, 8], [32, 16, 4], [16, 8], [8, 8, 8], [16, 16, 16], [32, 16, 8, 4, 2]]
+for layers in x:
+  model = MLPRegressor(
+    hidden_layer_sizes=layers,
+    random_state=0
   )
   _=model.fit(Xtrain, ytrain)
   train_scores.append(model.score(Xtrain, ytrain))
@@ -253,9 +176,23 @@ for depth in grid:
 ```
 
 ```{python}
-plt.plot(grid, train_scores, label="train")
-plt.plot(grid, test_scores, label="test")
-plt.xlabel("Depth", fontsize=16)
-plt.ylabel("Score", fontsize=16)
-_ = plt.legend(fontsize=16)
+import plotly.graph_objects as go
+trace = go.Scatter(
+  x=train_scores,
+  y=test_scores,
+  text = [repr(y) for y in x],
+  mode = "markers",
+  marker=dict(size=12),
+  hovertemplate="layer sizes = %{text}<extra></extra>"
+)
+fig = go.Figure(trace)
+fig.layout.xaxis["title"] = "Score on Training Data"
+fig.layout.yaxis["title"] = "Score on Test Data"
+fig.update_yaxes(tickformat=".0%")
+fig.update_xaxes(tickformat=".0%")
+fig.update_layout(template="none")
+fig.update_xaxes(title_font_size=16)
+fig.update_yaxes(title_font_size=16)
+fig.update_layout(font_size=14)
+fig.show()
 ```
