@@ -208,7 +208,7 @@ _ = plt.legend(fontsize=16)
 
 ```{.p code-line-numbers="1-2|4-10|11"}
 from sklearn.tree import DecisionTreeRegressor
-from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.ensemble import AdaBoostRegressor
 
 model = AdaBoostRegressor(
     DecisionTreeRegressor(
@@ -253,3 +253,4 @@ plt.xlabel('Depth', fontsize=16)
 plt.ylabel('Score', fontsize=16)
 _ = plt.legend(fontsize=16)
 ```
+

@@ -24,9 +24,9 @@ format:
 
 - Cross-validation (CV) is a way to choose optimal hyperparameters using the training data
 - Split the training data into subsets, e.g., A, B, C, D, E
-- Define a finite set of hyperparemeter combinations to choose from (the grid)
-  - Example: depth, learning rate = [[4, 0.1], [4, 0.5], [6, 0.1], [6, 0.5]]
-  - Example: hidden layer sizes = [[4, 2], [8, 4, 2], [16, 8, 4]]]
+- Define a finite set of hyperparemeter combinations (a grid) to choose from
+  - Example: {"max_depth": [3, 4], "learning_rate": [0.05, 0.1]}
+  - Example: {"hidden_layer_sizes:[[4, 2], [8, 4, 2], [16, 8, 4]]}
 
 ## 
 
@@ -57,6 +57,12 @@ format:
 from scipy.stats import spearmanr
 from sklearn.metrics import make_scorer
 score = make_scorer(spearmanr, greater_is_better=True)
+```
+
+```{python}
+from scipy.stats import spearmanr
+from sklearn.metrics import make_scorer
+scorer = make_scorer(lambda a, b: spearmanr(a, b), greater_is_better=True)
 ```
 
 - We can pass this to GridSearchCV to choose the best hyperparameters.
@@ -109,158 +115,131 @@ def qtxs(d):
 df[features+["ret"]] = df.groupby(
   "date", 
   group_keys=False
-)[[features+["ret"]].apply(qtxs)
+)[features+["ret"]].apply(qtxs)
+```
+
+## Cross validate gradient boosting
+
+. . .
+
+```{.p code-line-numbers="1|3-4|6-9|10"}
+from sklearn.model_selection import GridSearchCV
+from sklearn.ensemble import GradientBoostingRegressor
+
+model = GradientBoostingRegressor()
+```
+
+##
+
+. . .
+
+```.p
+param_grid = {
+  "random_state": [0],
+  "max_depth": [3, 4], 
+  "learning_rate": [0.05, 0.1]
+}
+cv = GridSearchCV(
+  estimator=model,
+  param_grid=param_grid,
+  scoring=scorer
+)
+```
+
+##
+
+. . .
+
+```.p
+cv.fit(Xtrain, ytrain)
+pd.DataFrame(cv.cv_results_).iloc[:, 4:]
+```
+
+. . .
+
+```{python}
+from sklearn.model_selection import GridSearchCV
+from sklearn.ensemble import GradientBoostingRegressor
+
+model = GradientBoostingRegressor()
+
+Xtrain = df[df.date=='2021-12'][features]
+ytrain = df[df.date=='2021-12']["ret"]
+
+param_grid = {
+  "random_state": [0],
+  "max_depth": [3, 4], 
+  "learning_rate": [0.05, 0.1]
+}
+
+cv = GridSearchCV(
+  model,
+  param_grid=param_grid,
+)
+
+cv.fit(Xtrain, ytrain)
+pd.DataFrame(cv.cv_results_).iloc[:, 4:]
 ```
 
 ## Cross validate AdaBoost
 
 . . .
 
-```{.p code-line-numbers="1|3-4|6-9|10"}
-from sklearn.model_selection import GridSearchCV
+```.p
 from sklearn.tree import DecisionTreeRegressor
-from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.ensemble import AdaBoostRegressor
 
 model = AdaBoostRegressor(
-    DecisionTreeRegressor(
-        max_depth=3,
-        random_state=0
-    ),
-    learning_rate=0.5,
+    base_estimator=DecisionTreeRegressor()
 )
+```
 
-Xtrain = df[df.date=='2021-12'][features]
-ytrain = df[df.date=='2021-12']["ret"]
+## 
 
-model = DecisionTreeRegressor(
-  max_depth=2,
-  random_state=0
+. . .
+
+```.p
+param_grid = {
+  "base_estimator__random_state": [0],
+  "base_estimator__max_depth": [3, 4],
+  "learning_rate": [0.1, 0.2]
+}
+
+cv = GridSearchCV(
+  model,
+  param_grid=param_grid
 )
-model.fit(Xtrain, ytrain)
 ```
-
-```{python}
-from sklearn.tree import DecisionTreeRegressor
-
-Xtrain = df[df.date=='2021-12'][["roeq", "mom12m"]]
-ytrain = df[df.date=='2021-12']["ret"]
-
-model = DecisionTreeRegressor(
-  max_depth=2,
-  random_state=0
-)
-_=model.fit(Xtrain, ytrain)
-```
-
-## View the regression tree
-
-. . .
-
-```p
-from sklearn.tree import plot_tree
-_ = plot_tree(model)
-```
-
-. . .
-
-```{python}
-import matplotlib as mpl
-from sklearn.tree import plot_tree
-import matplotlib.pyplot as plt
-
-mpl.rcParams["figure.figsize"] = (16,5)
-
-_ = plot_tree(model)
-```
-
-## Feature importance
-
-- What fraction of the splitting is each feature responsible for?
-
-. . .
-
-```p
-pd.Series(model.feature_importances_, index=Xtrain.columns)
-```
-
-. . .
-
-```{python}
-pd.Series(model.feature_importances_, index=Xtrain.columns)
-```
-
-## Model score
-
-- The default scoring method for regression models is R-squared.
-- Equals 1 - MSE / mean squared deviation from mean
-  - MSE = mean squared error
-  - So we compare MSE from the model to MSE using the mean to predict
-- Max R-squared is 1 and can be negative
 
 ##
 
-- R-squared on training data
-
 . . .
 
 ```.p
-model.score(Xtrain, ytrain)
-```
-. . .
-
-```{python}
-model.score(Xtrain, ytrain)
-```
-
-- R-squared on test data
-
-. . .
-
-```.p
-Xtest = df[df.date=='2022-01'][["roeq", "mom12m"]]
-ytest = df[df.date=='2022-01']["ret"]
-model.score(Xtest, ytest)
+cv.fit(Xtrain, ytrain)
+pd.DataFrame(cv.cv_results_).iloc[:, 4:]
 ```
 
 . . .
 
 ```{python}
-Xtest = df[df.date=='2022-01'][["roeq", "mom12m"]]
-ytest = df[df.date=='2022-01']["ret"]
-model.score(Xtest, ytest)
-```
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import AdaBoostRegressor
 
-## Depth and overfitting
+model = AdaBoostRegressor(
+    base_estimator=DecisionTreeRegressor()
+)
 
-- If we make a model more complex (more parameters), it will fit the training data better but may make worse predictions on new data.
-- This is called overfitting.
-- We can make a tree more complex by increasing its depth.
+param_grid = {
+  "base_estimator__random_state": [0],
+  "base_estimator__max_depth": [3, 4],
+  "learning_rate": [0.1, 0.2]
+}
 
-## Overfitting our tree
-
-. . .
-
-```{python}
-import seaborn as sns
-sns.set_style("whitegrid")
-train_scores = []
-test_scores = []
-import numpy as np
-grid = np.arange(2, 22, 2)
-for depth in grid:
-  model = DecisionTreeRegressor(
-  max_depth=depth,
-  random_state=0
-  )
-  _=model.fit(Xtrain, ytrain)
-  train_scores.append(model.score(Xtrain, ytrain))
-  test_scores.append(model.score(Xtest, ytest))
-```
-
-```{python}
-plt.plot(grid, train_scores, label="train")
-plt.plot(grid, test_scores, label="test")
-plt.xlabel("Depth", fontsize=16)
-plt.ylabel("Score", fontsize=16)
-_ = plt.legend(fontsize=16)
+cv = GridSearchCV(
+  model,
+  param_grid=param_grid
+)
+cv.fit(Xtrain, ytrain)
+pd.DataFrame(cv.cv_results_).iloc[:, 4:]
 ```
