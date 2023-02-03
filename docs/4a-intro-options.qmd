@@ -33,9 +33,9 @@ format:
 ## Example
 
 - When a contract is first opened for trading, open interest is zero.
-- Suppose Andy buys a contract from Brooke and Chloe buys a contract from David.
-  - Longs = Andy and Chloe
-  - Shorts = Brooke and David
+- Suppose Andy buys a contract from Chloe, and Brooke buys a contract from David.
+  - Longs = Andy and Brooke
+  - Shorts = Chloe and David
   - Open interest = 2
 
 ## 
@@ -43,8 +43,8 @@ format:
 - Suppose Andy then sells a contract to David.
   - Andy: long + short = no position
   - David: short + long = no position
-  - Longs = Chloe 
-  - Shorts = Brooke
+  - Longs = Brooke
+  - Shorts = Chloe
   - Open interest = 1
     
 
@@ -184,4 +184,17 @@ fig.show()
 ```
 
 
+## Option Data from Yahoo 
+
+. . .
+
+```.p
+import yfinance as yf
+cvx = yf.Ticker('CVX')
+```
+
+- cvx.options is the set of traded maturities
+- cvx.option_chain("some date") is an object containing call and put data
+- cvx.option_chain("some date").calls is a dataframe of call info
+- cvx.option_chain("some date").puts is a dataframe of put info
 

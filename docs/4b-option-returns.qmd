@@ -1,0 +1,124 @@
+---
+title:  "Option Returns"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+    cache: true
+---
+
+## Option Data from Yahoo 
+
+. . .
+
+```.p
+import yfinance as yf
+tick = yf.Ticker('aapl')
+```
+
+- tick.options is the set of traded maturities
+- tick.option_chain("some date") is an object containing call and put data
+- tick.option_chain("some date").calls is a dataframe of call info
+- tick.option_chain("some date").puts is a dataframe of put info
+
+```{python}
+import yfinance as yf
+tick = yf.Ticker('aapl')
+```
+
+## Apple stock price on Feb 3, 2023
+
+. . .
+
+```.p
+tick.history().iloc[-1]
+```
+
+. . .
+
+```{python}
+tick.history().iloc[-1]
+```
+
+## Apple calls on Feb 3, 2023
+
+. . .
+
+```.p
+df = tick.option_chain("2023-03-17").calls
+df = df.set_index("strike")
+df.iloc[:,2:5].loc[130:170]
+```
+
+## {.smaller}
+
+
+
+```{python}
+df = tick.option_chain("2023-03-17").calls
+df = df.set_index("strike")
+df.iloc[:,2:5].loc[130:170]
+```
+
+
+## Possible returns
+
+. . .
+
+Suppose we bought the 140 (in the money) call for the 160 (out of the money) call at the last prices shown.
+
+
+
+- Suppose Apple $\uparrow$ 10% between Feb 2 and Mar 17: $150.82 $\rightarrow$ $165.90
+  - $140 call: $13.50 $\rightarrow$ $25.90 = 92% return
+  - $160 call: $2.64 $\rightarrow$ $5.90 = 123% return
+- Suppose Apple stays at $150.82
+  - $140 call: $13.50 $\rightarrow$ $10.82 = 20% loss
+  - $160 call: $2.64 $\rightarrow$ 0 = 100% loss
+
+## Apple puts on Feb 2, 2023
+
+. . .
+
+```.p
+df = tick.option_chain("2023-03-17").puts
+df = df.set_index("strike")
+df.iloc[:,2:5].loc[130:170]
+```
+
+## {.smaller}
+
+
+
+```{python}
+df = tick.option_chain("2023-03-17").puts
+df = df.set_index("strike")
+df.iloc[:,2:5].loc[130:170]
+```
+
+
+## Possible returns
+
+. . .
+
+Suppose we bought the 140 put for $2.25.
+
+- Suppose Apple $\down$ 10% between Feb 2 and Mar 17.
+  - $150.82 $\rightarrow$ $135.74
+  - put: $2.25 $\rightarrow$ $4.26 = 89% return
+- Suppose Apple stays at $150.82
+  - put: $2.25 $\rightarrow$ 0 = -100% return

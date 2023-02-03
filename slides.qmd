@@ -54,15 +54,17 @@
 
 [4a. Introduction to Options](4a-intro-options.html){target="_blank"}
 
-[4b. Option Premia and Returns](4b-option-premia.html){target="_blank"}
+[4b. Option Returns](4b-option-premia.html){target="_blank"}
 
-[4c. Hedging and Speculating with Options](4c-hedging-speculating.html){target="_blank"}
+[4c. Hedging with Options](4c-hedging-speculating.html){target="_blank"}
 
-[4d. Put-Call Parity](4b-option-premia.html){target="_blank"}
+[4d. Option Portfolios]
+
+[4e. Put-Call Parity](4b-option-premia.html){target="_blank"}
 
 [4e. Trading Volatility](4e-trading-vol.html)
 
-[4f. Maxum Petroleum](4b-option-premia.html){target="_blank"}
+
 
 ### 5. Valuing Options
 
