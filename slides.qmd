@@ -56,7 +56,7 @@
 
 [4b. Option Returns](4b-option-returns.html){target="_blank"}
 
-[4c. Hedging with Options](4c-hedging-speculating.html){target="_blank"}
+[4c. Hedging with Options](4c-hedging.html){target="_blank"}
 
 [4d. Put-Call Parity](4d-put-call-parity.html){target="_blank"}
 
