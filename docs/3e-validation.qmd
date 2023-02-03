@@ -146,7 +146,7 @@ cv = GridSearchCV(
 )
 ```
 
-##
+## {.smaller}
 
 . . .
 
@@ -211,7 +211,7 @@ cv = GridSearchCV(
 )
 ```
 
-##
+## {.smaller}
 
 . . .
 
