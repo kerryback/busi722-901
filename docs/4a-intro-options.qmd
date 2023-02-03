@@ -183,18 +183,3 @@ fig.update_layout(
 fig.show()
 ```
 
-
-## Option Data from Yahoo 
-
-. . .
-
-```.p
-import yfinance as yf
-cvx = yf.Ticker('CVX')
-```
-
-- cvx.options is the set of traded maturities
-- cvx.option_chain("some date") is an object containing call and put data
-- cvx.option_chain("some date").calls is a dataframe of call info
-- cvx.option_chain("some date").puts is a dataframe of put info
-
