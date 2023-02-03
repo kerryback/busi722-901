@@ -38,12 +38,6 @@ format:
 ![](images/Trees_Transparent.png){height=500 fig-align="center"}
 
 
-## Another example
-
-. . .
-
-![](decision-tree-partition.png){height=500 fig-align="center"}
-
 
 ## Example: train from 2021-12, predict for 2022-01
 
@@ -131,7 +125,7 @@ Xtrain = df[df.date=='2021-12'][features]
 ytrain = df[df.date=='2021-12']["ret"]
 
 model = DecisionTreeRegressor(
-  max_depth=2,
+  max_depth=3,
   random_state=0
 )
 model.fit(Xtrain, ytrain)
@@ -144,7 +138,7 @@ Xtrain = df[df.date=='2021-12'][features]
 ytrain = df[df.date=='2021-12']["ret"]
 
 model = DecisionTreeRegressor(
-  max_depth=2,
+  max_depth=3,
   random_state=0
 )
 _=model.fit(Xtrain, ytrain)
