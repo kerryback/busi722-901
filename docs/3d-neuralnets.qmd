@@ -29,21 +29,17 @@ format:
 * The inputs in successive layers are the calculations from the prior level. 
 * The last layer is a single neuron that produces the output.
 
-## Illustration
+
+
+## Illustration {.smaller}
 
 . . .
 
-::: {layout="[70, 30]"}
+![](images/Neural-Nets-Transparent.png){height=380 width=760 fig-align="center"}
 
-![](neuralnet.png)
-
-* inputs $x_1, x_2, x_3, x_4$
-* variables $y_1, \ldots, y_5$  are calculated in hidden layer
-* output depends on $y_1, \ldots, y_5$
-
-:::
-
-
+- inputs $x_1, x_2, x_3, x_4$
+- variables $y_1, \ldots, y_5$  are calculated in hidden layer
+- output depends on $y_1, \ldots, y_5$
 
 
 

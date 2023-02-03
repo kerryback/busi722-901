@@ -18,6 +18,7 @@ format:
     transition: fade
     theme: [solarized, 2023.scss]
     incremental: true
+    cache: true
 ---
 
 
@@ -34,14 +35,14 @@ format:
 
 . . .
 
-![](decision-tree.png){height=440}
+![](images/Trees_Transparent.png){height=500 fig-align="center"}
 
 
 ## Another example
 
 . . .
 
-![](decision-tree-partition.png){height=560}
+![](decision-tree-partition.png){height=500 fig-align="center"}
 
 
 ## Example: train from 2021-12, predict for 2022-01
