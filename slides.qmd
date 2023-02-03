@@ -54,15 +54,15 @@
 
 [4a. Introduction to Options](4a-intro-options.html){target="_blank"}
 
-[4b. Option Returns](4b-option-premia.html){target="_blank"}
+[4b. Option Returns](4b-option-returns.html){target="_blank"}
 
 [4c. Hedging with Options](4c-hedging-speculating.html){target="_blank"}
 
-[4d. Option Portfolios]
+[4d. Put-Call Parity](4d-put-call-parity.html){target="_blank"}
 
-[4e. Put-Call Parity](4b-option-premia.html){target="_blank"}
+[4e. Early Exercise](4e-early-exercise.html)
 
-[4e. Trading Volatility](4e-trading-vol.html)
+[4f. Other Option Portfolios](4f-option-portfolios.html)
 
 
 

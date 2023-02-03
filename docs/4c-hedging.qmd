@@ -1,0 +1,173 @@
+---
+title:  "Hedging and Income from Options"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+    cache: true
+---
+
+## Covered Calls
+
+- Sell a call on a stock that you own.
+- Usually sell an out-of-the-money call.
+- Example: own a stock with price = $60, sell an $80 call
+- Caps your upside at $80.
+- Probably, stock ends < $80 and you just keep the premium
+- No margin required.  Stock serves as collateral.
+  
+     
+## Protective put
+  
+- Protect the downside of an asset you own by buying a put.  
+- The portfolio value cannot fall below the put strike, because the put is an option to sell at the strike.
+- Normally use an out-of-the-money put.
+  - Example: you own an asset worth $50.  Buy a put with strike $40.
+  - Insurance against a [drop in price]{style="color: tomato"}
+  - Buying an in-the-money put is buying insurance against a loss that has already happened. 
+
+## Collaring a long position
+
+- Buy an out-of-the money put for protection and sell an out-of-the-money call to help pay for the protection.
+- Give up some upside for downside protection.
+- Example: own a stock at $60, buy a put at $50, sell a call at $70
+- Zero-cost collar: price of call = price of put, so no out of pocket cost for protection.
+
+## Collaring Apple on Feb 3, 2023
+
+- Apple was trading at $155.80
+- Could buy a Mar 17 $140 put at the ask price of $1.22
+- Could sell a Mar 17 $170 call at the bid price of $1.31
+
+. . .
+
+```{python}
+import numpy as np
+import plotly.graph_objects as go
+
+underlying = np.linspace(130, 180, 100)
+long_put = np.maximum(140-underlying, 0)
+short_call = - np.maximum(underlying-170, 0)
+value = underlying + long_put + short_call
+val_with_prem = value + 0.09
+trace1 = go.Scatter(
+    x = underlying,
+    y = value,
+    mode="lines",
+    hovertemplate="underlying = ${x:.2f}<br>value w/o prem = {y:.1%}<extra></extra",
+    name="Portfolio Value w/o Premia",
+) 
+
+trace2 = go.Scatter(
+    x = underlying,
+    y = val_with_prem,
+    mode="lines",
+    hovertemplate="underlying = ${x:.2f}<br>value + prem = {y:.1%}<extra></extra",
+    name="Portfolio Value + Premia",
+) 
+
+fig = go.Figure()
+for trace in [trace2]:
+  fig.add_trace(trace)
+
+fig.update_layout(
+    xaxis_title="Apple Stock Price",
+    yaxis_title="Portfolio Value",
+    xaxis_title_font = {"size":18},
+    yaxis_title_font =  {"size":18},
+    template="plotly_white",
+    yaxis_tickformat="$.0f$",
+    height=350,  
+    width=800,
+    legend=dict(
+      x = 0.01,
+      y = 0.99,
+      xanchor="left"
+    )
+)
+fig.show()
+```
+
+## Protective call 
+
+- If you are short an asset, you can protect against the price spiking by buying a call.  
+- Your liability cannot exceed the call strike, because the call option can be exercised at the strike, and the asset you acquire can be used to cover the short.
+- Usually use an out-of-the-money call.
+  
+
+## Collaring a short position
+
+- Buy an out-of-the-money call for protection
+- Sell an out-of-the-money put to help pay for it
+- Example: short a $60 stock, buy a call at $80, sell a put at $40
+- Giving up some potential gain to limit your maximum loss
+
+## Collaring a short position in Apple on Feb 3, 2023
+
+- Apple was trading at $155.80
+- Could buy a Mar 17 $170 call at the bid price of $1.31
+- Could sell a Mar 17 $140 put at the ask price of $1.22
+
+
+. . .
+
+```{python}
+import numpy as np
+import plotly.graph_objects as go
+
+underlying = np.linspace(130, 180, 100)
+long_put = np.maximum(140-underlying, 0)
+short_call = - np.maximum(underlying-170, 0)
+value = - underlying - long_put - short_call
+val_with_prem = value + 0.09
+trace1 = go.Scatter(
+    x = underlying,
+    y = value,
+    mode="lines",
+    hovertemplate="underlying = ${x:.2f}<br>value w/o prem = {y:.1%}<extra></extra",
+    name="Portfolio Value w/o Premia",
+) 
+
+trace2 = go.Scatter(
+    x = underlying,
+    y = val_with_prem,
+    mode="lines",
+    hovertemplate="underlying = ${x:.2f}<br>value + prem = {y:.1%}<extra></extra",
+    name="Portfolio Value + Premia",
+) 
+
+fig = go.Figure()
+for trace in [trace2]:
+  fig.add_trace(trace)
+
+fig.update_layout(
+    xaxis_title="Apple Stock Price",
+    yaxis_title="Portfolio Value",
+    xaxis_title_font = {"size":18},
+    yaxis_title_font =  {"size":18},
+    template="plotly_white",
+    yaxis_tickformat="$.0f$",
+    height=350,  
+    width=800,
+    legend=dict(
+      x = 0.01,
+      y = 0.99,
+      xanchor="left"
+    )
+)
+fig.show()
+```
