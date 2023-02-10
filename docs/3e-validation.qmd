@@ -118,7 +118,7 @@ df[features+["ret"]] = df.groupby(
 )[features+["ret"]].apply(qtxs)
 ```
 
-## Cross validate gradient boosting
+## Cross validation for gradient boosting
 
 . . .
 
