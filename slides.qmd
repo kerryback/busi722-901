@@ -66,17 +66,17 @@
 
 ### 5. Options
 
-[5a. Introduction to Options](4a-intro-options.html){target="_blank"}
+[5a. Introduction to Options](5a-intro-options.html){target="_blank"}
 
-[5b. Option Returns](4b-option-returns.html){target="_blank"}
+[5b. Option Returns](5b-option-returns.html){target="_blank"}
 
-[5c. Hedging with Options](4c-hedging-speculating.html){target="_blank"}
+[5c. Hedging with Options](5c-hedging.html){target="_blank"}
 
-[5d. Put-Call Parity](4d-put-call-parity.html){target="_blank"}
+[5d. Put-Call Parity](5d-put-call-parity.html){target="_blank"}
 
-[5e. Early Exercise](4e-early-exercise.html)
+[5e. Early Exercise](5e-early-exercise.html)
 
-[5f. Other Option Portfolios](4f-option-portfolios.html)
+[5f. Other Option Portfolios](5f-option-portfolios.html)
 
 
 ### 6. Valuing Options

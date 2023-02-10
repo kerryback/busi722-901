@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.251">
+<meta name="generator" content="quarto-1.0.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,15 +11,10 @@
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
-ul.task-list li input[type="checkbox"] {
-  width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
-  vertical-align: middle;
-}
 </style>
 
 
@@ -58,11 +53,9 @@ ul.task-list li input[type="checkbox"] {
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
+      <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">BUSI 722-901</span>
-    </a>
-  </div>
+  </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
@@ -96,8 +89,8 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="slide-decks-busi-722-901-data-driven-finance-ii">Slide Decks<br>BUSI 722-901<br>Data Driven Finance II<br><br><img src="RiceBusiness-transparent-logo-sm.png" height="60"><br></h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<section id="quant-investing" class="level3">
-<h3 class="anchored" data-anchor-id="quant-investing">1. Quant Investing</h3>
+<section id="intro-to-quant-investing" class="level3">
+<h3 class="anchored" data-anchor-id="intro-to-quant-investing">1. Intro to Quant Investing</h3>
 <p><a href="1a-valuation-fundamentals.html" target="_blank">1a. Valuation Fundamentals</a></p>
 <p><a href="1b-quant-investing.html" target="_blank">1b. Quantitative Investing</a></p>
 <p><a href="1c-factors.html" target="_blank">1c. Factors</a></p>
@@ -105,8 +98,8 @@ ul.task-list li input[type="checkbox"] {
 <p><a href="1e-simple-backtest.html" target="_blank">1e. A Simple Backtest</a></p>
 <p><a href="1f-alpaca.html" target="_blank">1f. Alpaca</a></p>
 </section>
-<section id="backtests" class="level3">
-<h3 class="anchored" data-anchor-id="backtests">2: Backtests</h3>
+<section id="return-prediction-and-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="return-prediction-and-evaluation">2: Return Prediction and Evaluation</h3>
 <p><a href="2a-industries.html" target="_blank">2a. Industries</a></p>
 <p><a href="2b-transformations.html" target="_blank">2b. Transforming Features and Target</a></p>
 <p><a href="2c-additional.html" target="_blank">2c. Additional Considerations</a></p>
@@ -114,33 +107,44 @@ ul.task-list li input[type="checkbox"] {
 <p><a href="2e-evaluate2.html" target="_blank">2e. Market Benchmark</a></p>
 <p><a href="2f-evaluate3.html" target="_blank">2f. Fama-French Benchmark</a></p>
 </section>
-<section id="backtesting-ml-models" class="level3">
-<h3 class="anchored" data-anchor-id="backtesting-ml-models">3. Backtesting ML Models</h3>
+<section id="ml-models-and-hyperparameters" class="level3">
+<h3 class="anchored" data-anchor-id="ml-models-and-hyperparameters">3. ML Models and Hyperparameters</h3>
 <p><a href="3a-trees.html" target="_blank">3a. Trees</a></p>
 <p><a href="3b-scoring.html" target="_blank">3b. Scoring and Complexity</a></p>
 <p><a href="3c-forests.html" target="_blank">3c. Forests</a></p>
 <p><a href="3d-neuralnets.html" target="_blank">3d. Neural Nets</a></p>
 <p><a href="3e-validation.html" target="_blank">3e. Cross Validation</a></p>
-<p><a href="3f-complete-backtest.html" target="_blank">3f. Complete Backtest</a></p>
+<p><a href="3f-validation-results.html" target="_blank">3f. Some Validation Results</a></p>
 </section>
-</div><div class="column" style="width:50%;">
+</div><section id="backtesting-and-trading" class="level4">
+<h4 class="anchored" data-anchor-id="backtesting-and-trading">4. Backtesting and Trading</h4>
+<p>[4a. Backtest Overview]</p>
+<p>[4b. Today’s Predictions]</p>
+<p>[4c. Submitting Trades]</p>
+<p>[4d. Detailed Backtest: Preprocessing]</p>
+<p>[4e: Detailed Backtest: Looping]</p>
+<p>[4f: Detailed Backtest: Portfolio Returns]</p>
+</section><div class="column" style="width:50%;">
 <section id="options" class="level3">
-<h3 class="anchored" data-anchor-id="options">4. Options</h3>
-<p><a href="4a-intro-options.html" target="_blank">4a. Introduction to Options</a></p>
-<p><a href="4b-option-returns.html" target="_blank">4b. Option Returns</a></p>
-<p><a href="4c-hedging.html" target="_blank">4c. Hedging with Options</a></p>
-<p><a href="4d-put-call-parity.html" target="_blank">4d. Put-Call Parity</a></p>
-<p><a href="4e-early-exercise.html">4e. Early Exercise</a></p>
-<p><a href="4f-option-portfolios.html">4f. Other Option Portfolios</a></p>
+<h3 class="anchored" data-anchor-id="options">5. Options</h3>
+<p><a href="5a-intro-options.html" target="_blank">5a. Introduction to Options</a></p>
+<p><a href="5b-option-returns.html" target="_blank">5b. Option Returns</a></p>
+<p><a href="5c-hedging.html" target="_blank">5c. Hedging with Options</a></p>
+<p><a href="5d-put-call-parity.html" target="_blank">5d. Put-Call Parity</a></p>
+<p><a href="5e-early-exercise.html">5e. Early Exercise</a></p>
+<p><a href="5f-option-portfolios.html">5f. Other Option Portfolios</a></p>
 </section>
 <section id="valuing-options" class="level3">
-<h3 class="anchored" data-anchor-id="valuing-options">5. Valuing Options</h3>
-<p><a href="4b-option-premia.html" target="_blank">5a. Deltas in Binomial Models</a></p>
-<p><a href="4b-option-premia.html" target="_blank">5b. Risk-Neutral Probabilities</a></p>
-<p><a href="4b-option-premia.html" target="_blank">5c. Binomial Trees</a></p>
-<p><a href="4b-option-premia.html" target="_blank">5d. Black-Scholes</a></p>
-<p><a href="4b-option-premia.html" target="_blank">5e. Deltas in Black-Scholes</a></p>
-<p><a href="4b-option-premia.html" target="_blank">5f. Implied Volatilities</a></p>
+<h3 class="anchored" data-anchor-id="valuing-options">6. Valuing Options</h3>
+<p><a href="4b-option-premia.html" target="_blank">6a. Deltas in Binomial Models</a></p>
+<p><a href="4b-option-premia.html" target="_blank">6b. Risk-Neutral Probabilities</a></p>
+<p><a href="4b-option-premia.html" target="_blank">6c. Binomial Trees</a></p>
+<p><a href="4b-option-premia.html" target="_blank">6d. Black-Scholes</a></p>
+<p><a href="4b-option-premia.html" target="_blank">6e. Deltas in Black-Scholes</a></p>
+<p><a href="4b-option-premia.html" target="_blank">6f. Implied Volatilities</a></p>
+</section>
+<section id="futures" class="level3">
+<h3 class="anchored" data-anchor-id="futures">7. Futures</h3>
 </section>
 </div>
 </div>
@@ -218,8 +222,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      let href = ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);

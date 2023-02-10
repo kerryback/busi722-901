@@ -131,7 +131,7 @@ fig.update_traces(
     hovertemplate="Underlying = $%{x:.2f}<br>Call = $%{y:.2f}<extra></extra>"
 )
 fig.update_layout(
-    title = "Long Call Option"
+    title = "Long Call Option",
     xaxis_title="Underlying Price",
     yaxis_title="Call Option Value",
     xaxis_title_font = {"size":20},
@@ -178,7 +178,7 @@ fig.update_traces(
     hovertemplate="Underlying = $%{x:.2f}<br>Put = $%{y:.2f}<extra></extra>"
 )
 fig.update_layout(
-    
+    title = "Long Put Option",
     xaxis_title="Underlying Price",
     yaxis_title="Put Option Value",
     xaxis_title_font = {"size":20},

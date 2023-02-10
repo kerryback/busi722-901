@@ -4,7 +4,6 @@ author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-ca
 execute:
   echo: false
   jupyter: python3
-  cache: true
 format: 
   revealjs:
     highlight-style: monokai
@@ -40,7 +39,7 @@ import yfinance as yf
 tick = yf.Ticker('aapl')
 ```
 
-## Apple stock price on Feb 3, 2023
+## Apple stock price on Feb 10, 2023
 
 . . .
 
@@ -54,7 +53,7 @@ tick.history().iloc[-1].round(2)
 tick.history().iloc[-1].round(2)
 ```
 
-## Apple calls on Feb 3, 2023
+## Apple calls on Feb 10, 2023
 
 . . .
 
@@ -125,7 +124,7 @@ fig.show()
 ```
 
 
-## Apple puts on Feb 2, 2023
+## Apple puts on Feb 10, 2023
 
 . . .
 

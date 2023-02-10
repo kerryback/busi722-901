@@ -26,9 +26,35 @@ format:
 - Same features as in 3a-trees
   - agr, bm, idiovol, mom12m, roeq
 - Quantile transform features and ret in each cross-section
-- Cross-validate on five years 2000-2004
+- Cross-validate on one year (2019) just for illustration
 
+## Custom Scorer
 
+- For picking stocks based on return predictions, the important issue is whether stocks predicted to have higher returns actually do have higher returns.
+- The numerical values of the predictions and the numerical errors matter less.
+- To calculate the extent to which higher predictions correspond to higher returns, Spearman's rank correlation is useful.
+
+##
+
+```.p
+from scipy.stats import spearmanr
+from sklearn.metrics import make_scorer
+
+scorer = make_scorer(
+    lambda a, b: spearmanr(a, b).statistic, 
+    greater_is_better=True
+)
+```
+
+```{python}
+from scipy.stats import spearmanr
+from sklearn.metrics import make_scorer
+
+scorer = make_scorer(
+    lambda a, b: spearmanr(a, b).statistic, 
+    greater_is_better=True
+)
+```
 
 ```{python}
 from sqlalchemy import create_engine
@@ -55,7 +81,7 @@ df = pd.read_sql(
     """
     select ticker, date, agr, bm, idiovol, mom12m, roeq, ret
     from data
-    where date < '2005-01'
+    where date >= '2019-01' and date <= '2019-12'
     """, 
     conn
 )
@@ -94,18 +120,18 @@ cv = GridSearchCV(
   param_grid={
     "max_depth": range(1, 11)
   },
+  scoring=scorer
 )
 _ = cv.fit(X, y)
 ```
 
 ```{python}
-model = RandomForestRegressor()
-
 cv = GridSearchCV(
-  model,
+  RandomForestRegressor(),
   param_grid={
     "max_depth": range(1, 11)
   },
+  scoring=scorer
 )
 _ = cv.fit(X, y)
 
@@ -124,7 +150,7 @@ trace = go.Scatter(
     marker=dict(size=12, line=dict(width=2, color="DarkSlateGrey")),
     hovertemplate="""
             max depth = %{x}<br>
-            mean score = %{y:.1%}<extra></extra>
+            mean score = %{y:.2%}<extra></extra>
             """,
 )
 fig = go.Figure(trace)
@@ -132,7 +158,7 @@ fig.update_layout(
     title="Random Forest",
     xaxis_title="Max Depth",
     yaxis_title="Mean Test Score",
-    yaxis_tickformat=".0%",
+    yaxis_tickformat=".1%",
     template="plotly_white",
     xaxis_title_font_size=18,
     yaxis_title_font_size=18,
@@ -163,10 +189,10 @@ param_grid={
 ##
 
 ```.p
-model = MLPRegressor(max_iter=500)
 cv = GridSearchCV(
-  model,
-  param_grid=param_grid
+  MLPRegressor(max_iter=500)
+  param_grid=param_grid,
+  scoring=scorer
 )
 _ = cv.fit(X, y)
 ```
@@ -188,7 +214,8 @@ param_grid={
 model = MLPRegressor(max_iter=500)
 cv = GridSearchCV(
   model,
-  param_grid=param_grid
+  param_grid=param_grid,
+  scoring=scorer
 )
 _ = cv.fit(X, y)
 ```
@@ -211,7 +238,7 @@ for i in range(1, 5):
         name =f"{i} layer",
         hovertemplate="""
             hidden layer sizes = %{x}<br>
-            mean score = %{y:.1%}<extra></extra>
+            mean score = %{y:.2%}<extra></extra>
         """
     )
     traces.append(trace)
@@ -222,7 +249,7 @@ fig.update_layout(
     title="Multi-Layer Perceptron",
     xaxis_title="Hidden Layer Sizes",
     yaxis_title="Mean Test Score",
-    yaxis_tickformat=".0%",
+    yaxis_tickformat=".1%",
     template="plotly_white",
     xaxis_title_font_size=18,
     yaxis_title_font_size=18,
@@ -239,14 +266,13 @@ fig.show()
 from scipy.stats import uniform
 u = uniform(scale=0.2)
 
-model = GradientBoostingRegressor()
 cv = RandomizedSearchCV(
-    model,
+    GradientBoostingRegressor(),
     param_distributions={
         "learning_rate": u,
         "max_depth": range(2, 10, 2)
     },
-    n_iter=16
+    scoring=scorer,
 )
 _ = cv.fit(X, y) 
 ```
@@ -262,7 +288,7 @@ cv = RandomizedSearchCV(
         "learning_rate": u,
         "max_depth": range(2, 10, 2)
     },
-    n_iter=16
+    scoring=scorer,
 )
 _ = cv.fit(X, y) 
 ```
@@ -281,12 +307,13 @@ for depth in depths:
     trace = go.Scatter(
         x=d.learning_rate,
         y=d.score,
+        text=[depth]*len(d.learning_rate),
         mode="markers",
         marker=dict(size=12, line=dict(width=2, color="DarkSlateGrey")),
         hovertemplate="""
-            max depth = %{depth}<br>
+            max depth = %{text}<br>
             learning rate = %{x:.2f}<br>
-            mean score = %{y:.1%}<extra></extra>
+            mean score = %{y:.2%}<extra></extra>
             """,
         name = f"depth={depth}"
     )
@@ -298,7 +325,7 @@ fig.update_layout(
     title="Gradient Boosting Regressor",
     xaxis_title="Learning Rate",
     yaxis_title="Mean Test Score",
-    yaxis_tickformat=".0%",
+    yaxis_tickformat=".1%",
     template="plotly_white",
     xaxis_title_font_size=18,
     yaxis_title_font_size=18,

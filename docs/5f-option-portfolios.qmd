@@ -1,16 +1,14 @@
 ---
-title:  "Other Option Portfolios"
+title:  "Option Portfolios"
 author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
 execute:
   echo: false
   jupyter: python3
-  cache: true
 format: 
   revealjs:
     highlight-style: monokai
     code-fold: true
     code-copy: hover
-    scrollable: true
     slide-number: true
     preview-links: true
     self-contained: true
@@ -18,5 +16,280 @@ format:
     transition: fade
     theme: [solarized, 2023.scss]
     incremental: true
-    cache: true
 ---
+
+## Overview
+
+- Bull and bear spreads
+- Straddles and strangles
+- Butterfly spreads and condors
+
+## Review of collars
+
+- A collar is a hedge in which you pay for some or all of the hedge by selling another option.
+  - Sell an out-of the money call to buy a protective put.
+  - Sell an out-of-the-money put to buy a protective call for a short position.
+- When people speculate by buying a call or put, they often sell an option to pay for part of the speculative bet.
+
+## Bull spread
+
+. . .
+
+Buy a call and sell a call with a higher strike
+
+. . .
+
+```{python}
+import numpy as np
+import plotly.express as px
+
+underlying = np.linspace(0, 100, 201)
+call1 = np.maximum(underlying-40, 0)
+call2 = np.maximum(underlying-60, 0)
+fig = px.line(x=underlying, y=call1-call2)
+fig.update_traces(
+    hovertemplate="Stock = $%{x:.2f}<br>Bull spread = $%{y:.2f}<extra></extra>"
+)
+fig.update_layout(
+    xaxis_title="Stock Price",
+    yaxis_title="Bull Spread Value",
+    xaxis_title_font = {"size":20},
+    yaxis_title_font =  {"size":20},
+    template="plotly_white"
+)
+fig.show()
+```
+
+## Bear spread
+
+. . .
+
+Buy a put and sell a put with a lower strike
+
+. . .
+
+```{python}
+import numpy as np
+import plotly.express as px
+
+put1 = np.maximum(60 - underlying, 0)
+put2 = np.maximum(40 - underlying, 0)
+fig = px.line(x=underlying, y=put1-put2)
+fig.update_traces(
+    hovertemplate="Stock = $%{x:.2f}<br>Bear spread = $%{y:.2f}<extra></extra>"
+)
+fig.update_layout(
+    xaxis_title="Stock Price",
+    yaxis_title="Bear Spread Value",
+    xaxis_title_font = {"size":20},
+    yaxis_title_font =  {"size":20},
+    template="plotly_white"
+)
+fig.show()
+```
+
+## Straddle
+
+. . .
+
+Buy a put and buy a call with the same strike
+
+. . .
+
+```{python}
+import numpy as np
+import plotly.express as px
+
+put = np.maximum(50 - underlying, 0)
+call = np.maximum(underlying-50, 0)
+fig = px.line(x=underlying, y=put+call)
+fig.update_traces(
+    hovertemplate="Stock = $%{x:.2f}<br>Straddle = $%{y:.2f}<extra></extra>"
+)
+fig.update_layout(
+    xaxis_title="Stock Price",
+    yaxis_title="Straddle Value",
+    xaxis_title_font = {"size":20},
+    yaxis_title_font =  {"size":20},
+    template="plotly_white"
+)
+fig.show()
+```
+
+## Strangle
+
+. . .
+
+Buy a put and buy a call with call strike > put strike
+
+. . .
+
+```{python}
+import numpy as np
+import plotly.express as px
+
+put = np.maximum(40 - underlying, 0)
+call = np.maximum(underlying-60, 0)
+fig = px.line(x=underlying, y=put+call)
+fig.update_traces(
+    hovertemplate="Stock = $%{x:.2f}<br>Strangle = $%{y:.2f}<extra></extra>"
+)
+fig.update_layout(
+    xaxis_title="Stock Price",
+    yaxis_title="Strangle Value",
+    xaxis_title_font = {"size":20},
+    yaxis_title_font =  {"size":20},
+    template="plotly_white"
+)
+fig.show()
+```
+
+## Short Straddle
+
+. . .
+
+Sell a put and buy a call with the same strike
+
+. . .
+
+```{python}
+import numpy as np
+import plotly.express as px
+
+put = np.maximum(50 - underlying, 0)
+call = np.maximum(underlying-50, 0)
+fig = px.line(x=underlying, y=-put-call)
+fig.update_traces(
+    hovertemplate="Stock = $%{x:.2f}<br>Straddle = $%{y:.2f}<extra></extra>"
+)
+fig.update_layout(
+    xaxis_title="Stock Price",
+    yaxis_title="Short Straddle Value",
+    xaxis_title_font = {"size":20},
+    yaxis_title_font =  {"size":20},
+    template="plotly_white"
+)
+fig.show()
+```
+
+## Butterfly spread {.smaller}
+
+- Sell a call and put with the same strike (short straddle)
+- Buy a put with a lower strike and buy a call with a higher strike to hedge
+
+. . .
+
+```{python}
+import numpy as np
+import plotly.express as px
+
+put = np.maximum(50 - underlying, 0)
+call = np.maximum(underlying-50, 0)
+put2 = np.maximum(40 - underlying, 0)
+call2 = np.maximum(underlying-60, 0)
+fig = px.line(x=underlying, y=-put-call+put2+call2)
+fig.update_traces(
+    hovertemplate="Stock = $%{x:.2f}<br>Straddle = $%{y:.2f}<extra></extra>"
+)
+fig.update_layout(
+    xaxis_title="Stock Price",
+    yaxis_title="Butterfly Spread Value",
+    xaxis_title_font = {"size":20},
+    yaxis_title_font =  {"size":20},
+    template="plotly_white"
+)
+fig.show()
+```
+
+## Condor {.smaller}
+
+- Sell a strangle
+- Buy a put with a lower strike and buy a call with a higher strike to hedge
+
+. . .
+
+```{python}
+import numpy as np
+import plotly.express as px
+
+put = np.maximum(40 - underlying, 0)
+call = np.maximum(underlying-60, 0)
+put2 = np.maximum(30 - underlying, 0)
+call2 = np.maximum(underlying-70, 0)
+fig = px.line(x=underlying, y=-put-call+put2+call2)
+fig.update_traces(
+    hovertemplate="Stock = $%{x:.2f}<br>Straddle = $%{y:.2f}<extra></extra>"
+)
+fig.update_layout(
+    xaxis_title="Stock Price",
+    yaxis_title="Condor Value",
+    xaxis_title_font = {"size":20},
+    yaxis_title_font =  {"size":20},
+    template="plotly_white"
+)
+fig.show()
+```
+
+## Multiple ways to create positions
+
+Because of put-call parity, for European options on a stock that does not pay dividends prior to option maturity,
+
+- puts can be replaced by calls
+- and/or calls can be replaced by puts
+- timing of cash (upfront or at maturity) may change
+
+## Example: bull spread with puts
+
+. . .
+
+Buy a ~~call~~ put and sell a ~~call~~ put with a higher strike
+
+. . .
+
+```{python}
+import numpy as np
+import plotly.express as px
+
+put1 = np.maximum(40-underlying, 0)
+put2 = np.maximum(60-underlying, 0)
+fig = px.line(x=underlying, y=put1-put2)
+fig.update_traces(
+    hovertemplate="Stock = $%{x:.2f}<br>Bull spread = $%{y:.2f}<extra></extra>"
+)
+fig.update_layout(
+    xaxis_title="Stock Price",
+    yaxis_title="Bull Spread Value",
+    xaxis_title_font = {"size":20},
+    yaxis_title_font =  {"size":20},
+    template="plotly_white"
+)
+fig.show()
+```
+
+## Example: butterfly spread with only calls {.smaller}
+
+- Sell a call and ~~put~~ call with the same strike (i.e., sell 2 calls)
+- Buy a ~~put~~ call with a lower strike and buy a call with a higher strike 
+
+. . .
+
+```{python}
+import numpy as np
+import plotly.express as px
+
+call = np.maximum(underlying-50, 0)
+call1 = np.maximum(underlying-40, 0)
+call2 = np.maximum(underlying-60, 0)
+fig = px.line(x=underlying, y=call1-2*call+call2)
+fig.update_traces(
+    hovertemplate="Stock = $%{x:.2f}<br>Straddle = $%{y:.2f}<extra></extra>"
+)
+fig.update_layout(
+    xaxis_title="Stock Price",
+    yaxis_title="Butterfly Spread Value",
+    xaxis_title_font = {"size":20},
+    yaxis_title_font =  {"size":20},
+    template="plotly_white"
+)
+fig.show()
+```
