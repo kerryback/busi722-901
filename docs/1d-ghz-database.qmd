@@ -38,10 +38,7 @@ format:
 ## SQL Database
 
 - GHZ predictors and returns, monthly 2000-2021
-- all non-micro-cap U.S. stocks 
-  - meaning stocks with market caps above the NYSE 20th percentile
-  - number of stocks varies by month in the range of 1,500 to 2,700
-- hosted on CloudClusters.net, no need to be on Rice network
+- all NYSE and Nasdaq stocks
 
 
 ## Connect to the database

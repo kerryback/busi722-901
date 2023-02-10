@@ -1,0 +1,335 @@
+---
+title:  "Some Cross Validation Results"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+
+## 
+
+- Same features as in 3a-trees
+  - agr, bm, idiovol, mom12m, roeq
+- Quantile transform features and ret in each cross-section
+- Cross-validate on one year (2019) just for illustration
+
+## Custom Scorer
+
+- For picking stocks based on return predictions, the important issue is whether stocks predicted to have higher returns actually do have higher returns.
+- The numerical values of the predictions and the numerical errors matter less.
+- To calculate the extent to which higher predictions correspond to higher returns, Spearman's rank correlation is useful.
+
+##
+
+```.p
+from scipy.stats import spearmanr
+from sklearn.metrics import make_scorer
+
+scorer = make_scorer(
+    lambda a, b: spearmanr(a, b).statistic, 
+    greater_is_better=True
+)
+```
+
+```{python}
+from scipy.stats import spearmanr
+from sklearn.metrics import make_scorer
+
+scorer = make_scorer(
+    lambda a, b: spearmanr(a, b).statistic, 
+    greater_is_better=True
+)
+```
+
+```{python}
+from sqlalchemy import create_engine
+import pymssql
+import pandas as pd
+import plotly.graph_objects as go
+
+from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import RandomizedSearchCV
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.neural_network import MLPRegressor 
+
+server = "mssql-82792-0.cloudclusters.net:16272"
+username = "user"
+password = "RiceOwls1912" # paste password between quote marks
+database = "ghz"
+
+string = "mssql+pymssql://" + username + ":" + password + "@" + server + "/" + database
+
+conn = create_engine(string).connect()
+
+df = pd.read_sql(
+    """
+    select ticker, date, agr, bm, idiovol, mom12m, roeq, ret
+    from data
+    where date >= '2019-01' and date <= '2019-12'
+    """, 
+    conn
+)
+features = ["agr", "bm", "idiovol", "mom12m", "roeq"]
+df = df.dropna()
+```
+
+
+
+```{python}
+from sklearn.preprocessing import QuantileTransformer
+qt = QuantileTransformer(output_distribution="normal")
+def qtxs(d):
+    x = qt.fit_transform(d)
+    return pd.DataFrame(x, columns=d.columns, index=d.index)
+
+df[features+["ret"]] = df.groupby(
+  "date", 
+  group_keys=False
+)[features+["ret"]].apply(qtxs)
+
+X = df[features]
+y = df["ret"]
+```
+
+
+## GridSearchCV for Random Forest
+
+. . .
+
+```.p
+model = RandomForestRegressor()
+
+cv = GridSearchCV(
+  model,
+  param_grid={
+    "max_depth": range(1, 11)
+  },
+  scoring=scorer
+)
+_ = cv.fit(X, y)
+```
+
+```{python}
+cv = GridSearchCV(
+  RandomForestRegressor(),
+  param_grid={
+    "max_depth": range(1, 11)
+  },
+  scoring=scorer
+)
+_ = cv.fit(X, y)
+
+```
+
+##
+
+```{python}
+results = pd.DataFrame(cv.cv_results_["params"])
+results["score"] = cv.cv_results_["mean_test_score"]
+
+trace = go.Scatter(
+    x = results.max_depth,
+    y = results.score,
+    mode="lines+markers",
+    marker=dict(size=12, line=dict(width=2, color="DarkSlateGrey")),
+    hovertemplate="""
+            max depth = %{x}<br>
+            mean score = %{y:.2%}<extra></extra>
+            """,
+)
+fig = go.Figure(trace)
+fig.update_layout(
+    title="Random Forest",
+    xaxis_title="Max Depth",
+    yaxis_title="Mean Test Score",
+    yaxis_tickformat=".1%",
+    template="plotly_white",
+    xaxis_title_font_size=18,
+    yaxis_title_font_size=18,
+    font_size=16
+)
+fig.show()
+```
+
+## GridSearchCV for Multi-Layer Perceptron
+
+. . .
+
+```.p
+param_grid={
+    "hidden_layer_sizes": [
+        [16, 8, 4, 2], 
+        [16, 8, 4],
+        [8, 4, 2], 
+        [16, 8],
+        [16, 4],
+        [8, 4],
+        [4, 4],
+        [4, 2]
+    ]
+}
+```
+
+##
+
+```.p
+cv = GridSearchCV(
+  MLPRegressor(max_iter=500)
+  param_grid=param_grid,
+  scoring=scorer
+)
+_ = cv.fit(X, y)
+```
+
+```{python}
+param_grid={
+    "hidden_layer_sizes": [
+        [16, 8, 4, 2], 
+        [16, 8, 4],
+        [8, 4, 2], 
+        [16, 8],
+        [16, 4],
+        [8, 4],
+        [4, 4],
+        [4, 2]
+    ]
+}
+
+model = MLPRegressor(max_iter=500)
+cv = GridSearchCV(
+  model,
+  param_grid=param_grid,
+  scoring=scorer
+)
+_ = cv.fit(X, y)
+```
+
+##
+
+```{python}
+results = pd.DataFrame(cv.cv_results_["params"])
+results["score"] = cv.cv_results_["mean_test_score"]
+results["number_layers"] = [len(x) for x in results.hidden_layer_sizes]
+results["hidden_layer_sizes"] = [repr(x) for x in results.hidden_layer_sizes]
+
+traces = []
+for i in range(1, 5):
+    trace = go.Scatter(
+        x=results[results.number_layers==i].hidden_layer_sizes,
+        y=results[results.number_layers==i].score,
+        mode="markers",
+        marker=dict(size=12, line=dict(width=2, color="DarkSlateGrey")),
+        name =f"{i} layer",
+        hovertemplate="""
+            hidden layer sizes = %{x}<br>
+            mean score = %{y:.2%}<extra></extra>
+        """
+    )
+    traces.append(trace)
+fig = go.Figure()
+for trace in traces:
+    fig.add_trace(trace)
+fig.update_layout(
+    title="Multi-Layer Perceptron",
+    xaxis_title="Hidden Layer Sizes",
+    yaxis_title="Mean Test Score",
+    yaxis_tickformat=".1%",
+    template="plotly_white",
+    xaxis_title_font_size=18,
+    yaxis_title_font_size=18,
+    font_size=16
+)
+fig.show()
+```
+
+## RandomizedSearchCV for Gradient Boosting
+
+. . .
+
+```.p
+from scipy.stats import uniform
+u = uniform(scale=0.2)
+
+cv = RandomizedSearchCV(
+    GradientBoostingRegressor(),
+    param_distributions={
+        "learning_rate": u,
+        "max_depth": range(2, 10, 2)
+    },
+    scoring=scorer,
+)
+_ = cv.fit(X, y) 
+```
+
+```{python}
+from scipy.stats import uniform
+u = uniform(scale=0.2)
+
+model = GradientBoostingRegressor()
+cv = RandomizedSearchCV(
+    model,
+    param_distributions={
+        "learning_rate": u,
+        "max_depth": range(2, 10, 2)
+    },
+    scoring=scorer,
+)
+_ = cv.fit(X, y) 
+```
+
+##
+
+```{python}
+results = pd.DataFrame(cv.cv_results_["params"])
+results["score"] = cv.cv_results_["mean_test_score"]
+import numpy as np
+
+depths = np.sort(results.max_depth.unique())
+traces = []
+for depth in depths:
+    d = results[results.max_depth==depth]
+    trace = go.Scatter(
+        x=d.learning_rate,
+        y=d.score,
+        text=[depth]*len(d.learning_rate),
+        mode="markers",
+        marker=dict(size=12, line=dict(width=2, color="DarkSlateGrey")),
+        hovertemplate="""
+            max depth = %{text}<br>
+            learning rate = %{x:.2f}<br>
+            mean score = %{y:.2%}<extra></extra>
+            """,
+        name = f"depth={depth}"
+    )
+    traces.append(trace)
+fig = go.Figure()
+for trace in traces: 
+    fig.add_trace(trace)
+fig.update_layout(
+    title="Gradient Boosting Regressor",
+    xaxis_title="Learning Rate",
+    yaxis_title="Mean Test Score",
+    yaxis_tickformat=".1%",
+    template="plotly_white",
+    xaxis_title_font_size=18,
+    yaxis_title_font_size=18,
+    font_size=16
+)
+fig.show()
+```

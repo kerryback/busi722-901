@@ -1,0 +1,68 @@
+---
+title:  "Early Exercise"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+    cache: true
+---
+
+## Intrinsic value
+
+- The "intrinsic value" of an option is what it would be worth if it were immediately expiring.
+  - The intrinsic value of a call is max(0, stock price - strike)
+  - The intrinsic value of a put is max(0, strike - stock price)
+- Prior to maturity, the value of an option usually exceeds its intrinsic value.  It is "better alive than dead."
+- No one should exercise when value > intrinsic value
+
+## Early exercise
+
+- Sometimes, prior to maturity, the value of an option equals its the intrinsic value.
+- All options should be exercised, or positions should be closed by trading.
+
+## Calls are better alive than dead
+
+- A call option on an underlying asset that does not pay dividends prior to the option maturity should never be exercised early.
+- Proof is by put-call parity:
+
+. . .
+
+$$ \text{call price} = \text{stock price} + \text{put price} - \text{PV of strike}$$
+
+. . .
+
+$$ \text{call price} > \text{stock price}  - \text{PV of strike}$$
+
+. . .
+
+$$ \text{call price} > \text{stock price}  - \text{strike}$$
+
+## Possible counter-argument
+
+- You own a call option and think the stock will fall.  
+- Should you exercise the call and sell the stock before it falls instead of holding on to the option?
+- No, instead: keep the option alive and short the stock.
+  - Stock goes up $\Rightarrow$ happy you kept the call
+  - Stock goes down $\Rightarrow$ cover short with call
+- This assumes you (or someone in the market) can short.  It does not apply to executive stock options, which often should be exercised early.
+
+## Early exercise of puts is often optimal
+
+- If the stock price has fallen very low, you can be pretty sure you will not regret exercising a put.
+- Exercising the put early gets the cash early, which can be invested.
+- There is always a critical stock price (threshold) such that it is optimal to exercise a put when the stock falls below the threshold.
+- The threshold depends crucially on the stock volatility.

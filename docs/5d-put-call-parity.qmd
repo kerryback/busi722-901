@@ -1,0 +1,146 @@
+---
+title:  "Put-Call Parity"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+    cache: true
+---
+
+# Put-Call Parity
+
+##
+
+- At maturity, protective put portfolio (stock + put) is same as cash + call
+- Cash = strike
+- Stock ends up $\Rightarrow$ 
+  - With stock + put, keep stock
+  - With cash + call, exercise, using cash, to get stock
+- Stock ends down $\Rightarrow$
+  - With stock + put, exercise, using stock, to get cash
+  - With call + cash, keep cash
+
+## Prices of puts and calls
+
+- Prior to maturity, for European options on a stock that does not pay dividends prior to the option expirations,
+
+. . .
+
+$$ \text{price of (stock + put)} = \text{price of (cash + call)}$$
+
+. . .
+
+$$ \text{stock price} + \text{put price} = $$
+$$ \text{PV of strike} + \text{call price}$$
+
+## Example
+
+- One year to maturity, interest rate = 5%, strike = 100
+- Suppose underlying is at 90 and price of call = 10
+- Price of put should be
+
+. . .
+
+$$\frac{100}{1.05} + 10 - 90 = 25.24$$
+
+## Difference between call and put prices
+
+- call price - put price = stock price - PV of strike
+  - difference in prices (call minus put) goes up 1-for-1 with stock price
+  - call price > put price when stock price > PV of strike
+- put price - call price = PV of strike - price of underlying
+  - difference in prices (put minus call) goes up 1/(1+r) for 1 with strike
+  - e.g., strike $\uparrow$ 5 $\Rightarrow$ put - call $\uparrow$ 5/(1+r)
+
+```{python}
+import yfinance as yf
+tick = yf.Ticker('aapl')
+```
+
+## Apple example on Feb 10, 2023
+. . .
+
+```{python}
+import yfinance as yf
+tick = yf.Ticker('aapl')
+price = tick.history().Close.iloc[-1]
+print(f"last AAPL price was ${price:.2f}")
+```
+
+. . .
+
+## Apple calls expiring March 17, 2023 {.smaller}
+
+. . .
+
+```{python}
+```{python}
+roundprice = round(price/5)*5
+strikes = [roundprice + x for x in range(-20, 25, 5)]
+options = tick.option_chain("2023-03-17")
+calls = options.calls.set_index("strike")
+puts = options.puts.set_index("strike")
+calls = calls.loc[strikes]
+puts = puts.loc[strikes]
+calls.iloc[:, 2:5]
+```
+
+## Apple puts expiring March 17, 2023 {.smaller}
+
+. . .
+
+```{python}
+```{python}
+puts.iloc[:, 2:5]
+```
+
+## Apple put prices minus call prices
+
+. . .
+
+```{python}
+calls = calls.lastPrice
+puts = puts.lastPrice
+
+import plotly.express as px
+fig = px.scatter(
+  x = strikes,
+  y = puts-calls,
+  trendline="ols",
+)
+fig.update_traces(
+    hovertemplate="strike = $%{x}<br>put - call = $%{y:.2f}<extra></extra>",
+    marker=dict(
+        size=8, 
+        line=dict(width=1, color="DarkSlateGrey")
+    )
+)
+fig.update_layout(
+    title="AAPL Puts and Calls",
+    xaxis_title="Strike",
+    yaxis_title="Put Premium minus Call Premium",
+    template="plotly_white"
+)
+fig.show()
+```
+
+
+## Dividends and early exercise
+
+- Put-call parity is based on values at expiration being equal
+- It may not hold for American options, because the optimal exercise conditions may be different for "stock + put" compared to "cash + call"
+- It will not hold if the stock pays dividends prior to option expiration, because "stock + put" will get the dividends and "cash + call" will not.
