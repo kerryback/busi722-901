@@ -150,7 +150,7 @@ fig.show()
 $$\begin{cases} \text{strike} - \text{underlying} & \text{if underlying < strike}\\
  0 & \text{if underlying > strike}
  \end{cases}
- $$
+$$
 
 - Equivalently, the value of a put is 
 
