@@ -148,7 +148,7 @@ fig.show()
 
 . . .
 
-Sell a put and buy a call with the same strike
+Sell a put and sell a call with the same strike
 
 . . .
 
