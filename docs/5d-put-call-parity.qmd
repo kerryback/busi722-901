@@ -21,7 +21,6 @@ format:
     cache: true
 ---
 
-# Put-Call Parity
 
 ##
 
