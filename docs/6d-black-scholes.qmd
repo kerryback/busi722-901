@@ -80,7 +80,7 @@ def callBS(S, K, T, sigma, r, q=0):
 
 . . .
 
-```
+```.p
 def putBS(S, K, T, sigma, r, q=0):
     d1 = np.log(S/K) + (r-q+0.5*sigma**2)*T
     d1 /= sigma*np.sqrt(T)
