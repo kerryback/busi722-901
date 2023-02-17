@@ -137,7 +137,7 @@ plt.xlabel("Stock Price")
 plt.show()
 ```
 
-## Put Example <a href="https://bbcx-investments.com/futures-options/binomial-convergence"><img src="images/Rice_Owl.jpg" style="width:.65in;" align="right"> </a> {.smaller}
+## Put Example <a href="https://bbcx-investments.com/futures-options/europeans-americans"><img src="images/Rice_Owl.jpg" style="width:.65in;" align="right"> </a> {.smaller}
 
 - $K=50$, $T=1$, $\sigma=0.4$, $r=0.04$
 
