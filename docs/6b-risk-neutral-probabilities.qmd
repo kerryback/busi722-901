@@ -1,0 +1,177 @@
+---
+title:  "Risk-Neutral Probabilities"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+
+## Single Period Model Again
+
+
+- Suppose a stock priced at $100 will go up by 10% or down by 10%.
+  
+. . .
+
+![](images/binomial_stock_oneperiod.jpg){width=4in fig-align="center"}
+  
+
+
+##
+
+- Consider a call  with a strike of $105.  Using the delta argument, we obtained
+
+. . .
+
+![](images/binomial_call_complete_oneperiod.jpg){width=4in fig-align="center"}
+
+##
+
+- If there were no risk premium, the call value would be the expected value discounted at the risk-free rate:
+
+. . .
+
+$$C = \frac{p \times \text{\$}5 + (1-p)\times \text{\$}0}{1.05}$$
+
+- where $p=$ prob of positive return.  The stock price would also be the discounted expected value:
+
+. . .
+
+$$\text{\$}100 = \frac{p \times \text{\$}110 + (1-p) \times \text{\$}90}{1.05}$$
+
+##
+
+- Solve the stock equation for $p$ and substitute into the call option equation.  
+- Stock equation is solved as:
+
+. . .
+
+$$p = \frac{r_f - r_d}{r_u - r_d} = \frac{0.05 - (-0.1)}{0.1 - (-0.1)} = \frac{.15}{.2} = 0.75$$
+
+- Calculate the call option value:
+
+. . .
+
+$$C = \frac{0.75 \times \text{\$}5 + 0.25 \times \text{\$}0}{1.05} = \text{\$}3.57$$
+
+##
+
+- $p$ and $1-p$ are called the [risk-neutral probabilities]{style="color: tomato"}.
+- Why does this work?
+  - Delta hedge argument didn't depend on risk preferences, so we can act as if investors don't require risk premia.
+  - Simple algebra!
+
+
+
+## Two-period example again
+
+
+- Suppose a $100 stock goes up by 5% or down by (1/1.05-1) = -4.76% in each of two periods.
+
+. . .
+
+![](images/binomial_two_period.jpg){width=4in fig-align="center"}
+
+
+- Suppose the interest rate is 3% per period.
+
+##
+
+- Suppose a call option with a strike of $105 expires at the end of the 2nd period.
+- From the delta argument, we obtained
+
+. . .
+
+![](images/call_two_period_2.jpg){width=4in fig-align="center"}
+
+## Risk-neutral probability
+
+- The risk-neutral probability of "up" is
+
+. . .
+
+$$ p = \frac{r_f - r_d}{r_u - r_d} = \frac{0.03 - (-0.0476)}{0.05 - (-0.0476)} = 0.795$$
+
+##
+
+- Discounting the expected call value (using prob of up = 0.795) at the risk-free rate yields
+
+. . .
+
+![](images/call_two_period_2.jpg){width=4in fig-align="center"}
+
+## Call with a strike of $95 
+
+. . .
+
+::::{.columns}
+::: {.column width="50%"}
+Stock:
+:::
+::: {.column width="50%"}
+![](images/binomial_two_period.jpg){width=4in fig-align="left"}
+:::
+::::
+
+. . .
+
+::::{.columns}
+::: {.column width="50%"}
+Call with a strike of $95:
+:::
+::: {.column width="50%"}
+![](images/callb_two_period_1.jpg){width=4in fig-align="left"}
+:::
+::::
+
+## Example code
+
+```{.p code-line-numbers="1-6|7-8|9|10|11-12|13"}
+import numpy as np
+S = 100             # stock price
+K = 95              # strike
+u = 0.05            # up return per period
+r = 0.03            # interest rate per period
+n = 2               # number of periods
+d = 1/(1+u) - 1     # down return per period
+p = (r-d) / (u-d)   # risk-neutral prob
+x = [S*(1+u)**(n-2*i) for i in range(n+1)]
+v = np.maximum(0, np.array(x)-K)
+while len(v)>1:
+    v = (p*v[:-1]+(1-p)*v[1:]) / (1+r)
+v[0]
+```
+. . .
+
+
+```{python}
+import numpy as np
+
+S = 100    # stock price
+K = 95     # strike
+u = 0.05   # up return per period
+r = 0.03   # interest rate per period
+n = 2      # number of periods
+d = 1/(1+u) - 1     # down return per period
+p = (r-d) / (u-d)   # risk-neutral prob
+x = [S*(1+u)**(n-2*i) for i in range(n+1)]
+c = np.maximum(0, np.array(x)-K)
+while len(c)>1:
+    c = (p*c[:-1]+(1-p)*c[1:]) / (1+r)
+c[0]
+```

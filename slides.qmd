@@ -46,9 +46,7 @@
 
 [3f. Some Validation Results](3f-validation-results.html){target="_blank"}
 
-:::
-
-#### 4. Backtesting and Trading
+### 4. Backtesting and Trading
 
 [4a. Backtest Overview]
 
@@ -83,13 +81,13 @@
 
 ### 6. Valuing Options
 
-[6a. Deltas in Binomial Models](4b-option-premia.html){target="_blank"}
+[6a. Deltas in Binomial Models](6a-binomial-deltas.html){target="_blank"}
 
-[6b. Risk-Neutral Probabilities](4b-option-premia.html){target="_blank"}
+[6b. Risk-Neutral Probabilities](6b-risk-neutral-probabilities.html){target="_blank"}
 
-[6c. Binomial Trees](4b-option-premia.html){target="_blank"}
+[6c. Early Exercise in Binomial Trees](6c-early-exercise.html){target="_blank"}
 
-[6d. Black-Scholes](4b-option-premia.html){target="_blank"}
+[6d. Black-Scholes](6d-black-scholes.html){target="_blank"}
 
 [6e. Deltas in Black-Scholes](4b-option-premia.html){target="_blank"}
 

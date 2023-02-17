@@ -1,0 +1,241 @@
+---
+title:  "Option Deltas in Binomial Trees"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+# Single Period Model
+
+##
+
+
+Suppose a stock priced at $100 will either go up by 10% or down by 10%.
+  
+. . .
+
+![](images/binomial_stock_oneperiod.jpg){width=4in fig-align="center"}
+  
+  
+  
+## Call Option
+
+- Consider a call option with a strike of $105.  
+- It ends with a value of $5 if the stock goes to $110 and a value of $0 if the stock goes to $90.
+- We want to find its value at the beginning.
+  
+. . .
+
+![](images/binomial_call_oneperiod.jpg){width=4in fig-align="center"}
+  
+  
+## Delta
+
+- Define $\Delta$ as the difference in the option values divided by the difference in the stock values.
+- This is $(5-0)/(110-90) = 1/4$.  
+- Here is the value of 1/4 share of the stock.
+ 
+ . . .
+
+![](images/binomial_deltashares_oneperiod.jpg){width=4in fig-align="center"} 
+  
+  
+## Debt
+
+- Consider borrowing the PV of the bottom value from the previous figure.
+- Suppose the interest rate is 5%.  The PV of $22.50 is $21.43. Here is how the debt evolves.
+
+. . .
+
+![](images/binomial_liability_oneperiod.jpg){width=4in fig-align="center"} 
+
+## Buy $\Delta$ shares on margin
+
+
+. . .
+
+::::{.columns}
+::: {.column width="50%"}
+Value of $\Delta$ shares
+:::
+::: {.column width="50%"}
+![](images/binomial_deltashares_oneperiod.jpg){width=2in fig-align="center"}
+:::
+::::
+
+. . .
+
+::::{.columns}
+::: {.column width="50%"}
+Value of loan
+:::
+::: {.column width="50%"}
+![](images/binomial_liability_oneperiod.jpg){width=2in fig-align="center"}
+:::
+::::
+
+. . .
+
+::::{.columns}
+::: {.column width="50%"}
+Equity in levered portfolio
+:::
+::: {.column width="50%"}
+![](images/binomial_call_complete_oneperiod.jpg){width=2in fig-align="center"}
+:::
+::::
+
+ 
+
+## Conclusion
+
+- A call option in this simple model is equivalent to buying $\Delta$ shares with leverage.
+- The value of the call must be the equity needed in the levered portfolio.
+- This is the cost of $\Delta$ shares minus the amount borrowed.
+
+## Calculation in code
+
+. . .
+
+```{.p code-line-numbers="1-5|7-8|9-10|11|12|13-14"}
+S = 100     # initial stock price
+K = 105     # strike
+u = 0.10    # up return
+d = -0.10   # down return
+r = 0.05    # interest rate
+
+Su = S * (1+u)
+Sd = S * (1+d)
+Cu = max(0, Su-K)
+Cd = max(0, Sd-K)
+delta = (Cu-Cd) / (Su-Sd)
+lev = (delta*Sd - Cd) / (1+r)
+call = delta*S - lev
+call
+```
+
+. . .
+
+```{python}
+S = 100     # initial stock price
+K = 105     # strike
+u = 0.10    # up return
+d = -0.10   # down return
+r = 0.05    # interest rate
+
+Su = S * (1+u)
+Sd = S * (1+d)
+Cu = max(0, Su-K)
+Cd = max(0, Sd-K)
+delta = (Cu-Cd) / (Su-Sd)
+lev = (delta*Sd - Cd) / (1+r)
+call = delta*S - lev
+call
+```
+
+##
+
+
+
+# Two-period example
+
+
+##
+
+- Suppose a $100 stock goes up by 5% or down by (1/1.05-1) = -4.76% in each of two periods.
+
+. . .
+
+![](images/binomial_two_period.jpg){width=4in fig-align="center"}
+
+
+- Suppose the interest rate is 3% per period.
+
+##
+
+- A call option with a strike of $105 expires at the end of the 2nd period.
+- The call evolves as
+
+. . .
+
+![](images/call_two_period_1.jpg){width=4in fig-align="center"}
+
+## Recursion
+
+- At each of the two nodes at the middle date, repeat the one-period analysis to get call values $c_u$ and $c_d$.
+- Then repeat the one-period analysis at the initial date using $c_u$ and $c_d$. 
+
+## Recursion in code
+
+. . .
+
+```.p
+def one_period_call(S, Su, Sd, Cu, Cd, r):
+    delta = (Cu-Cd) / (Su-Sd)
+    lev = (delta*Sd - Cd) / (1+r)
+    return delta*S - lev
+
+S = 100
+K = 105
+u = 0.05  # up return each period
+r = 0.03  # interest rate each period
+```
+
+##
+
+```{.p code-line-numbers="1-2|3-5|6-8|9-10|11-12"}
+Su = S * (1+u)
+Sd = S / (1+u)
+Suu = Su * (1+u)
+Sud = S
+Sdd = Sd / (1+u)
+Cuu = max(0, Suu-K)
+Cud = max(0, Sud-K)
+Cdd = max(0, Sdd-K)
+Cu = one_period_call(Su, Suu, Sud, Cuu, Cud, r)
+Cd = one_period_call(Sd, Sud, Sdd, Cud, Cdd, r)
+C = one_period_call(S, Su, Sd, Cu, Cd, r)
+C
+```
+
+. . .
+
+```{python}
+def one_period_call(S, Su, Sd, Cu, Cd, r):
+    delta = (Cu-Cd) / (Su-Sd)
+    lev = (delta*Sd - Cd) / (1+r)
+    return delta*S - lev
+
+S = 100
+K = 105
+u = 0.05  # up return each period
+r = 0.03  # interest rate each period
+Su = S * (1+u)
+Sd = S / (1+u)
+Suu = Su * (1+u)
+Sud = S
+Sdd = Sd / (1+u)
+Cuu = max(0, Suu-K)
+Cud = max(0, Sud-K)
+Cdd = max(0, Sdd-K)
+Cu = one_period_call(Su, Suu, Sud, Cuu, Cud, r)
+Cd = one_period_call(Sd, Sud, Sdd, Cud, Cdd, r)
+C = one_period_call(S, Su, Sd, Cu, Cd, r)
+C
+```
+    

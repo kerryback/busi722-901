@@ -1,0 +1,156 @@
+---
+title:  "Calibrating Trees and the Black-Scholes Formula"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+## Calibration
+
+
+- Estimate $\sigma=$ std dev of annual stock return
+- Find $r_f =$ annualized continuously compounded interest rate $= \log(1+\text{annual rate})$.
+- $T=$ time to maturity of an option in years
+- $N=$ number of periods in a binomial model
+
+##
+
+- $\Delta t = T/N=$ period length
+- Set the up rate of return as $u = e^{\sigma\sqrt{\Delta t}}-1$ and set $d=1/(1+u)-1$ as before
+- Set the 1-period interest rate as $r=e^{r_f \Delta t}-1$
+- The risk-neutral probability of "up" is
+
+. . .
+
+$$p = \frac{r-d}{u-d} = \frac{e^{r_f \Delta t} - e^{-\sigma \Delta t}}{e^{\sigma \Delta t} - e^{-\sigma \Delta t}}$$
+
+## Dividends
+
+- The simplest assumption is that the stock pays dividends continuously with a constant dividend yield.
+- This means that the dividend paid in each small period $\Delta t$ is $q \times S \times \Delta t$ where $S$ denotes the price at the beginning of the period and $q$ is a constant.
+- Set $q =$ annual dividend / stock price
+
+##
+
+- We can still use a binomial model with the same $r$, $u$, and $d$, except that the risk-neutral probability of "up" should be
+
+. . .
+
+$$\frac{e^{(r_f-q) \Delta t} - e^{-\sigma \Delta t}}{e^{\sigma \Delta t} - e^{-\sigma \Delta t}}$$
+
+##  Take limit  <a href="https://bbcx-investments.com/futures-options/binomial-convergence"><img src="images/Rice_Owl.jpg" style="width:.65in;" align="right"> </a>
+
+- As the number of periods is increased, the distribution of the stock price converges to lognormal, meaning that log stock price has a normal distribution.
+- The values of options converge
+- The limits of European option values are given by the Black-Scholes formulas
+
+## Black-Scholes Call Formula
+
+. . .
+
+```.p
+import numpy as np
+from scipy.stats import norm
+
+def callBS(S, K, T, sigma, r, q=0):
+    d1 = np.log(S/K) + (r-q+0.5*sigma**2)*T
+    d1 /= sigma*np.sqrt(T)
+    d2 = d1 - sigma*np.sqrt(T)
+    N1 = norm.cdf(d1)
+    N2 = norm.cdf(d2)
+    return np.exp(-q*T)*S*N1 - np.exp(-r*T)*K*N2
+```
+
+## Black-Scholes Put Formula
+
+. . .
+
+```
+def putBS(S, K, T, sigma, r, q=0):
+    d1 = np.log(S/K) + (r-q+0.5*sigma**2)*T
+    d1 /= sigma*np.sqrt(T)
+    d2 = d1 - sigma*np.sqrt(T)
+    N1 = norm.cdf(-d1)
+    N2 = norm.cdf(-d2)
+    return np.exp(-r*T)*K*N2 - np.exp(-q*T)*S*N1
+```
+
+## Call Example {.smaller}
+
+- $K=50$, $T=1$, $\sigma=0.4$, $r=0.04$
+
+. . .
+
+```{python}
+import numpy as np
+from scipy.stats import norm
+import matplotlib.pyplot as plt
+
+def callBS(S, K, T, sigma, r, q=0):
+    d1 = np.log(S/K) + (r-q+0.5*sigma**2)*T
+    d1 /= sigma*np.sqrt(T)
+    d2 = d1 - sigma*np.sqrt(T)
+    N1 = norm.cdf(d1)
+    N2 = norm.cdf(d2)
+    return np.exp(-q*T)*S*N1 - np.exp(-r*T)*K*N2
+
+def putBS(S, K, T, sigma, r, q=0):
+    d1 = np.log(S/K) + (r-q+0.5*sigma**2)*T
+    d1 /= sigma*np.sqrt(T)
+    d2 = d1 - sigma*np.sqrt(T)
+    N1 = norm.cdf(-d1)
+    N2 = norm.cdf(-d2)
+    return np.exp(-r*T)*K*N2 - np.exp(-q*T)*S*N1
+
+K = 50
+T = 1
+sigma = 0.4
+r = 0.04
+import seaborn as sns
+sns.set_style('whitegrid')
+underlying = np.linspace(0,100,101)
+intrinsic = np.maximum(underlying-K, 0)
+bs = [callBS(x, K, T, sigma, r) for x in underlying]
+
+plt.rcParams.update({'font.size': 14})
+
+plt.plot(underlying, intrinsic, label="Intrinsic value", c="g")
+plt.plot(underlying, bs, label="Black-Scholes value")
+plt.legend()
+plt.title("European Call Option")
+plt.xlabel("Stock Price")
+plt.show()
+```
+
+## Put Example <a href="https://bbcx-investments.com/futures-options/binomial-convergence"><img src="images/Rice_Owl.jpg" style="width:.65in;" align="right"> </a> {.smaller}
+
+- $K=50$, $T=1$, $\sigma=0.4$, $r=0.04$
+
+. . .
+
+```{python}
+bs = [putBS(x, K, T, sigma, r) for x in underlying]
+intrinsic = np.maximum(K-underlying, 0)
+plt.plot(underlying, intrinsic, label="Intrinsic value", c='g')
+plt.plot(underlying, bs, label="Black-Scholes value")
+plt.xlabel("Stock Price")
+plt.legend()
+plt.title("European Put Option")
+plt.show()
+```
+
