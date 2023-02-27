@@ -16,34 +16,24 @@ Room 217, McNair Hall
 
 #### Course Description
 
-We'll cover three topics in this course: options, futures, and quantitative equity investing.  Options and futures are important instruments for risk management and also for investing.  We'll explain what the securities are and how they trade, how they are used in risk management and investments, and how to value them.  Quantitative equity investing is using quantifiable signals to select stocks via algorithms.  We'll explore machine learning methods to predict returns and classify stocks as Buy/Hold/Sell.  We'll backtest trading strategies based on the signals.  And, we will analyze the results in the way that endowments and other institutions evaluate investment managers.  We'll do a real-world implementation of our algorithms using daily updated company financials and market data from a SQL database and with paper trading via the python API at Alpaca Brokerage.
+We'll cover two topics in this course: quantitative equity investing and derivative securities.  Quantitative equity investing is using quantifiable signals to select stocks via algorithms.  We'll explore machine learning methods to predict returns and classify stocks as Buy/Hold/Sell.  We'll backtest trading strategies based on the signals.  And, we will analyze the results in the way that endowments and other institutions evaluate investment managers.  We'll do a real-world implementation of our algorithms using daily updated company financials and market data from a SQL database and with paper trading via the python API at Alpaca Brokerage.
+
+Derivative securities are securities whose values depend upon (are derived from) other securities.  We'll cover options and futures, which are the basic derivative securities.  Options and futures are important instruments for risk management and also for investing.  We'll explain what the securities are and how they trade, how they are used in risk management and investments, and how to value them.  
 
 #### Assignments and Grading
 
-Grades will be based on a project and a final exam.  They will be count equally towards the course grade.  The project is about quantitative equity investing.  The final exam will cover options and futures.  
+Grades will be based on weekly assignments and a project.  They will count equally towards the course grade.  
 
-#### Tentative Schedule
+The project requires conducting backtests of strategies and implementing a strategy on Alpaca.  The strategy that is implemented should be a 150/50 strategy, meaning 150% long and 50% short.  Each person should submit a pdf containing the following elements.  
 
-- Weeks 1-3: Factor investing 
-- Week 4: Introduction to options
-- Week 5: Option valuation
-- Week 6: Introduction to futures
-- Week 7: Risk management examples
+ - Descriptions of at least two strategies 
+ - Description of the backtest procedure
+ - Evaluation of backtest results for the two strategies 
+ - Explanation for why one of the strategies was chosen for implementation
+- Description of the trading process: how many stocks and when were trades made
+- Evaluation of the weekly returns of the Alpaca strategy (return compared to SPY over the same time period)
 
-#### Project Description
-
-The project requires conducting backtests of strategies and implementing a strategy on Alpaca.  The strategy that is implemented should be a 150/50 strategy, meaning 150% long and 50% short.  The strategy should be implemented on Alpaca no later than the opening of trading on ..., and the analysis should include results through at least the close of trading on ....  Each group should submit a pdf containing the following elements.  It is due on ....
-
- - Descriptions of at least two strategies and their results in backtests.
- - An explanation of a choice of a particular strategy to implement.
- - A description of the trading process:
-   - What were the target portfolio weights?
-   - How frequently were trades made?
-   - What were the criteria for trading out of positions?
-   - What were the criteria for putting on new positions?
-   - How often and to what extent were positions rebalanced to target weights?
-- An evaluation of the weekly returns of the Alpaca strategy.
-
+The submission is due by midnight on Monday, May 1.  At least three full weeks of Alpaca returns are required, so the first trades on Alpaca should be made no later than the week of April 3.
 
 #### Honor Code
 

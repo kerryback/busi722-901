@@ -1,0 +1,130 @@
+---
+title:  "Current Predictions"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+## Current feature values
+
+- Some of the GHZ predictors are updated daily in a SQL database on a Rice server.
+- We can use them to update predictions daily.
+- You must be on the Rice network to access the database.
+  - On campus on the Rice Owls wifi network (not Rice Visitor)
+  - Or using the [Rice VPN](https://oit.rice.edu/vpn-software)
+
+## Retrain, dump, and load
+
+- Retrain your model using all months in the CloudClusters database.
+- A scikit-learn model or pipeline can be saved with 
+
+. . .
+
+```.p
+from joblib import dump
+dump(pipe, "mypipe.joblib")
+```
+
+- Then it can later be loaded with
+
+. . .
+
+```.p
+from joblib import load
+pipe = load("mypipe.joblib")
+```
+
+## Get current features from Rice database
+
+. . .
+
+```{.p code-line-numbers="1-3|5-10|12-13"}
+import pandas as pd
+import pymssql
+from sqlalchemy import create_engine
+
+server = 'fs.rice.edu'
+database = 'stocks'
+username = 'stocks'
+password = '6LAZH1'
+string = "mssql+pymssql://" + username + ":" + password + "@" + server + "/" + database 
+conn = create_engine(string).connect()
+
+df = pd.read_sql("select * from ghz", conn)
+df = df.dropna().set_index("ticker")
+```
+
+## Transformations
+
+. . .
+
+Apply any cross-sectional transformations to the entire dataframe.  E.g., change
+
+. . .
+
+```.p
+def qt_df(d):
+    x = qt.fit_transform(d)
+    return pd.DataFrame(x, columns=d.columns, index=d.index)
+
+df[features] = df.groupby("date", group_keys=False)[features].apply(qt_df)
+```
+
+. . .
+
+to 
+
+. . .
+
+```.p
+df[features] = qt.fit_transform(df[features])
+```
+
+## Industries
+
+. . .
+
+Define industries using:
+
+. . .
+
+```{.p code-line-numbers="1-7|9-10"}
+inds = pd.read_csv("files/siccodes12.csv", index_col="industry")
+
+def industry(sic):
+  try:
+    return inds[(inds.start<=sic)&(sic<=inds.end)].index[0]
+  except:
+    return "Other"
+
+df["industry"] = df.siccd.map(industry)
+features.append("industry")
+```
+
+## Predict
+
+. . .
+
+Use the loaded model (or pipeline) and the current features (possibly including industry) to make predictions as
+
+. . .
+
+```.p
+predictions = pipe.predict(df[features])
+predictions = pd.Series(predictions, index=df.index)
+```

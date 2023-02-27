@@ -48,17 +48,18 @@
 
 ### 4. Backtesting and Trading
 
-[4a. Backtest Overview]
+[4a. Backtest Overview](4a-backtest-overview.html){target="_blank"}
 
-[4b. Today's Predictions]
 
-[4c. Submitting Trades]
+[4b. Detailed Backtest: Preprocessing](4a-backtest-overview.html){target="_blank"}
 
-[4d. Detailed Backtest: Preprocessing]
+[4c: Detailed Backtest: Looping](4a-backtest-overview.html){target="_blank"}
 
-[4e: Detailed Backtest: Looping]
+[4d: Detailed Backtest: Portfolio Returns](4a-backtest-overview.html){target="_blank"}
 
-[4f: Detailed Backtest: Portfolio Returns]
+[4e. Current Predictions](4e-current-predictions.html){target="_blank"}
+
+[4f. Submitting Trades](4f-submitting-trades.html){target="_blank"}
 
 :::
 
