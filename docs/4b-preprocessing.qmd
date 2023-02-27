@@ -54,7 +54,7 @@ qt = QuantileTransformer(output_distribution="normal")
 
 grouped = df.groupby("date", group_keys=False)
 
-df[features+["ret"]] = grouped[feature+["ret"]].apply(
+df[features+["ret"]] = grouped[features+["ret"]].apply(
   lambda d: 
     pd.DataFrame(
       qt.fit_transform(d),
@@ -73,12 +73,39 @@ df[features+["ret"]] = grouped[feature+["ret"]].apply(
 
 ##
 
-- The following creates a function to define the industry classification from a firm's SIC code.
+- The SIC code ranges for each industry are in siccodes12.csv, which was obtained from French's data library.
+
+. . .
+
 
 ```.p
-inds = pd.read_csv("files/siccodes12.csv", index_col="industry")
+inds = pd.read_csv(
+  "files/siccodes12.csv", 
+  index_col="industry"
+)
+inds
+```
+
+. . .
+
+```{python}
+import pandas as pd
+inds = pd.read_csv(
+  "files/siccodes12.csv", 
+  index_col="industry"
+)
+inds
+```
 
 
+##
+
+- To find the industry for a given SIC code, find the range in which the SIC code lies.
+- If it is not in any of the ranges, then the industry is "Other."
+
+. . .
+
+```.p
 def industry(sic):
   try:
     return inds[(inds.start<=sic)&(sic<=inds.end)].index[0]
@@ -90,13 +117,14 @@ def industry(sic):
 
 - We could loop over all observations and define the industry for each observation.
 - But it's faster to pull the unique SIC codes, define the industry for each SIC code, and then do a one-to-many merge into the dataframe of all observations.
-    
+
+. . .
+
 ```.p
-mapping = pd.DataFrame(
-  df.siccd.unique()
-)
-mapping["industry"] = mapping.siccd.map(industry)
-df = df.merge(mapping, on="siccd", how="left")
+codes = pd.Series({code: industry(code) for code in df.siccd.unique()})
+codes.name = "industry" 
+codes.index.name = "siccd"
+df = df.merge(codes, on="siccd")
 ```
 
 ## Polynomial features
@@ -104,15 +132,27 @@ df = df.merge(mapping, on="siccd", how="left")
 - Polynomial features with degree=2 adds products and squares of features.
 - Degree=3 adds `a*b*c`, `a**3`, etc.
 - Adding products facilitates including interactions between variables.
-- We can use polynomial features in a pipeline
+- We can use polynomial features in a pipeline.
 
 ## Pipeline
 
-- We'll create a pipeline that when fit will
-  - Add industry dummy variables
-  - Add polynomial features
-  - Fit the model to the enlarged feature set.
-- When we apply `pipe.predict`, it will enlarge the feature set in the same way and then predict using the trained model.
+- The advantage of putting transformations in a pipeline with a model is that the exact same transformations will be automatically applied to new data when predictions are made.
+- sklearn code is 
+
+. . .
+
+```.p
+from sklearn.pipeline import make_pipeline
+pipe = make_pipeline(transform1, transform2, ..., model)
+```
+
+
+
+##
+
+- We will illustrate with OneHotEncoder (to create dummies) and PolynomialFeatures
+- OneHotEncoder is only applied to the "industry" column, so we use make_column_transformer to apply different transformations to different columns.
+
 
 ##
 
@@ -121,14 +161,14 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import make_column_transformer
 from sklearn.pipeline import make_pipeline
 
-transform = make_column_transformer(
+transform1 = make_column_transformer(
     (OneHotEncoder(), ["industry"]),
     remainder="passthrough"
 )
-poly = PolynomialFeatures(degree=2, include_bias=False)
+transform2 = PolynomialFeatures(degree=2)
 pipe = make_pipeline(
-    transform,
-    poly,
+    transform1,
+    transform2,
     model
 )
 ```
