@@ -1,0 +1,137 @@
+---
+title:  "Backtest: Preprocessing"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+## Filter
+
+- We might want to drop stocks with prices below some threshold ("drop penny stocks").
+- We might want to drop stocks of certain sizes.
+  - Maybe fewer opportunities in large caps?
+  - Maybe drop microcaps because they're harder to trade?
+
+## Deal with missing data
+
+- We need to have valid data for all featurews in each observation.
+- Can drop NaNs.
+- Or can fill NaNs.
+  - Maybe use median or mean for the feature in that time period.
+  - Or median or mean for the feature for that industry in that time period.
+
+## Transform cross-sections
+
+- Rather than pooling across dates and scaling/transforming, it is probably better in our application to scale/transform each cross-section independently.
+- We can group by date and apply transformations to the groupby object.
+
+##
+
+- Let's look at an example: QuantileTransformer.
+- Quantile transformer maps quantiles of the sample distribution to quantiles of a target distribution (uniform or normal).
+- So, the transformed data has the target distribution.
+
+##
+
+```{.p code-line-numbers="1-2|4|6-13"}
+from sklearn.preprocessing import QuantileTransformer
+qt = QuantileTransformer(output_distribution="normal")
+
+grouped = df.groupby("date", group_keys=False)
+
+df[features+["ret"]] = grouped[feature+["ret"]].apply(
+  lambda d: 
+    pd.DataFrame(
+      qt.fit_transform(d),
+      columns=d.columns,
+      index=d.index
+    )     
+)
+```
+
+## Industries
+
+- Industry membership can be used in various ways.
+- One example is adding industry dummy variables as features.
+- There are various ways to define industries, most of which are based on SIC codes.
+- We'll look at the example of the Fama-French 12 industry classification.
+
+##
+
+- The following creates a function to define the industry classification from a firm's SIC code.
+
+```.p
+inds = pd.read_csv("files/siccodes12.csv", index_col="industry")
+
+
+def industry(sic):
+  try:
+    return inds[(inds.start<=sic)&(sic<=inds.end)].index[0]
+  except:
+    return "Other"
+```
+
+##
+
+- We could loop over all observations and define the industry for each observation.
+- But it's faster to pull the unique SIC codes, define the industry for each SIC code, and then do a one-to-many merge into the dataframe of all observations.
+    
+```.p
+mapping = pd.DataFrame(
+  df.siccd.unique()
+)
+mapping["industry"] = mapping.siccd.map(industry)
+df = df.merge(mapping, on="siccd", how="left")
+```
+
+## Polynomial features
+
+- Polynomial features with degree=2 adds products and squares of features.
+- Degree=3 adds `a*b*c`, `a**3`, etc.
+- Adding products facilitates including interactions between variables.
+- We can use polynomial features in a pipeline
+
+## Pipeline
+
+- We'll create a pipeline that when fit will
+  - Add industry dummy variables
+  - Add polynomial features
+  - Fit the model to the enlarged feature set.
+- When we apply `pipe.predict`, it will enlarge the feature set in the same way and then predict using the trained model.
+
+##
+
+```{.p code-line-numbers="1-3|5-8|9|10-14"}
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import make_column_transformer
+from sklearn.pipeline import make_pipeline
+
+transform = make_column_transformer(
+    (OneHotEncoder(), ["industry"]),
+    remainder="passthrough"
+)
+poly = PolynomialFeatures(degree=2, include_bias=False)
+pipe = make_pipeline(
+    transform,
+    poly,
+    model
+)
+```
+
+
+

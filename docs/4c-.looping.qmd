@@ -1,0 +1,51 @@
+---
+title:  "Backtest: Looping"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+## Preliminaries
+
+- Get data
+- Filter based on, e.g., size if desired
+- Define industries and industry dummies if desired
+- Transform features and ret in each cross-section
+- Define pipeline
+
+
+## Train and Predict Loop
+
+. . .
+
+For each date in a set of training dates,
+
+- Define training data = past
+- Train (possibly using cross-validation to choose hyperparameters)
+- Use the trained model to make predictions for each month until the next training date
+
+## portfolio returns
+
+- Use predictions to define portfolios at the beginning of each month. Example: best 100 and worst 100, equally weighted
+- Use actual (not transformed) stock returns to compute portfolio returns
+
+## Evaluate returns
+
+- Sharpe ratio, accumulation, drawdowns
+- Compared to beta-adjusted market benchmark: alpha, information ratio
+- Compare to market and other factors (e.g., Fama-French): alpha, information ratio, attribution analysis
