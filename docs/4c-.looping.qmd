@@ -20,32 +20,52 @@ format:
     incremental: true
 ---
 
-## Preliminaries
+## 
 
-- Get data
-- Filter based on, e.g., size if desired
-- Define industries and industry dummies if desired
-- Transform features and ret in each cross-section
-- Define pipeline
+- We'll stick with monthly portfolio formation.
+- At the beginning of each month, choose what seems to be the best portfolio (possibly including shorts) based on the data available at that time.
+- Hold the portfolio for a month and record the return.
+- Rinse and repeat.
 
+##
 
-## Train and Predict Loop
+- Example: Jan 1, 2020.  All data prior to 2020 is regarded as training data.
+- We can use it to train models, compare hyparameters, and compare models.
+- To compare hyperparameters and models and avoid over-fitting, we should split the training data into train and test, or cross validate.
+- To do extensive model and hyperparameter search at each month in a long time period will be slow.
+
+## 
+
+- Given limited computer resources, we will simplify.  We will just train each month, rather than train/validate/test each month.
+- To simplify further, we will just train some months and use the trained model to form predictions for several following months.  Example: train every five years:
 
 . . .
 
-For each date in a set of training dates,
+```{.p code-line-numbers="1|2|3-6|7"}
+df = df.set_index(["date", "ticker"])
+dates = ["2005-01", "2010-01", "2015-01", "2020-01", "3000-01"]
+for train_date, end_date in zip(dates[:-1], dates[1:]):
+  train at train_date
+  predict at train_date ... up to but not including end_date
+  store predictions in a (date, ticker) indexed series
+df["predict"] = predictions
+```
 
-- Define training data = past
-- Train (possibly using cross-validation to choose hyperparameters)
-- Use the trained model to make predictions for each month until the next training date
+## 
 
-## portfolio returns
-
-- Use predictions to define portfolios at the beginning of each month. Example: best 100 and worst 100, equally weighted
-- Use actual (not transformed) stock returns to compute portfolio returns
-
-## Evaluate returns
-
-- Sharpe ratio, accumulation, drawdowns
-- Compared to beta-adjusted market benchmark: alpha, information ratio
-- Compare to market and other factors (e.g., Fama-French): alpha, information ratio, attribution analysis
+```{.p code-line-numbers="1-2|3-6|7-9|10|11-12|13|14"}
+predictions = None
+for train_date, end_date in zip(dates[:-1], dates[1:]):
+  fltr1 = df.index.get_level_values("date") < train_date
+  fltr2 = df.index.get_level_values("date") < end_date
+  train = df[fltr1]
+  test = df[~fltr1 & fltr2]
+  Xtrain = train[features]
+  ytrain = train["ret"]
+  Xtest = test[features]
+  pipe.fit(Xtrain, ytrain)
+  pred = pipe.predict(Xtest)
+  pred = pd.Series(pred, index=test.index)
+  predictions = pd.concat((predictions, pred))
+df["predict"] = predictions
+```

@@ -20,32 +20,187 @@ format:
     incremental: true
 ---
 
-## Preliminaries
+##
 
-- Get data
-- Filter based on, e.g., size if desired
-- Define industries and industry dummies if desired
-- Transform features and ret in each cross-section
-- Define pipeline
+- Form a portfolio each month based on the predictions
+- How many stocks?  
+- Short sales?  150/50, 130/30, 100/100, 100/0?
+- How many stocks on long and short sides?
+- How to allocate money across stocks on long and short sides?
+  - Equal weight?
+  - Weight based on predictions?  More on best, etc.?
 
 
-## Train and Predict Loop
+## Portfolio returns
+
+- [Important]{style="color:tomato"}: before transforming return in preprocessing step, save actual return with a different name (or use different name for the transformed return).
+- Example: df["actual"] = df["ret"]
+
+
+##  Example: equally weighted
+. . .
+
+```{.p code-line-numbers="1-2|4-8|10-13"}
+numlong = 100
+numshort = 100
+
+df["rank_from_top"] = df.groupby("date").predict.rank(
+  method="first", 
+  ascending=False
+)
+df["long"] = df.rank_from_top <= numlong
+
+df["rank_from_bottom"] = df.groupby("date").predict.rank(
+  method="first"
+)
+df["short"] = df.rank_from_bottom <= numshort
+```
+
+
+## Monthly returns
 
 . . .
 
-For each date in a set of training dates,
+```.p
+df = df[df.index.get_level_values("date") >= dates[0]]
 
-- Define training data = past
-- Train (possibly using cross-validation to choose hyperparameters)
-- Use the trained model to make predictions for each month until the next training date
+long_ret = df.groupby("date").apply(
+    lambda d: (d.long*d.actual).mean()
+)
+short_ret = df.groupby("date").apply(
+    lambda d: (d.short*d.actual).mean()
+)
+```
 
-## portfolio returns
+## Example: 150/50
 
-- Use predictions to define portfolios at the beginning of each month. Example: best 100 and worst 100, equally weighted
-- Use actual (not transformed) stock returns to compute portfolio returns
+. . .
 
-## Evaluate returns
+```.p
+ret = 1.5*long_ret - 0.5*short_ret
+ret
+```
 
-- Sharpe ratio, accumulation, drawdowns
-- Compared to beta-adjusted market benchmark: alpha, information ratio
-- Compare to market and other factors (e.g., Fama-French): alpha, information ratio, attribution analysis
+. . .
+
+```{python}
+
+from sqlalchemy import create_engine
+import pymssql
+import pandas as pd
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import QuantileTransformer
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import make_column_transformer
+from sklearn.pipeline import make_pipeline
+from sklearn.linear_model import LinearRegression
+model = LinearRegression()
+
+transform1 = make_column_transformer(
+    (OneHotEncoder(), ["industry"]),
+    remainder="passthrough"
+)
+transform2 = PolynomialFeatures(degree=2)
+pipe = make_pipeline(
+    transform1,
+    transform2,
+    model
+)
+
+
+
+server = "mssql-82792-0.cloudclusters.net:16272"
+username = "user"
+password = "RiceOwls1912" 
+database = "ghz"
+string = "mssql+pymssql://" + username + ":" + password + "@" + server + "/" + database
+
+conn = create_engine(string).connect()
+
+df = pd.read_sql(
+    """
+    select ticker, date, ret, roeq, bm, siccd
+    from data
+    order by ticker, date
+    """, 
+    conn
+)
+
+df = df.dropna()
+df["actual"] = df.ret
+
+qt = QuantileTransformer(output_distribution="normal")
+
+grouped = df.groupby("date", group_keys=False)
+
+features = ["roeq", "bm"]
+
+df[features+["ret"]] = grouped[features+["ret"]].apply(
+  lambda d: 
+    pd.DataFrame(
+      qt.fit_transform(d),
+      columns=d.columns,
+      index=d.index
+    )     
+)
+
+inds = pd.read_csv(
+  "files/siccodes12.csv", 
+  index_col="industry"
+)
+
+def industry(sic):
+  try:
+    return inds[(inds.start<=sic)&(sic<=inds.end)].index[0]
+  except:
+    return "Other"
+
+codes = pd.Series({code: industry(code) for code in df.siccd.unique()})
+codes.name = "industry" 
+codes.index.name = "siccd"
+df = df.merge(codes, on="siccd")
+features.append("industry")
+
+df = df.set_index(["date", "ticker"])
+dates = ["2005-01", "2010-01", "2015-01", "2020-01", "3000-01"]
+predictions = None
+for train_date, end_date in zip(dates[:-1], dates[1:]):
+  fltr1 = df.index.get_level_values("date") < train_date
+  fltr2 = df.index.get_level_values("date") < end_date
+  train = df[fltr1]
+  test = df[~fltr1 & fltr2]
+  Xtrain = train[features]
+  ytrain = train["ret"]
+  Xtest = test[features]
+  pipe.fit(Xtrain, ytrain)
+  pred = pipe.predict(Xtest)
+  pred = pd.Series(pred, index=test.index)
+  predictions = pd.concat((predictions, pred))
+df["predict"] = predictions
+
+numlong = 100
+numshort = 100
+
+df["rank_from_top"] = df.groupby("date").predict.rank(
+  method="first", 
+  ascending=False
+)
+df["long"] = df.rank_from_top <= numlong
+
+df["rank_from_bottom"] = df.groupby("date").predict.rank(
+  method="first"
+)
+df["short"] = df.rank_from_bottom <= numshort
+
+df = df[df.index.get_level_values("date") >= dates[0]]
+
+long_ret = df.groupby("date").apply(
+    lambda d: (d.long*d.ret).mean()
+)
+short_ret = df.groupby("date").apply(
+    lambda d: (d.short*d.ret).mean()
+)
+ret = 1.5*long_ret - 0.5*short_ret
+ret
+```
