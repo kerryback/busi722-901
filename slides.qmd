@@ -59,7 +59,7 @@
 
 [4e. Current Predictions](4e-current-predictions.html){target="_blank"}
 
-[4f. Submitting Trades](4f-submitting-trades.html){target="_blank"}
+[4f. Trading](4f-trading.html){target="_blank"}
 
 :::
 

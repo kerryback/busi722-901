@@ -125,6 +125,5 @@ Use the loaded model (or pipeline) and the current features (possibly including 
 . . .
 
 ```.p
-predictions = pipe.predict(df[features])
-predictions = pd.Series(predictions, index=df.index)
+df["predict"] = pipe.predict(df[features])
 ```

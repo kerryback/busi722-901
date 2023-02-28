@@ -1,0 +1,100 @@
+---
+title:  "Trading"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+## Overview
+
+- Generate current predictions as in the previous session.
+- Produces a dataframe indexed by ticker with a "predict" column.
+- Add information from Alpaca
+  - tradable and shortable status
+  - bid and ask prices
+  - current positions
+- Also get account equity
+  
+## Example
+
+- 150/50
+- Longs = 100 best tradable stocks equally weighted
+- Shorts = 100 worst shortable stocks equally weighted
+- Target positions:
+  - Longs = 0.015 * equity / ask
+  - Shorts = 0.005 * equity / bid
+- Trades = target - current
+
+## Tradable and shortable 
+
+. . .
+
+```{.p code-line-numbers="1-4|6-12"}
+from alpaca.trading.client import TradingClient
+
+trading_client = TradingClient(KEY, SECRET_KEY, paper=True)
+assets = trading_client.get_all_assets()
+
+df["tradable"] = {
+  x.symbol: x.trabable for x in assets
+}
+
+df["shortable"] = {
+  x.symbol: x.shortable for x in assets
+}
+```
+
+## Quotes
+
+. . .
+
+```{.p code-line-numbers="1-8|10-11"}
+from alpaca.data import StockHistoricalDataClient
+from alpaca.data.requests import StockLatestQuoteRequest
+
+data_client = StockHistoricalDataClient(KEY, SECRET_KEY)
+params = StockLatestQuoteRequest(
+  symbol_or_symbols=df.index.to_list()
+)
+quotes = data_client.get_stock_latest_quote(params)
+
+df["ask"] = {x: quotes[x].ask_price for x in quotes}
+df["bid"] = {x: quotes[x].bid_price for x in quotes}
+```
+
+## Account equity and current positions
+
+. . .
+
+```{.p code-line-numbers="1-2|4-9"}
+account = trading_client.get_account()
+equity = float(account.equity)
+
+current = trading_client.get_all_positions()
+if len(current) > 0:
+  df["current"] = {x.symbol: int(x.qty) for x in current}
+  df["current"] = df.current.fillna(0)
+else:
+  df["current"] = 0
+```
+
+
+## Target positions
+
+
+
