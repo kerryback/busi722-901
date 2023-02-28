@@ -100,7 +100,7 @@ inds
 
 ##
 
-- To find the industry for a given SIC code, find the range in which the SIC code lies.
+- Find the range in which an SIC code lies to find its industry.
 - If it is not in any of the ranges, then the industry is "Other."
 
 . . .
@@ -136,7 +136,7 @@ df = df.merge(codes, on="siccd")
 
 ## Pipeline
 
-- The advantage of putting transformations in a pipeline with a model is that the exact same transformations will be automatically applied to new data when predictions are made.
+- The advantage of putting transformations in a pipeline is that the exact same transformations will be automatically applied to new data when predictions are made.
 - sklearn code is 
 
 . . .
@@ -144,6 +144,8 @@ df = df.merge(codes, on="siccd")
 ```.p
 from sklearn.pipeline import make_pipeline
 pipe = make_pipeline(transform1, transform2, ..., model)
+pipe.fit(...)
+pipe.predict(...)
 ```
 
 
