@@ -51,11 +51,11 @@
 [4a. Backtest Overview](4a-backtest-overview.html){target="_blank"}
 
 
-[4b. Backtest: Preprocessing](4a-backtest-overview.html){target="_blank"}
+[4b. Backtest: Preprocessing](4b-preprocessing.html){target="_blank"}
 
-[4c: Backtest: Looping](4a-backtest-overview.html){target="_blank"}
+[4c: Backtest: Looping](4c-looping.html){target="_blank"}
 
-[4d: Backtest: Portfolio Returns](4a-backtest-overview.html){target="_blank"}
+[4d: Backtest: Portfolio Returns](4d-portfolio-returns.html){target="_blank"}
 
 [4e. Current Predictions](4e-current-predictions.html){target="_blank"}
 

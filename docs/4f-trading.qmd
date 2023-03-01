@@ -22,13 +22,20 @@ format:
 
 ## Overview
 
-- Generate current predictions as in the previous session.
-- Produces a dataframe indexed by ticker with a "predict" column.
+- Generate current predictions as in the previous session to obtain a dataframe indexed by ticker with a "predict" column.
 - Add information from Alpaca
   - tradable and shortable status
   - bid and ask prices
   - current positions
-- Also get account equity
+
+##
+
+- For longs, choose the best tradable stocks.
+- For shorts, choose the worst shortable stocks.
+- To equal weight, set target weights = 1/numstocks.
+- Target $ values are equity * target weights.
+- Target shares are target $ values / prices.
+- Trades are target shares - current shares.
   
 ## Example
 
@@ -95,6 +102,19 @@ else:
 
 
 ## Target positions
+
+. . .
+
+```.p
+num_long = num_short = 100
+
+best = df[df.tradable].sort_values(by="predict").iloc[-num_long:]
+best["target"] = (equity / num_long) / best.ask
+
+worst = df[df.shortable].sort_values(by="predict").iloc[:num_short]
+worst["target"] = - (equity / num_short) / worst.bid
+```
+
 
 
 
