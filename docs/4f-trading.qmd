@@ -20,7 +20,7 @@ format:
     incremental: true
 ---
 
-## Overview
+## Steps
 
 - Generate current predictions as in the previous session to obtain a dataframe indexed by ticker with a "predict" column.
 - Add information from Alpaca
@@ -58,7 +58,7 @@ trading_client = TradingClient(KEY, SECRET_KEY, paper=True)
 assets = trading_client.get_all_assets()
 
 df["tradable"] = {
-  x.symbol: x.trabable for x in assets
+  x.symbol: x.tradable for x in assets
 }
 
 df["shortable"] = {
@@ -93,11 +93,11 @@ account = trading_client.get_account()
 equity = float(account.equity)
 
 current = trading_client.get_all_positions()
-if len(current) > 0:
-  df["current"] = {x.symbol: int(x.qty) for x in current}
-  df["current"] = df.current.fillna(0)
-else:
-  df["current"] = 0
+df["current"] = (
+    {x.symbol: int(x.qty) for x in current} 
+    if len(current)>0 else 0
+)
+df["current"] = df.current.fillna(0)
 ```
 
 
