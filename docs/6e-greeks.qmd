@@ -1,0 +1,37 @@
+---
+title:  "Greeks"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+##
+
+- Assume that changes in the value of an option are driven by changes in the stock price and the passage of time.
+- The value also depends on the strike, interest rate, and volatility, but suppose those things don't change.
+- Holding constant the strike, interest rate, and volatility, we can express the values of calls and puts as $C(S, t)$ and $P(S, t)$ where $S$ is the stock price and $t$ is the time to maturity.
+
+##  Black-Scholes example
+
+. . .
+
+```.p
+class BlackScholes():
+
+
+- 
