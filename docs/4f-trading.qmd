@@ -42,10 +42,11 @@ format:
 - 150/50
 - Longs = 100 best tradable stocks equally weighted
 - Shorts = 100 worst shortable stocks equally weighted
-- Target positions:
-  - Longs = 0.015 * equity / ask
-  - Shorts = 0.005 * equity / bid
-- Trades = target - current
+- Target dollars:
+  - Longs = 0.015 * equity 
+  - Shorts = 0.005 * equity 
+- Trades = (target dollars - current dollars) / ask or bid
+
 
 ## Tradable and shortable 
 
@@ -101,20 +102,97 @@ df["current"] = df.current.fillna(0)
 ```
 
 
-## Target positions
+## Ranking tradables and shortables
+
+. . .
+
+```{.p code-line-numbers="1-4|5-8|10-13|14"}
+df["predict"] = np.where(
+  df.tradable & (df.ask>0), 
+  df.predict, np.nan
+)
+df["rank_from_top"] = df.predict.rank(
+  ascending=False, 
+  method="first
+)
+
+df["predict"] = np.where(
+  df.shortable & (df.bid>0), 
+  df.predict, np.nan
+)
+df["rank_from_bottom"] = df.predict.rank(method="first")
+```
+
+## Longs and shorts
 
 . . .
 
 ```.p
-num_long = num_short = 100
+numlong = numshort = 100
 
-best = df[df.tradable].sort_values(by="predict").iloc[-num_long:]
-best["target"] = (equity / num_long) / best.ask
+df["long"] = df.rank_from_top <= numlong
+df["short"] = df.rank_from_bottom <= numshort
 
-worst = df[df.shortable].sort_values(by="predict").iloc[:num_short]
-worst["target"] = - (equity / num_short) / worst.bid
+print(f"number long is {len(df.long)}")
+print(f"number short is {len(df.short)}")
 ```
 
+## Targets and trades
 
+. . .
 
+```{.p code-line-numbers="1-4|5|6|7-10|11-12"}
+df["target_dollars"] = (
+  (1.5*equity/numlong)*df.long - 
+      (0.5*equity/numshort)*df.short
+)
+df["current_dollars"] = df.current*(df.bid+df.ask)/2
+df["trade_dollars"] = df.target_dollars - df.current_dollars
+df["trade"] = (
+    (df.trade_dollars>0)*df.trade_dollars/df.ask
+    + (df.trade_dollars<0)*df.trade_dollars/df.bid
+)
+df["trade"] = df.trade.fillna(0)
+df["trade"] = df.trade.astype(int)
+```
+
+## Submit buys
+
+. . .
+
+```{.p code-line-numbers="1|2-7|8-10"}
+  market_order_data = MarketOrderRequest(
+    symbol=tick,
+    qty=df.trade[tick],
+    side=OrderSide.BUY,
+    time_in_force=TimeInForce.DAY
+  )
+  market_order = trading_client.submit_order(
+    order_data=market_order_data
+  )
+```
+
+## Submit sells
+
+. . .
+
+```{.p code-line-numbers="1|2-7|8-10"}
+  market_order_data = MarketOrderRequest(
+    symbol=tick,
+    qty=df.trade[tick],
+    side=OrderSide.BUY,
+    time_in_force=TimeInForce.DAY
+  )
+  market_order = trading_client.submit_order(
+    order_data=market_order_data
+  )
+```
+
+## Save data
+
+- df
+- trades
+- new positions
+- account equity
+- See binder notebook for an example.
 
