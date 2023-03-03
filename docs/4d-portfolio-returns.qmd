@@ -65,14 +65,14 @@ df["short"] = df.rank_from_bottom <= numshort
 df = df[df.index.get_level_values("date") >= dates[0]]
 
 long_ret = df.groupby("date").apply(
-    lambda d: (d.long*d.actual).mean()
+    lambda d: (d.long*d.actual).sum() / numlong
 )
 short_ret = df.groupby("date").apply(
-    lambda d: (d.short*d.actual).mean()
+    lambda d: (d.short*d.actual).sum() / numshort
 )
 ```
 
-## Example: 150/50
+## Example 150/50
 
 . . .
 
@@ -196,10 +196,10 @@ df["short"] = df.rank_from_bottom <= numshort
 df = df[df.index.get_level_values("date") >= dates[0]]
 
 long_ret = df.groupby("date").apply(
-    lambda d: (d.long*d.ret).mean()
+    lambda d: (d.long*d.actual).sum() / numlong
 )
 short_ret = df.groupby("date").apply(
-    lambda d: (d.short*d.ret).mean()
+    lambda d: (d.short*d.actual).sum() / numshort
 )
 ret = 1.5*long_ret - 0.5*short_ret
 ret
