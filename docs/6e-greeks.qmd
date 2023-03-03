@@ -22,7 +22,12 @@ format:
 
 ##
 
-- Assume that changes in the value of an option are driven by changes in the stock price and the passage of time.
+- The value of an option depends on its strike, the stock price, the time to maturity, the stock volatility, and the interest rate.
+- For example, the Black-Scholes formulas are explicit formulas for the value of European options in terms of these inputs.
+- Derivatives of the option value with respect to the inputs are called Greeks.
+  - Derivative in the stock price is delta
+  - Second derivative in the stock price is gamma
+  - Assume that changes in the value of an option are driven by changes in the stock price and the passage of time.
 - The value also depends on the strike, interest rate, and volatility, but suppose those things don't change.
 - Holding constant the strike, interest rate, and volatility, we can express the values of calls and puts as $C(S, t)$ and $P(S, t)$ where $S$ is the stock price and $t$ is the time to maturity.
 
