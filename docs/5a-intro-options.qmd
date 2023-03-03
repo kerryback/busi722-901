@@ -22,59 +22,13 @@ format:
 
 ## 
 - A financial option is a right to buy or sell  a financial security.
-    
-- The right trades separately from the (underlying) security and usually even on a different exchange.
-    
-- The rights are not (usually) issued by the companies who issue the underlying securities.  
-  - Instead, the rights are created when someone buys one from someone else.  
-  - Open interest is the number that exist at any time.
+  - A call option is the right to buy an asset at a pre-specified price.
 
-##  
+  - A put option is the right to sell an asset at a pre-specified price.
 
-- A call option is the right to buy an asset at a pre-specified price.
-
-- A put option is the right to sell an asset at a pre-specified price.
-
-- The pre-specified price is called the exercise price or strike price.  
+  - The pre-specified price is called the exercise price or strike price.  
 
 ##
-
-- An option is valid for a specified period of time, after which it expires.
-  - Most financial options can be exercised at any time the owner wishes, prior to expiration.  Such options are called American.
-  - There are some options that can only be exercised on the expiration date.  They are called European.  Both types are traded on both continents.
-
-##
-
-- If you've bought an option, you are "long.""  If you've sold an option, you are "short."
-- After a trade occurs, the option clearinghouse steps in the middle and becomes the counterparty to both sides.
-  - The long party has an option to buy from or sell to the clearinghouse at the strike.
-  - The short party has an obligation to sell to or buy from the clearinghouse at the strike.
-
-##
-
-- Usually buyers sell to close their position rather than exercising.
-- And sellers buy to close their positions rather than being obliged to buy/sell.
-- Open interest rises when a contract first begins to trade, then eventually declines as people trade to close their positions.
-
-## Open Interest Example
-
-- When a contract is first opened for trading, open interest is zero.
-- Suppose Andy buys a contract from Chloe, and Brooke buys a contract from David.
-  - Longs = Andy and Brooke
-  - Shorts = Chloe and David
-  - Open interest = 2
-
-## 
-
-- Suppose Andy then sells a contract to David.
-  - Andy: long + short = no position
-  - David: short + long = no position
-  - Longs = Brooke
-  - Shorts = Chloe
-  - Open interest = 1
-    
-
-## Hedging, speculation, and income
 
 - You pay upfront to acquire an option.  
   - The amount you pay is called the option premium.  
@@ -83,16 +37,22 @@ format:
 - Sellers of options need to have sufficient equity in their accounts (margin).  A buyer needs enough cash to pay the premium but no more (like buying a stock).
 
 
+##
+
+- If you've bought an option, you are "long.""  If you've sold an option, you are "short."
+- After a trade occurs, the option clearinghouse steps in the middle and becomes the counterparty to both sides.
+  - The long party has an option to buy from or sell to the clearinghouse at the strike.
+  - The short party has an obligation to sell to or buy from the clearinghouse at the strike.
+
       
-## Moneyness
+## 
 
 - Borrowing language from horse racing, we say a call is
   - in the money if the underlying price is above the strike,
   - at the money if the underlying price equals the strike
   - out of the money if the underlying price is below the strike
 - The reverse for puts
- 
-- Also, "deep in the money" and "deep out of the money"
+
 
 ## Value of a call at maturity
 
@@ -188,5 +148,35 @@ fig.update_layout(
 fig.show()
 ```
 
+
+##
+
+- An option is valid for a specified period of time, after which it expires.
+  - Most financial options can be exercised at any time the owner wishes, prior to expiration.  Such options are called American.
+  - There are some options that can only be exercised on the expiration date.  They are called European.  Both types are traded on both continents.
+
+##
+
+- Usually buyers sell to close their position rather than exercising.
+- And sellers buy to close their positions rather than being obliged to buy/sell.
+- Open interest rises when a contract first begins to trade, then eventually declines as people trade to close their positions.
+
+## Open Interest Example
+
+- When a contract is first opened for trading, open interest is zero.
+- Suppose Andy buys a contract from Chloe, and Brooke buys a contract from David.
+  - Longs = Andy and Brooke
+  - Shorts = Chloe and David
+  - Open interest = 2
+
+## 
+
+- Suppose Andy then sells a contract to David.
+  - Andy: long + short = no position
+  - David: short + long = no position
+  - Longs = Brooke
+  - Shorts = Chloe
+  - Open interest = 1
+    
 
 
