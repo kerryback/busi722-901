@@ -33,9 +33,10 @@ format:
 - For longs, choose the best tradable stocks.
 - For shorts, choose the worst shortable stocks.
 - To equal weight, set target weights = 1/numstocks.
-- Target $ values are equity * target weights.
-- Target shares are target $ values / prices.
-- Trades are target shares - current shares.
+- To compute trades:
+  - target $ value = equity * target weight
+  - target shares = target $ value / price
+  - trade = target shares - current shares
   
 ## Example
 
@@ -67,7 +68,7 @@ df["shortable"] = {
 }
 ```
 
-## Quotes
+## Bid and ask prices
 
 . . .
 
@@ -156,31 +157,16 @@ df["trade"] = df.trade.fillna(0)
 df["trade"] = df.trade.astype(int)
 ```
 
-## Submit buys
+## Submit trades
 
 . . .
 
 ```{.p code-line-numbers="1|2-7|8-10"}
+for tick in df[df.trade!=0].index:
   market_order_data = MarketOrderRequest(
     symbol=tick,
-    qty=df.trade[tick],
-    side=OrderSide.BUY,
-    time_in_force=TimeInForce.DAY
-  )
-  market_order = trading_client.submit_order(
-    order_data=market_order_data
-  )
-```
-
-## Submit sells
-
-. . .
-
-```{.p code-line-numbers="1|2-7|8-10"}
-  market_order_data = MarketOrderRequest(
-    symbol=tick,
-    qty=df.trade[tick],
-    side=OrderSide.BUY,
+    qty=abs(df.trade[tick]),
+    side=OrderSide.BUY if df.trade>0 else OrderSide.SELL,
     time_in_force=TimeInForce.DAY
   )
   market_order = trading_client.submit_order(
@@ -190,9 +176,6 @@ df["trade"] = df.trade.astype(int)
 
 ## Save data
 
-- df
-- trades
-- new positions
-- account equity
+- predictions, trades, new positions and account equity
 - See binder notebook for an example.
 
