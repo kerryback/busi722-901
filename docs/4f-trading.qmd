@@ -32,7 +32,7 @@ format:
 
 - For longs, choose the best tradable stocks.
 - For shorts, choose the worst shortable stocks.
-- To equal weight, set target weights = 1/numstocks.
+- To equal weight, set target weights = multiple/numstocks.
 - To compute trades:
   - target $ value = equity * target weight
   - target shares = target $ value / price
