@@ -37,7 +37,7 @@ format:
 - Example: df["actual"] = df["ret"]
 
 
-##  Example: equally weighted
+##  Longs and shorts
 . . .
 
 ```{.p code-line-numbers="1-2|4-8|10-13"}
@@ -57,7 +57,7 @@ df["short"] = df.rank_from_bottom <= numshort
 ```
 
 
-## Monthly returns
+## Equally weighted Monthly returns
 
 . . .
 

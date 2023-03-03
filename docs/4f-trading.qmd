@@ -103,7 +103,7 @@ df["current"] = df.current.fillna(0)
 ```
 
 
-## Ranking tradables and shortables
+## Ranking tradable and shortable stocks
 
 . . .
 
@@ -114,7 +114,7 @@ df["predict"] = np.where(
 )
 df["rank_from_top"] = df.predict.rank(
   ascending=False, 
-  method="first
+  method="first"
 )
 
 df["predict"] = np.where(
@@ -161,7 +161,10 @@ df["trade"] = df.trade.astype(int)
 
 . . .
 
-```{.p code-line-numbers="1|2-7|8-10"}
+```{.p code-line-numbers="1-2|4|5-10|11-13"}
+from alpaca.trading.requests import MarketOrderRequest
+from alpaca.trading.enums import OrderSide, TimeInForce
+
 for tick in df[df.trade!=0].index:
   market_order_data = MarketOrderRequest(
     symbol=tick,
@@ -176,6 +179,6 @@ for tick in df[df.trade!=0].index:
 
 ## Save data
 
-- predictions, trades, new positions and account equity
-- See binder notebook for an example.
+- trades, new positions, and account equity
+- See 4f notebook in binder for an example.
 
