@@ -26,7 +26,9 @@ format:
 
   - A put option is the right to sell an asset at a pre-specified price.
 
-  - The pre-specified price is called the exercise price or strike price.  
+  - The pre-specified price is called the exercise price or strike price. 
+
+- For concreteness, consider an option on a stock. 
 
 ##
 
@@ -48,9 +50,9 @@ format:
 ## 
 
 - Borrowing language from horse racing, we say a call is
-  - in the money if the underlying price is above the strike,
-  - at the money if the underlying price equals the strike
-  - out of the money if the underlying price is below the strike
+  - in the money if the stock price is above the strike,
+  - at the money if the stock price equals the strike
+  - out of the money if the stock price is below the strike
 - The reverse for puts
 
 
@@ -60,8 +62,8 @@ format:
 
 . . .
 
-$$\begin{cases} 0 & \text{if underlying < strike}\\
- \text{underlying} - \text{strike} & \text{if underlying > strike}
+$$\begin{cases} 0 & \text{if stock price < strike}\\
+ \text{stock price} - \text{strike} & \text{if stock price > strike}
  \end{cases}
  $$
 
@@ -69,7 +71,7 @@ $$\begin{cases} 0 & \text{if underlying < strike}\\
 
 . . .
 
-$$\max(\text{underlying price}-\text{strike}, 0)$$
+$$\max(\text{stock price}-\text{strike}, 0)$$
 
 ##
 
@@ -83,16 +85,16 @@ import numpy as np
 import plotly.express as px
 
 strike = 50
-underlying = np.linspace(0, 100, 100)
+underlying = np.linspace(0, 100, 101)
 call = np.maximum(underlying-strike, 0)
 
 fig = px.line(x=underlying, y=call)
 fig.update_traces(
-    hovertemplate="Underlying = $%{x:.2f}<br>Call = $%{y:.2f}<extra></extra>"
+    hovertemplate="stock price = $%{x:.2f}<br>Call = $%{y:.2f}<extra></extra>"
 )
 fig.update_layout(
     title = "Long Call Option",
-    xaxis_title="Underlying Price",
+    xaxis_title="Stok Price at Option Maturity",
     yaxis_title="Call Option Value",
     xaxis_title_font = {"size":20},
     yaxis_title_font =  {"size":20},
@@ -107,8 +109,8 @@ fig.show()
 
 . . .
 
-$$\begin{cases} \text{strike} - \text{underlying} & \text{if underlying < strike}\\
- 0 & \text{if underlying > strike}
+$$\begin{cases} \text{strike} - \text{stock price} & \text{if stock price < strike}\\
+ 0 & \text{if stock price > strike}
  \end{cases}
 $$
 
@@ -116,7 +118,7 @@ $$
 
 . . .
 
-$$\max(\text{strike}-\text{underlying price}, 0)$$
+$$\max(\text{strike}-\text{stock price}, 0)$$
 
 ## 
 
@@ -130,16 +132,16 @@ import numpy as np
 import plotly.express as px
 
 strike = 50
-underlying = np.linspace(0, 100, 100)
+underlying = np.linspace(0, 100, 101)
 put = np.maximum(strike-underlying, 0)
 
 fig = px.line(x=underlying, y=put)
 fig.update_traces(
-    hovertemplate="Underlying = $%{x:.2f}<br>Put = $%{y:.2f}<extra></extra>"
+    hovertemplate="stock price = $%{x:.2f}<br>put = $%{y:.2f}<extra></extra>"
 )
 fig.update_layout(
     title = "Long Put Option",
-    xaxis_title="Underlying Price",
+    xaxis_title="Stock Price at Option Maturity",
     yaxis_title="Put Option Value",
     xaxis_title_font = {"size":20},
     yaxis_title_font =  {"size":20},
@@ -149,13 +151,13 @@ fig.show()
 ```
 
 
-##
+## European and American
 
 - An option is valid for a specified period of time, after which it expires.
   - Most financial options can be exercised at any time the owner wishes, prior to expiration.  Such options are called American.
   - There are some options that can only be exercised on the expiration date.  They are called European.  Both types are traded on both continents.
 
-##
+## Open Interest and Trading out of Positions
 
 - Usually buyers sell to close their position rather than exercising.
 - And sellers buy to close their positions rather than being obliged to buy/sell.

@@ -51,14 +51,6 @@ $$ \text{call price} > \text{stock price}  - \text{PV of strike}$$
 
 $$ \text{call price} > \text{stock price}  - \text{strike}$$
 
-## Possible counter-argument
-
-- You own a call option and think the stock will fall.  Should you exercise the call and sell the stock before it falls?
-- No, instead: keep the option alive and short the stock.
-  - Stock goes down $\Rightarrow$ cover short at market (cheaper than strike)
-  - Stock goes up $\Rightarrow$ cover short by exercising call 
-  
-- This assumes you can short.  It does not apply to executive stock options, which often should be exercised early.
 
 ## Early exercise of puts is often optimal
 
