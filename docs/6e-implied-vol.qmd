@@ -1,0 +1,176 @@
+---
+title:  "Implied Volatility"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+##
+- The inputs to the Black-Scholes formulas are: strike, time to maturity, interest rate, and volatility (and dividends).  
+- All of these are known except volatility (and dividends, which is easy to estimate).
+- We could input historical volatility, but volatility changes over time and the market is forward looking.
+- A standard thing is to infer volatility from market prices of actively traded options.  This is called the implied volatility.
+
+## 
+
+```.p
+from scipy.optimize import fsolve
+def callIV(C, S, K, T, r, q=0):
+  return fsolve(
+    lambda x: C - callBS(S, K, T, x, r, q),
+    x0=0.3
+  )
+
+C = 15
+S = 100
+K = 100
+T = 1
+r = 0.05
+iv = callIV(C, S, K, T, r)
+iv[0]
+```
+
+. . .
+
+
+```{python}
+from scipy.optimize import fsolve
+import numpy as np
+from scipy.stats import norm
+
+def callBS(S, K, T, sigma, r, q=0):
+    d1 = np.log(S/K) + (r-q+0.5*sigma**2)*T
+    d1 /= sigma*np.sqrt(T)
+    d2 = d1 - sigma*np.sqrt(T)
+    N1 = norm.cdf(d1)
+    N2 = norm.cdf(d2)
+    return np.exp(-q*T)*S*N1 - np.exp(-r*T)*K*N2
+
+def callIV(C, S, K, T, r, q=0):
+  return fsolve(
+    lambda x: C - callBS(S, K, T, x, r, q),
+    x0=0.3
+  )
+
+C = 15
+S = 100
+K = 100
+T = 1
+r = 0.05
+iv = callIV(C, S, K, T, r)
+iv[0]
+```
+
+##
+
+```{python}
+import yfinance as yf
+tick = yf.Ticker('aapl')
+price = tick.history()["Close"].iloc[-1].round(2)
+rounded = int(5*round(price/5, 0))
+```
+
+## AAPL Call Data on 3/6/2023
+
+- last AAPL price:
+
+. . .
+
+```{python}
+price
+```
+
+- April 21, 2023 calls
+
+. . .
+
+```{python}
+import pandas as pd
+calls = tick.option_chain("2023-04-21").calls
+calls = calls.set_index("strike")
+puts = tick.option_chain("2023-04-21").puts
+puts = puts.set_index("strike")
+calls = calls.loc[rounded-15:rounded+15]
+ser1 = calls["impliedVolatility"]
+ser2 = puts["impliedVolatility"].loc[rounded-15:rounded+15]
+df = pd.concat((ser1, ser2), axis=1)
+df.columns = ["Call IV", "Put IV"]
+calls
+```
+
+## AAPL Call and Put Implied Vols
+
+. . .
+
+```{python}
+df
+```
+
+
+## TSLA Call and Put Implied Vols {.smaller}
+
+. . .
+
+```{python}
+tick = yf.Ticker('tsla')
+price = tick.history()["Close"].iloc[-1].round(2)
+rounded = int(5*round(price/5, 0))
+calls = tick.option_chain("2023-04-21").calls
+calls = calls.set_index("strike")
+puts = tick.option_chain("2023-04-21").puts
+puts = puts.set_index("strike")
+calls = calls.loc[rounded-15:rounded+15]
+ser1 = calls["impliedVolatility"]
+ser2 = puts["impliedVolatility"].loc[rounded-15:rounded+15]
+df = pd.concat((ser1, ser2), axis=1)
+df.columns = ["Call IV", "Put IV"]
+df
+```
+
+## VIX (Volatility Index)
+
+- average of implied vols of out-of-the-money 1-month-to-maturity S&P 500 put and call options
+
+. . .
+
+```{python}
+from pandas_datareader import DataReader as pdr
+vix = pdr('vixcls', 'fred', start=2000).reset_index()
+import plotly.graph_objects as go
+
+trace = go.Scatter(
+    x = vix.DATE,
+    y=vix.vixcls/100,
+    hovertemplate = "%{x}<br>%{y:.1%}<extra></extra>"
+)
+fig = go.Figure(trace)
+fig.update_layout(
+    xaxis_title="Date",
+    yaxis_title="VIX",
+    xaxis_title_font = {"size":18},
+    yaxis_title_font =  {"size":18},
+    template="plotly_white",
+    yaxis_tickformat=".0%",
+    height=400,  
+    width=1000,
+    showlegend=False
+)
+fig.show()
+
+
+```

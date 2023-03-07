@@ -1,0 +1,231 @@
+---
+title:  "Option Greeks"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+##
+
+- The value of an option depends on its strike, the stock price, the time to maturity, the stock volatility, and the interest rate.
+- For example, the Black-Scholes formulas are formulas for the value of European options in terms of these inputs.
+- Derivatives of the option value with respect to the inputs are called Greeks.
+
+## 
+
+- Derivative in the stock price is delta ($\Delta$)
+- Second derivative in the stock price is gamma ($\Gamma$)
+- Derivative in interest rate is rho ($\tho$)
+- Minus derivative in time to maturity is theta ($\Theta$)
+- Derivative in volatility is vega ($\mathcal{V}$)
+
+## Delta
+
+- Definition of delta mirrors binomial model:
+
+. . .
+
+$$\frac{\text{difference in option values}}{\text{difference in stock values}}$$
+
+- Black-Scholes call delta = $e^{-qT}N(d_1)$
+- Black-Scholes put delta = $-e^{-qT}N(-d_1)$
+
+
+
+## Replication and hedging
+
+- Delta is a replication ratio.  The replicating portfolio is a hedge for someone who has written the option.
+- To replicate a call, 
+  - invest value of call and buy delta shares of the stock, using your investment and borrowing the rest
+- To replicate a put,
+  - invest value of put and short $|\text{delta}|$ shares, investing proceeds plus your investment at risk-free rate
+
+
+## Call option and replicating portfolio
+
+. . .
+
+```{python}
+import numpy as np
+from scipy.stats import norm
+
+def callBS(S, K, T, sigma, r, q=0):
+    if S == 0:
+        return 0
+    else:
+        d1 = np.log(S/K) + (r-q+0.5*sigma**2)*T
+        d1 /= sigma*np.sqrt(T)
+        d2 = d1 - sigma*np.sqrt(T)
+        N1 = norm.cdf(d1)
+        N2 = norm.cdf(d2)
+        return np.exp(-q*T)*S*N1 - np.exp(-r*T)*K*N2
+
+
+def callBS_delta(S, K, T, sigma, r, q=0):
+    if S==0:
+        return 0
+    else:
+        d1 = np.log(S/K) + (r-q+0.5*sigma**2)*T
+        d1 /= sigma*np.sqrt(T)
+        N1 = norm.cdf(d1)
+        return np.exp(-q*T)*N1 
+
+K = 50
+T = 1
+sigma = 0.3
+r = 0.05
+
+grid = np.linspace(0,101)
+call = [callBS(x, K, T, sigma, r) for x in grid]
+delta = callBS_delta(60, K, T, sigma, r)
+lev = delta*60 - callBS(60, K, T, sigma, r)
+
+import plotly.graph_objects as go
+
+trace1 = go.Scatter(
+  x = grid,
+  y = call,
+  mode="lines",
+  name = "call",
+  hovertemplate="stock price = $%{x:.2f}<br>call value = $%{y:.2f}<extra></extra>"
+)
+
+trace2 = go.Scatter(
+  x = grid,
+  y = [delta*x-lev for x in grid],
+  mode="lines",
+  name = "delta shares levered",
+  hovertemplate="stock price = $%{x:.2f}<br>delta shares levered = $%{y:.2f}<extra></extra>"
+
+)
+
+fig = go.Figure()
+fig.add_trace(trace1)
+fig.add_trace(trace2)
+fig.update_layout(
+    xaxis_title="Stock Price",
+    yaxis_title="",
+    xaxis_title_font = {"size":18},
+    template="plotly_white",
+    xaxis_tickprefix="$",
+    yaxis_tickprefix="$",
+    height=600,  
+    width=1000,
+    legend=dict(
+      x = 0.01,
+      y = 0.99
+    ),
+    font_size=16
+)
+fig.show()
+```
+
+## Put option and replicating portfolio
+
+. . .
+
+```{python}
+import numpy as np
+from scipy.stats import norm
+
+def putBS(S, K, T, sigma, r, q=0):
+    if S == 0:
+        return np.exp(-r*T)*K
+    else:
+        d1 = np.log(S/K) + (r-q+0.5*sigma**2)*T
+        d1 /= sigma*np.sqrt(T)
+        d2 = d1 - sigma*np.sqrt(T)
+        N1 = norm.cdf(-d1)
+        N2 = norm.cdf(-d2)
+        return np.exp(-r*T)*K*N2 - np.exp(-q*T)*S*N1
+
+
+def putBS_delta(S, K, T, sigma, r, q=0):
+    if S==0:
+        return 0
+    else:
+        d1 = np.log(S/K) + (r-q+0.5*sigma**2)*T
+        d1 /= sigma*np.sqrt(T)
+        N1 = norm.cdf(-d1)
+        return -np.exp(-q*T)*N1 
+
+K = 50
+T = 1
+sigma = 0.3
+r = 0.05
+
+grid = np.linspace(0,101)
+put = [putBS(x, K, T, sigma, r) for x in grid]
+delta = putBS_delta(60, K, T, sigma, r)
+cash = - delta*60 + putBS(60, K, T, sigma, r)
+
+import plotly.graph_objects as go
+
+trace1 = go.Scatter(
+  x = grid,
+  y = put,
+  mode="lines",
+  name = "call",
+  hovertemplate="stock price = $%{x:.2f}<br>put value = $%{y:.2f}<extra></extra>"
+)
+
+trace2 = go.Scatter(
+  x = grid,
+  y = [cash + delta*x for x in grid],
+  mode="lines",
+  name = "cash and delta shares",
+  hovertemplate="stock price = $%{x:.2f}<br>cash and delta shares = $%{y:.2f}<extra></extra>"
+
+)
+
+fig = go.Figure()
+fig.add_trace(trace1)
+fig.add_trace(trace2)
+fig.update_layout(
+    xaxis_title="Stock Price",
+    yaxis_title="",
+    xaxis_title_font = {"size":18},
+    template="plotly_white",
+    xaxis_tickprefix="$",
+    yaxis_tickprefix="$",
+    height=600,  
+    width=1000,
+    legend=dict(
+      x = 0.99,
+      y = 0.99
+    ),
+    font_size=16
+)
+fig.show()
+```
+
+## Gamma
+
+- Gamma is how much the delta changes when the stock price changes.
+- Notice option value lies above replicating portfolio.  This is called convexity.
+- More convexity $\Leftrightarrow$ higher gamma
+- If you write an option and hedge with the replicating portfolio, you will be "short gamma" or "short convexity."  You will lose if there is a big change in the stock price.
+- Offsetting this possibility is the fact that you win from time decay (theta).
+
+## Theta and vega
+
+- Theta $<0$ because option values fall as time passes, holding everything else constant.
+- Vega $>0$ because option values rise when volatility increases
+- Volatility risk (exposure to changing volatility) is very important in options trading, though volatility is assumed to be constant in the Black-Scholes model.
+
+

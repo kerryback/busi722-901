@@ -90,9 +90,9 @@
 
 [6d. Black-Scholes](6d-black-scholes.html){target="_blank"}
 
-[6e. Deltas in Black-Scholes](4b-option-premia.html){target="_blank"}
+[6e. Implied Volatility](6e-implied-vol.html){target="_blank"}
 
-[6f. Implied Volatilities](4b-option-premia.html){target="_blank"}
+[6f. Option Greeks](6f-greeks.html){target="_blank"}
 
 ### 7. Futures
 
