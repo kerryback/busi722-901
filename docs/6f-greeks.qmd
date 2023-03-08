@@ -30,7 +30,7 @@ format:
 
 - Derivative in the stock price is delta ($\Delta$)
 - Second derivative in the stock price is gamma ($\Gamma$)
-- Derivative in interest rate is rho ($\tho$)
+- Derivative in interest rate is rho ($\rho$)
 - Minus derivative in time to maturity is theta ($\Theta$)
 - Derivative in volatility is vega ($\mathcal{V}$)
 
@@ -40,7 +40,7 @@ format:
 
 . . .
 
-$$\frac{\text{difference in option values}}{\text{difference in stock values}}$$
+$$\frac{\text{difference in option values}}{\text{difference in stock values}} \sim \frac{d \,\text{option value}}{d \,\text{stock value}}$$
 
 - Black-Scholes call delta = $e^{-qT}N(d_1)$
 - Black-Scholes put delta = $-e^{-qT}N(-d_1)$
@@ -217,8 +217,7 @@ fig.show()
 ## Gamma
 
 - Gamma is how much the delta changes when the stock price changes.
-- Notice option value lies above replicating portfolio.  This is called convexity.
-- More convexity $\Leftrightarrow$ higher gamma
+- Notice option value lies above replicating portfolio.  This is called convexity. More convexity $\Leftrightarrow$ higher gamma.
 - If you write an option and hedge with the replicating portfolio, you will be "short gamma" or "short convexity."  You will lose if there is a big change in the stock price.
 - Offsetting this possibility is the fact that you win from time decay (theta).
 

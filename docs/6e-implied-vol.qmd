@@ -113,7 +113,7 @@ df.columns = ["Call IV", "Put IV"]
 calls
 ```
 
-## AAPL Call and Put Implied Vols
+## AAPL Call and Put Implied Vols {.smaller}
 
 . . .
 
