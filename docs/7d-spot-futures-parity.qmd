@@ -1,0 +1,167 @@
+---
+title:  "Spot-Futures Parity"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+## Arbitrage and spot-futures parity
+
+- In last session, looked at implications of the expectations hypothesis for the forward curve.
+- In this session, we look at the implications of arbitrage.
+- Question is: how do futures prices relate to spot (contango or backwardation) and why?
+- Link between spot and futures is called spot-futures parity.
+
+## Overview of arbitrage
+
+- Suppose the forward curve is extremely steep.  At some point, it pays to buy spot and sell futures.
+- Suppose the forward curve is extremely downwards sloping.
+  - If you can short sell the spot, you can sell spot and buy futures.  Accept delivery on the futures to cover the short spot position.
+  - Or people who are long spot, could sell it and buy futures to restore their long position.
+
+## Synthetic long futures and steep forward curves
+
+- On a long futures (ignoring daily settlement), you pay in the future and accept delivery in the future.
+- To duplicate this, you can borrow money, buy spot and hold.
+- At the future date, you will have the asset (like accepting delivery) and owe money (like paying in the future).
+- If the synthetic futures is cheaper, you should create it and sell the futures contract.
+
+##
+
+- The synthetic futures is cheaper when the futures price is sufficiently high (forward curve is sufficiently steep).
+- The possibility of arbitrage rules out extremely steep forward curves.
+
+## Synthetic short futures and downward sloping forward curves
+
+- On a short futures (ignoring daily settlement), you deliver in the future and get paid then.
+- To duplicate this, you can short the spot and invest the proceeds in T-bills.
+- At the future date, you will owe the asset (like having to deliver) and have cash (like being paid in the future).
+- If the synthetic short futures generates more cash, then you should create it and buy the futurex contract.
+
+##
+
+- The synthetic short futures generates more cash when the futures price is sufficiently low (forward curve is sufficiently downward sloping).
+- The possibility of arbitrage rules out extremely downward sloping forward curves (when you can short the asset).
+
+## Cost of carry
+
+
+## Understanding S&P 500 Futures
+
+- Buying stocks ties up money but provides dividends.
+- Better to buy spot (at equal prices) if dividends > interest.  This implies backwardation.
+- Better to buy futures (at equal prices) if interest > dividends.  This implies contango.
+ 
+## Currency Futures
+
+- The advantage of owning a foreign currency now is that you can invest it and earn the foreign interest rate.
+    
+- The cost of buying foreign currency now is that it ties up dollars and you lose the dollar interest rate.
+    
+- Whether it is better to buy now or buy later depends on which interest rate is higher.
+    
+- U.S. interest rate higher $\Rightarrow$ contango (like gold)
+    
+- Foreign interest rate higher $\Rightarrow$ backwardation.
+    
+## Euro Forward Curve
+    
+![](images/fig_euro.png)
+    
+    Euro forward curve on 1-24-2022
+
+
+## Peso Forward Curve
+    
+![](images/fig_peso.png)
+    
+    Mexican peso forward curve on 1-24-2022
+
+## Commodities
+
+- Commodities (energy, agricultural) are sometimes in backwardation and sometimes in contango.
+
+- Backwardation occurs 
+  - when there is nothing left in storage to sell now to cause spot prices to come down relative to futures prices.
+  - or people are hoarding.  For example, corn (and others) moved into backwardation during the pandemic.
+
+##
+
+- If a commodity is seasonal and storage is costly, futures may have seasonal spikes (e.g., natural gas and gasoline).
+    
+
+
+## Crude Oil Forward Curves
+    
+![](images/fig_crude.png)
+    
+    Backwardation and contango in 2020
+
+
+## Natural Gas
+    
+![](images/fig_ng.png)
+    
+    Natural gas forward curve on 1-24-2022
+
+
+## Gasoline
+    
+![](images/fig_rbob.png)
+    
+    Gasoline forward curve on 1-24-2022
+
+
+
+
+
+## Understanding Gold Futures
+
+- There is lots of gold in storage.  If the futures is less than the spot price, people storing gold should sell spot and buy futures.  
+  - They earn the difference between the prices plus interest that they can earn on the cash from selling spot.
+- The story is the same if the futures price at a long maturity is less than the futures price at a shorter maturity.  
+  - Buy the cheap short maturity and sell the expensive long maturity.  
+    
+##
+
+- But what everyone thinks the bottom will drop out of the gold market? 
+
+- Then the spot price will drop now.  The futures will still end up higher than the spot.
+
+
+## Gold futures
+
+- Synthetic gold futures:
+  - borrow money, buy gold spot and store it
+  - later pay today's spot price + interest and have gold
+- Futures price should equal today's spot price + interest
+  - Anyone can create synthetic futures and sell actual futures if synthetic futures is cheaper
+  - People storing gold can "sell" synthetic futures and buy actual if synthetic is more expensive
+
+## Cost of carry and convenience yield
+
+- Cost of carry = cost of owning physical = foregone interest + storage costs
+- Convenience yield = benefit of owning physical = dividends and/or profits from temporary product shortages
+
+## Contango and backwardation
+
+- Contango = upward sloping forward curve (futures > spot)
+- Cost of carry > convenience yield $\Rightarrow$ contango (like gold)
+- Backwardation = downward sloping (spot > futures)
+- Convenience yield > cost of carry $\Rightarrow$ backwardation (like peso)
+- Commodities can have high cost of carry (storage) and sometimes high convenience yield

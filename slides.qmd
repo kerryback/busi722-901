@@ -75,9 +75,9 @@
 
 [5d. Put-Call Parity](5d-put-call-parity.html){target="_blank"}
 
-[5e. Early Exercise](5e-early-exercise.html)
+[5e. Early Exercise](5e-early-exercise.html){target="_blank"}
 
-[5f. Option Spreads](5f-option-portfolios.html)
+[5f. Option Spreads](5f-option-portfolios.html){target="_blank"}
 
 
 ### 6. Valuing Options
@@ -95,6 +95,18 @@
 [6f. Option Greeks](6f-greeks.html){target="_blank"}
 
 ### 7. Futures
+
+[7a. Introduction to Futures](7a-intro-futures.html){target="_blank"}
+
+[7b. Marking to Market](7b-marking-market.html){target="_blank"}
+
+[7c. The Expectations Hypothesis](7c-expectations-hypothesis.html){target="_blank"}
+
+[7d. Spot-Futures Parity](7d-spot-futures-parity.html){target="_blank"}
+
+[7e. Futures-Based ETFs](7e-futures-based-etfs.html){target="_blank"}
+
+[7f. Currency Carry Trade with Futures](7f-currency-carry.html){target="_blank"}
 
 :::
 

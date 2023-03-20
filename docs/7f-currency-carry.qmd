@@ -1,0 +1,114 @@
+---
+title:  "Currency Carry Trade with Futures"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+
+# Speculating on currencies
+
+## Currency speculation with futures
+
+- Consider selling currency futures that are in contango
+- If forward curve doesn't move, forward roll will produce profits
+- Likewise, buying currency futures in backwardation may be profitable
+- What may go wrong?
+  - Spot may rise for contango futures
+  - Spot may fall for backwardation futures
+
+## Currency carry trade
+
+- Borrow in low interest rate currencies
+- Invest in high interest rate currencies
+- What may go wrong?
+  - Low interest-rate currencies may appreciate
+  - High interest-rate currencies may depreciate
+
+## Equivalence
+
+- Low interest-rate $\Leftrightarrow$ contango.  Appreciate $\Leftrightarrow$ spot rises
+- High interest-rate $\Leftrightarrow$ backwardation.  Depreciate $\Leftrightarrow$ spot falls
+
+## What do the data show?
+
+- Currency carry trade has been profitable on average
+- Equivalently, selling contango futures and buying backwardation futures has been profitable on average
+
+# Futures options
+
+## 
+    
+- A call option on a futures contract gives you the right to acquire a long position in the futures (buy the futures) at the option strike.
+    
+- A put option gives you the right to acquire a short position in the futures (sell the futures) at the option strike.
+
+- If you've sold an option and it is exercised, you are rolled into the opposite futures position.
+  - short futures if you sold a call
+  - long futures if you sold a put
+
+##
+
+- On the exercise date of a call, daily settlement produces a cash flow of futures_settlement_price - strike to the party who exercised and the opposite cash flow to the party who sold the call.
+
+- For a put, it is strike - futures_settlement_price.
+
+- Everyone who wants could unwind the futures position by making an offsetting trade on the day of exercise.  
+
+## Risk-neutral probability from before
+
+- If there were no risk premium, the call value would be the expected value discounted at the risk-free rate:
+
+. . .
+
+$$C = \frac{p \times \text{\$}5 + (1-p)\times \text{\$}0}{1.05}$$
+
+- where $p=$ prob of positive return.  
+
+##
+
+- The stock price would also be the discounted expected value:
+
+. . .
+
+$$\text{\$}100 = \frac{p \times \text{\$}110 + (1-p) \times \text{\$}90}{1.05}$$
+
+- - Solve the stock equation for $p$ and substitute into the call option equation.
+
+## Risk-neutral probability for futures options
+
+- The futures price would be the expected (not discounted, because no cash changes hands upon purchase/sale):
+
+. . .
+
+$$\text{\$}100 = p \times \text{\$}110 + (1-p) \times \text{\$}90$$
+
+## Calibrating binomial tree for futures option
+
+- Set $T=$ time to maturity in years of a futures option
+- Set $N=$ number of periods in a binomial model
+- Set $\Delta t = T/N=$ period length
+- Set the up rate of return as $e^{\sigma\sqrt{\Delta t}}-1$ and down rate of return as $e^{-\sigma\sqrt{\Delta t}} - 1$.
+
+##
+
+- The risk-neutral probability of "up" is
+
+. . .
+
+$$\frac{1 - e^{-\sigma \Delta t}}{e^{\sigma \Delta t} - e^{-\sigma \Delta t}}$$

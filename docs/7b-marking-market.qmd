@@ -1,0 +1,78 @@
+---
+title:  "Daily Settlement"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+    
+
+
+- If a contract has a negative value to someone (they have a unrealized loss) and the person defaults, then the clearinghouse would have to make good on it.
+  
+- To avoid this risk, the exchange does daily settlement: all gains and losses are realized daily and then contracts are reset at the daily settlement price -- called `marking to market.'
+  
+
+## Example
+
+- Suppose you bought 1 CME WTI contract for Dec, 2022 delivery on Jan 2, 2020.  You bought it at $51.80.  The contract closed (settled) that day at $51.97.
+    
+- You made $\text{1,000 barrels} \times 0.17 \$/\text{barrel} = \$170$ on Jan 2.  You received that money at the end of the day.
+
+## 
+
+- The settlement prices for subsequent days were
+    \begin{align*}
+        \text{Jan 3} \quad & \quad 51.72\\
+        \text{Jan 6} \quad & \quad  51.81\\
+        \text{Jan 7} \quad & \quad 52.13 \\
+        \text{Jan 8} \quad & \quad 51.31
+    \end{align*}
+
+- Suppose you sold 1 contract on Jan 9 at $51.50.  
+
+##
+
+- Here are the daily cash flows
+
+. . .
+
+\begin{align*}
+       \text{Jan 2} \quad & \quad 51.80 & \quad \\
+       \text{Jan 2} \quad & \quad 51.97 & \quad +170\\
+        \text{Jan 3} \quad & \quad 51.72& \quad - 250\\
+        \text{Jan 6} \quad & \quad  51.81& \quad + 90\\
+        \text{Jan 7} \quad & \quad 52.13 & \quad +320\\
+        \text{Jan 8} \quad & \quad 51.31& \quad - 820\\
+        \text{Jan 9} \quad & \quad 51.50& \quad + 190
+    \end{align*}
+
+- The net is $-300 = \text{1,000} \times (51.50-51.80)$.
+
+## Cash Settled Contracts
+    
+- Cash settled contracts are also settled daily.
+
+- On the last day, settlement is based on the spot price.
+
+- E.g., the E-mini S&P 500 futures contract is settled on the last day at the actual S&P 500 index level.
+
+
+
+
+

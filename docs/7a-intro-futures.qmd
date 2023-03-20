@@ -1,0 +1,94 @@
+---
+title:  "Introduction to Futures"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+    
+- A forward contract is a contract to deliver something and to be paid at a later date.
+    
+- A futures contract is functionally like a forward contract, but it is traded on an exchange with anonymous counterparties and special provisions to deal with default risk.
+ 
+- Primary exchanges are the Chicago Mercantile Exchange (CME) and the Intercontinental Exchange (ICE).
+
+- The futures clearinghouse provides guarantees to both sides in case of a failure to deliver.
+
+
+
+## Standardization
+
+- Futures contracts are standardized regarding quantity, quality, and delivery.   Standardization improves liquidity.
+-  Hedgers are  left with ``basis risk,'' meaning the difference between the standardized contract and what, where, and when they really want.    
+- Example: CME/NYMEX WTI (West Texas Intermediate) crude oil contract is for 1,000 barrels to be delivered to Cushing, Oklahoma with restrictions on sulfur, gravity, and other qualities: [CME WTI contract specifications](https://www.cmegroup.com/content/dam/cmegroup/rulebook/NYMEX/2/200.pdf).
+  
+
+
+
+## Examples of Contracts
+
+ 
+- CME WTI crude: 1,000 barrels delivered to Cushing, OK
+- CME natural gas: 10,000 MMBtu delivered to Henry Hub, LA
+- CME gasoline: 42,000 gallons delivered to NY harbor
+- CME heating oil (ULSD) : 42,000 gallons delivered to NY harbor
+- CME gold: 100 troy ounces
+
+##
+
+- CME corn: 5,000 bushels of No. 2 yellow corn at par, No. 1 yellow corn at 1.5 cents per bushel over contract price, or No. 3 yellow corn at between 2 and 4 cents per bushel under contract price depending on broken corn and foreign material and damage grade factors.
+- CME Mexican peso: 500,000 pesos
+- CME E-mini S\&P 500: $50 multiplier (cash settled)
+
+## Cash Settlement
+
+- There are some futures contracts with no delivery procedures.  They are cash settled.
+
+- Instead of delivery, cash changes hands based on the price at maturity of the underlying asset.
+    
+- Example: E-mini S\&P 500 futures.  The futures price is an index level (e.g., 4600).  It is determined by supply and demand in the futures market, usually $\neq$ actual S\&P 500 index.
+
+
+##
+
+- If you buy the E-mini S\&P 500 futures contract and S&P index at maturity > futures price at which you bought, you make money.
+
+- You make $50 times the difference between the index at maturity and the futures price.
+
+- $50 is the "contract size."
+
+## Front Month Contract
+
+- Contracts are traded for delivery at monthly intervals.
+- When you hear that ``oil is up 2\%,'' this almost certainly refers to the futures contract that is nearest to maturity (the shortest contract), called the front month contract.
+    
+- Contracts at different maturities are highly correlated, so other contracts are probably also up, but near-maturity contracts tend to be more volatile, so other contracts are probably up by less than 2\%.
+
+
+
+
+## Margin
+
+- The buyer does not pay the seller when a futures contract is traded.
+- Both have to post collateral (margin) to ensure they can uphold their future obligations.  Generally less than 10\% of the contract value.
+
+## Exiting through trade
+
+- Positions are usually cancelled by making offsetting trades.
+- Example: buy a contract at $70.  Later sell when price is at $80.  Made $10 per unit.  Would need margin around $7 for this trade.
+

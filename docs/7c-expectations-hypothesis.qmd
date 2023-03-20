@@ -1,0 +1,96 @@
+---
+title:  "The Expectations Hypothesis"
+author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
+execute:
+  echo: false
+  jupyter: python3
+  cache: true
+format: 
+  revealjs:
+    highlight-style: monokai
+    code-fold: true
+    code-copy: hover
+    scrollable: true
+    slide-number: true
+    preview-links: true
+    self-contained: true
+    controls: true
+    transition: fade
+    theme: [solarized, 2023.scss]
+    incremental: true
+---
+
+
+## Forward Curve
+    
+- The forward curve shows the prices of contracts for different delivery dates.
+    
+- It shifts up and down over time as prices change.
+    
+- Its slope can also change.  
+
+- The front month price is the "spot price" - i.e., the price for (near) immediate delivery.
+
+## Gold Forward Curve
+
+![](images/fig_gold.png)
+    
+    Gold forward curve on 1-24-2022.
+
+## Expectations hypothesis
+
+- The expectations hypothesis is: The futures price is equal to the market's expectation of what the spot price will become.
+- Example: maybe the market expected on 1-24-2022 that gold would hit $2,000 in 8 years.
+- The expectations hypothesis is reasonable, though there is risk and there may be risk premia.
+
+## Expectations and the forward curve
+
+- Expectations affect not just the futures price but also today's spot price.
+- Example: If we think gold will hit $2,000 in 8 years and it is trading at $500 today, then we should all be buying gold today (quadruple our money in 8 years).
+- This drives up the spot price to the point that we would only get a "normal" return on spot gold.
+
+##
+
+- Ignoring risk and risk premia, if we think gold will hit $2,000 in 8 years, then today's spot price should be $\text{2,000} / (1+r)^8$.
+- So, futures in 8 years (2,000)should equal spot $\times (1+r)^8$
+- In fact, the forward curve should be rising by the factor $1+r$ each year.
+
+## Contango
+
+- A market is in contango if the forward curve is upward sloping, as in the gold example.
+
+- In other words, you pay more for future delivery than in the spot market.
+
+- The term originates from deferring purchase of a stock.  You had to pay a fee to postpone settlement.
+
+- Contango is natural, because of the time value of money.  But, there are other factors.
+    
+
+
+## Backwardation
+
+- A market is in backwardation in the opposite situation: the forward curve is downward sloping.
+    
+
+
+## Stock Index Futures in Backwardation
+
+ 
+![](images/fig_sp500.png)
+    
+    S&P 500 forward curve on 1-24-2022
+
+## Backwardation and Expectations Hypothesis
+
+- According to the expectations hypothesis, the market expected stock prices to fall on 1-24-2022.
+- Did people expect to lose money on stocks?
+- No.  Part of the stock return is the dividend.  According to the expectations hypothesis, the market expected to earn the risk-free rate on stocks as dividends + capital gain.
+- Dividends > interest $\Rightarrow$ capital gain < 0.
+
+## Summary
+
+- Expectations hypothesis is "futures price = expected future spot price."
+- Expectations affect both the futures price and the spot price.
+- Markets can be in contango (rising futures price and futures > spot) or backwardation (falling futures price and futures < spot).
+
+
