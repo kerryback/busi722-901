@@ -31,6 +31,34 @@ format:
 
 - The front month price is the "spot price" - i.e., the price for (near) immediate delivery.
 
+##
+
+```{python}
+import pandas as pd
+import numpy as np
+
+
+codes = ['F','G','H','J','K','M','N','Q','U','V','X','Z']
+codeToMonth = dict(zip(codes,range(1,13)))
+
+def expiry(code) :
+    year = code[-4:]
+    month = codeToMonth[code[-5]]
+    month = str(month) if month>=10 else '0'+str(month)
+    return datetime.datetime.strptime(year+month,'%Y%m')
+
+server = 'fs.rice.edu'
+database = 'futures'
+username = 'futures'
+password = 'RCGCMO'
+string = "mssql+pymssql://" + username + ":" + password + "@" + server + "/" + database 
+
+df = pd.read_sql(" select * from data where code like 'CME_CL%' and date='2022-0' and volume>0 ", conn)    
+df['expiry'] = df.code.apply(expiry)
+df = df.sort_values(by='expiry').set_index('expiry')
+df.settle.plot()
+nothing = plt.title(df.date[0])
+
 ## Gold Forward Curve
 
 ![](images/fig_gold.png)
