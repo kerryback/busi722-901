@@ -36,32 +36,88 @@ format:
 
 ## Synthetic long futures and steep forward curves
 
-- On a long futures (ignoring daily settlement), you pay in the future and accept delivery in the future.
-- To duplicate this, you can borrow money, buy spot and hold.
-- At the future date, you will have the asset (like accepting delivery) and owe money (like paying in the future).
+- On a long futures (ignoring daily settlement), you pay at the delivery date and accept delivery then.
+- To duplicate this, you can borrow money, buy spot and hold until the delivery date.
+- At the delivery date, you will have the asset and owe money (so you pay at the delivery date).
 - If the synthetic futures is cheaper, you should create it and sell the futures contract.
 
 ##
 
-- The synthetic futures is cheaper when the futures price is sufficiently high (forward curve is sufficiently steep).
-- The possibility of arbitrage rules out extremely steep forward curves.
+- The synthetic futures is cheaper when the futures price is sufficiently high relative to spot (forward curve is sufficiently steep).
+- So, arbitrage rules out extremely steep forward curves.
 
 ## Synthetic short futures and downward sloping forward curves
 
-- On a short futures (ignoring daily settlement), you deliver in the future and get paid then.
+- On a short futures (ignoring daily settlement), you deliver at the delivery date and get paid then.
 - To duplicate this, you can short the spot and invest the proceeds in T-bills.
-- At the future date, you will owe the asset (like having to deliver) and have cash (like being paid in the future).
-- If the synthetic short futures generates more cash, then you should create it and buy the futurex contract.
+- At the delivery date, you cover the short and have cash (T-bills).
+- If the synthetic short futures generates more cash, then you should create it and buy the futures contract.
 
 ##
 
-- The synthetic short futures generates more cash when the futures price is sufficiently low (forward curve is sufficiently downward sloping).
-- The possibility of arbitrage rules out extremely downward sloping forward curves (when you can short the asset).
+- The synthetic short futures generates more cash when the spot price is high relative to the futures price.
+- So, arbitrage rules out extremely downward sloping forward curves (when you can short the asset).
 
-## Cost of carry
+## Cost of carry and convenience yield
+
+- Now, more details.  
+- On the synthetic long futures, you pay at delivery the spot price plus interest.
+- Also, there may be storage costs.
+- Cost of carry = interest + storage costs.
+- On the other hand, you may earn dividends, etc. when holding the asset.
+- Convenience yield = dividends or other income
+
+##
+
+- Ruling out extremely steep forward curves means
+
+$$ \text{futures price} \le \text{spot price} +
+
+\text{cost of carry} - \text{convenience yield}$$
+
+- Ruling out extremely downward sloping forward curves (when you can short) means
+
+$$ \text{futures price} \ge \text{spot price} + \text{cost of carry} - \text{convenience yield}$$
+
+## Gold
+
+- Convenience yield = 0
+- Storage costs $\approx$ 0
+- Can probably short, but also lots of gold in storage (longs can sell and then restore, like shorting and covering)
+- So,
+
+. . .
+
+$$\text{futures price} \le \text{spot price} +
+\text{interest}$$
+$$= \text{spot price} \times (1+r)^n$$
+
+## Gold Forward Curve
+
+![](images/fig_gold.png)
+    
+    Gold forward curve on 1-24-2022.
+
+## Stock index futures
+
+- Cost of carry = interest rate
+- Convenience yield = dividends,
+- Can short, so
+
+. . .
+
+$$\text{futures price} \le \text{spot price} +
+\text{interest}$$
+
+## Stock Index Futures on 1-24-2022
+
+ 
+![](images/fig_sp500.png)
+    
+    S&P 500 forward curve on 1-24-2022
 
 
-## Understanding S&P 500 Futures
+##
 
 - Buying stocks ties up money but provides dividends.
 - Better to buy spot (at equal prices) if dividends > interest.  This implies backwardation.
