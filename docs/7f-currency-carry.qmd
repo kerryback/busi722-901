@@ -20,7 +20,38 @@ format:
     incremental: true
 ---
 
+## Currency carry trade
 
+- The currency carry trade is to borrow in a low interest-rate currency (e.g., euro) and invest in a high interest-rate currency (e.g., peso).
+- You earn the interest differential.
+- The risk is that the high interest-rate currency may depreciate relative to the other.
+- Empirically, this has been on average a profitable trade.
+
+## Exchange rates
+
+- It is simplest to quote foreign currency prices in the domestic currency (dollars).
+- Cost of a euro, cost of a peso, etc. is the same concept as the cost of a loaf of bread.
+- A currency appreciates (relative to the dollar) when its cost rises and depreciates when its cost falls.
+
+## Currency carry trade again
+
+- Borrowing in euros, exchanging to pesos, and depositing pesos can be called shorting euros and going long pesos.
+- Example: short (borrow) $100,000 of euros and go long $100,000 of pesos.  Pay euro interest rate and receive peso interest rate.  Earn the difference.
+- But when we sell the pesos and cover the euro loan, prices may have moved.
+
+## Currency carry with futures
+
+- Synthetic long peso future = borrow $ and buy pesos
+- Synthetic short euro future = short euros and invest in $
+- Combining them equals currency carry trade ($ cancel)
+- Combining actual long peso future and actual short euro future also equals currency carry trade
+
+
+- 
+
+- When we short one asset and go long another, we always earn the difference in returns.
+- Here, returns = interest + price changes.
+- Interest is called carry and is known.
  
 ## Currency Futures
 
