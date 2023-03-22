@@ -146,7 +146,6 @@ fig.update_layout(
     yaxis_title="Futures Price",
     xaxis_title_font = {"size":18},
     template="plotly_white",
-    yaxis_tickprefix="$",
     height=600,  
     width=1000,
     font_size=16
