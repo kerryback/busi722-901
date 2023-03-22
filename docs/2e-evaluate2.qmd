@@ -76,7 +76,7 @@ df = df.reset_index()
 df = df.dropna()
 
 result = smf.ols("ret_rf~mkt_rf", df).fit()
-beta = round(result.params["mkt_rf"], 2)
+beta = result.params["mkt_rf"]
 mkt = df.rf + beta*df.mkt_rf 
 active = df.ret - mkt
 
@@ -84,16 +84,19 @@ trace1 = go.Scatter(
     x = df.date,
     y = (1+df.ret).cumprod(),
     name = "150-50 total",
+    hovertemplate="%{x}<br>total=$%{y:.2f}<extra></extra>"
 )
 trace2 = go.Scatter(
     x = df.date,
     y = (1+active).cumprod(),
     name = "150-50 active",
+    hovertemplate="%{x}<br>active=$%{y:.2f}<extra></extra>"
 )
 trace3 = go.Scatter(
     x = df.date,
     y = (1+mkt).cumprod(),
     name = "150-50 market",
+    hovertemplate="%{x}<br>market=$%{y:.2f}<extra></extra>"
 )
 fig = go.Figure()
 for trace in [trace1, trace3, trace2]:
@@ -115,5 +118,4 @@ fig.update_layout(
 )
 
 fig.show()
-
 ```

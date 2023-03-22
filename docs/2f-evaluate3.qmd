@@ -70,4 +70,89 @@ $$ + \beta_3 HML + \beta_4 CMA + \beta_5 RMW$$
 
 ## Example
 
-![](ff.png)
+```{python}
+
+import pandas as pd
+import plotly.graph_objects as go
+import statsmodels.formula.api as smf
+from pandas_datareader import DataReader as pdr
+
+ret = pd.read_csv("files/rets.csv", index_col="date")
+ret = 1.5*ret.best - 0.5*ret.worst
+
+df = pdr("F-F_Research_Data_5_Factors_2x3", "famafrench", start=2005)[0]/100
+df.index = df.index.astype(str)
+df["ret"] = ret
+df["ret_rf"] = df.ret - df.RF
+df = df.dropna()
+df.index = df.index.astype(str)
+df.index.name = "date"
+df = df.reset_index()
+df = df.rename(columns={"Mkt-RF": "mkt_rf", "RF": "rf"})
+
+result = smf.ols("ret_rf~mkt_rf+SMB+HML+CMA+RMW", df).fit()
+betas = result.params[1:]
+mkt = df.rf + betas[0]*df.mkt_rf 
+smb = betas[1]*df.SMB
+hml = betas[2]*df.HML
+cma = betas[3]*df.CMA
+rmw = betas[4]*df.RMW
+active = df.ret - mkt - smb - hml - cma - rmw
+
+trace1 = go.Scatter(
+    x = df.date,
+    y = (1+df.ret).cumprod(),
+    name = "150-50 total",
+)
+trace2 = go.Scatter(
+    x = df.date,
+    y = (1+mkt).cumprod(),
+    name = "150-50 market",
+)
+trace3 = go.Scatter(
+    x = df.date,
+    y = (1+smb).cumprod(),
+    name = "150-50 smb",
+)
+trace4 = go.Scatter(
+    x = df.date,
+    y = (1+hml).cumprod(),
+    name = "150-50 hml",
+)
+trace5 = go.Scatter(
+    x = df.date,
+    y = (1+cma).cumprod(),
+    name = "150-50 cma",
+)
+trace6 = go.Scatter(
+    x = df.date,
+    y = (1+rmw).cumprod(),
+    name = "150-50 rmw",
+)
+trace7 = go.Scatter(
+    x = df.date,
+    y = (1+active).cumprod(),
+    name = "150-50 active",
+)
+fig = go.Figure()
+for trace in [trace1, trace2, trace3, trace4, trace5, trace6, trace7]:
+    fig.add_trace(trace)
+
+fig.update_layout(
+    yaxis_title="Accumulation",
+    xaxis_title_font = {"size":18},
+    template="plotly_white",
+    yaxis_tickprefix="$",
+    yaxis_tickformat=".2f",
+    height=600,  
+    width=1000,
+    legend=dict(
+      x = 0.01,
+      y = 0.99
+    ),
+    font_size=16
+)
+
+fig.show()
+
+```
