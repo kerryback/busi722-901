@@ -66,7 +66,7 @@ trace1 = go.Scatter(
     y = (1+df.ret).cumprod(),
     mode="lines",
     name="150-50 return",
-    hovertemplate="%{x}<br>accumulation = $%{:.2f}<extra><\extra"
+    hovertemplate="%{x}<br>accumulation = $%{y:.2f}<extra></extra>"
 )
 
 trace2 = go.Scatter(
@@ -74,7 +74,7 @@ trace2 = go.Scatter(
     y = (1+df.mkt).cumprod(),
     mode="lines",
     name="market return",
-    hovertemplate="%{x}<br>accumulation = $%{:.2f}<extra><\extra>"
+    hovertemplate="%{x}<br>accumulation = $%{y:.2f}<extra></extra>"
 )
 
 fig = go.Figure(trace1)
@@ -99,14 +99,69 @@ fig.show()
 
 ## Example drawdown plot
 
-```.p
-accum = (1+ret).cumprod()
-accum_max = accum.expanding().max()
-drawdown = accum/accum_max - 1
-```
 . . .
 
-![](drawdown.png)
+
+
+```{python}
+df["accum"] = (1+df.ret).cumprod()
+accum_max = df.accum.expanding().max()
+df["drawdown"] = df.accum/accum_max - 1
+
+trace1 = go.Scatter(
+    x = df.index.to_list(),
+    y = df.accum,
+    mode="lines",
+    name="150-50 accumulation",
+    hovertemplate="%{x}<br>accumulation = $%{y:.2f}<extra></extra>"
+)
+
+trace2 = go.Scatter(
+    x = df.index.to_list(),
+    y = df.drawdown,
+    mode="lines",
+    name="150-50 drawdown",
+    hovertemplate="%{x}<br>drawdown = %{y:.1%}<extra></extra>"
+)
+
+from plotly.subplots import make_subplots
+
+
+# Create figure with secondary y-axis
+fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+# Add traces
+fig.add_trace(trace1,
+    secondary_y=False,
+)
+
+fig.add_trace(
+    trace2,
+    secondary_y=True,
+)
+
+import plotly.io as pio
+plotly_template = pio.templates["plotly_white"]
+colors = plotly_template.layout.colorway
+
+# Set y-axes titles
+fig.update_yaxes(title_text="<b>Accumulation</b>", title_font=dict(color=colors[0]), color=colors[0], tickformat=".2f", tickprefix="$", secondary_y=False)
+fig.update_yaxes(title_text="<b>Drawdown</b>", title_font=dict(color=colors[1]), color=colors[1], tickformat=".0%", secondary_y=True)
+
+fig.update_layout(
+    template="plotly_white",
+    height=600,  
+    width=1000,
+    legend=dict(
+      x = 0.99,
+      y = 0.01
+    ),
+    font_size=16,
+    showlegend=False,
+)
+fig.show()
+```
+
 
 
 
