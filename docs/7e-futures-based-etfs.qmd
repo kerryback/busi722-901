@@ -20,3 +20,393 @@ format:
     incremental: true
 ---
 
+
+- Futures-based ETFs hold futures contracts
+- Value of fund = cash used for margin
+- Example: [USO holds crude futures](https://finance.yahoo.com/quote/USO/holdings?p=USO)
+- Return on futures-based ETF $\neq$ % change in commodity price
+
+## Futures returns
+
+- Typical strategy: buy contracts 2 or 3 months out
+- When the contract becomes the front month contract, sell it and buy new contracts 2 or 3 months out.
+- Return = % change in futures price 2 or 3 months $\rightarrow$ 1 month
+- $\neq$ % change in front month price
+
+
+
+# Futures returns vs spot prices
+
+## Spot price of crude from EIA
+
+. . .
+
+```{python}
+import pandas as pd
+import plotly.graph_objects as go
+import plotly.express as px
+import yfinance as yf
+import numpy as np
+```
+
+
+```{python}
+df = pd.read_excel(
+    "files/PET_PRI_SPT_S1_D.xls", 
+    sheet_name="Data 1",
+    skiprows=9,
+    header=None,
+    parse_dates=[0])
+df.columns=['date', 'wti', 'brent']
+```
+
+```{python}
+trace = go.Scatter(
+  x=df.date,
+  y=df.wti,
+  mode="lines",
+  hovertemplate="%{x}<br>$%{y:.2f}"
+)
+fig = go.Figure(trace)
+
+fig.update_yaxes(tickformat=".2f", title = "Spot WTI", tickprefix="$")
+fig.update_xaxes(title="Date")
+fig.layout.template = "simple_white"
+fig.update_layout(margin=dict(l=25, r=25, t=40, b=25))
+fig.update_xaxes(title_font_size=18, showgrid=True)
+fig.update_yaxes(title_font_size=18, showgrid=True)
+fig.update_layout(font_size=18, width=1000)
+fig.show()
+```
+
+
+
+## History of USO
+
+. . .
+
+```{python}
+uso = yf.download("USO", start="1970-01-01", progress=False).reset_index()
+uso.Date = pd.to_datetime(uso.Date)
+```
+
+```{python}
+trace = go.Scatter(
+  x=uso.Date,
+  y=uso.Close,
+  hovertemplate="%{x}<br>$%{y:.2f}"
+)
+fig = go.Figure(trace)
+
+fig.update_yaxes(tickformat=".2f", title="USO", tickprefix="$")
+fig.update_xaxes(title="Date")
+fig.layout.template = "simple_white"
+fig.update_layout(margin=dict(l=25, r=25, t=40, b=25))
+fig.update_xaxes(title_font_size=18, showgrid=True)
+fig.update_yaxes(title_font_size=18, showgrid=True)
+fig.update_layout(font_size=18, width=1000)
+fig.show()
+```
+
+## Normalized histories 
+
+. . .
+
+```{python}
+uso.Date = [x.strftime("%Y-%m-%d") for x in uso.Date]
+df.date = df.date.astype(str)
+
+df = df.merge(uso, left_on="date", right_on="Date")
+df["spot"] = df.wti / df.wti.iloc[0]
+df["uso"] = df.Close / df.Close.iloc[0]
+```
+
+```{python}
+trace1 = go.Scatter(
+  x=df.date,
+  y=df.spot,
+  name="Spot",
+  hovertemplate='$%{y:.2f}<extra></extra>'
+)
+trace2 = go.Scatter(
+  x=df.date,
+  y=df.uso,
+  name="USO",
+  hovertemplate='$%{y:.2f}<extra></extra>'
+)
+fig = go.Figure()
+for trace in [trace1, trace2]:
+  fig.add_trace(trace)
+fig.update_yaxes(tickformat=".2f", title="Values Starting from $1", tickprefix="$")
+fig.update_xaxes(title="Date")
+fig.layout.template = "simple_white"
+fig.update_layout(margin=dict(l=25, r=25, t=40, b=25))
+fig.update_xaxes(title_font_size=18, showgrid=True)
+fig.update_yaxes(title_font_size=18, showgrid=True)
+fig.update_layout(font_size=18)
+fig.update_layout(hovermode="x unified", width=1000)
+fig.show()
+```
+
+## Forward Curves
+
+
+```{python}
+df = pd.read_csv("files/crude_futures_monthly.csv")
+df = df[(df.date>="2006-03-01")&(df.days<=365)]
+df = df.sort_values(by=["date", "days"])
+import plotly.express as px
+fig = px.line(
+  df,
+  x="days",
+  y="settle",
+  animation_frame="date",
+)
+fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 200
+fig.update_yaxes(range=[0.99*df.settle.min(), 1.01*df.settle.max()])
+fig.update_xaxes(range=[0, df.days.max()])
+fig.update_yaxes(tickformat=".0f", title="WTI Futures Settle")
+fig.update_xaxes(title="Days to Maturity")
+fig.layout.template = "simple_white"
+fig.update_layout(margin=dict(l=25, r=25, t=40, b=25))
+fig.update_xaxes(title_font_size=18, showgrid=True)
+fig.update_yaxes(title_font_size=18, showgrid=True)
+fig.update_layout(font_size=18, width=1000)
+```
+
+# Levered Index ETFs
+
+## 
+
+- Examples: SPXL, SPXS (L=Long, S=Short) are 3x levered
+- Each day hold futures contracts (long or short) with
+
+. . .
+
+$$\text{# contracts}\times \text{contract size} \times  \text{futures price}$$
+$$= 3 \times \text{fund equity}$$
+
+
+## Daily SPXL returns versus daily SPY returns
+
+. . .
+
+```{python}
+df = yf.download(("SPY", "SPXL", "SPXS"), start="1970-01-01", progress=False)["Adj Close"].dropna()
+rets = df.pct_change().reset_index()
+df = df.reset_index()
+```
+
+```{python}
+fig = px.scatter(
+  rets,
+  x="SPY",
+  y="SPXL",
+  trendline="ols",
+  hover_name="Date"
+)
+fig.update_yaxes(tickformat=".1%", title="SPXL Return")
+fig.update_xaxes(tickformat=".1%", title="SPY Return")
+fig.layout.template = "simple_white"
+fig.update_layout(margin=dict(l=25, r=25, t=40, b=25))
+fig.update_xaxes(title_font_size=18, showgrid=True)
+fig.update_yaxes(title_font_size=18, showgrid=True)
+fig.update_layout(font_size=18, width=1000)
+fig.show()
+```
+
+## Daily SPXS returns versus daily SPY returns
+
+. . .
+
+```{python}
+fig = px.scatter(
+  rets,
+  x="SPY",
+  y="SPXS",
+  trendline="ols",
+  hover_name="Date"
+)
+fig.update_yaxes(tickformat=".1%", title="SPXS Return")
+fig.update_xaxes(tickformat=".1%", title="SPY Return")
+fig.layout.template = "simple_white"
+fig.update_layout(margin=dict(l=25, r=25, t=40, b=25))
+fig.update_xaxes(title_font_size=18, showgrid=True)
+fig.update_yaxes(title_font_size=18, showgrid=True)
+fig.update_layout(font_size=18, width=1000)
+fig.show()
+```
+
+
+## SPXL
+
+. . .
+
+```{python}
+trace = go.Scatter(
+  x=df.Date,
+  y=df.SPXL,
+  name="SPXL",
+  hovertemplate="SPXL = $%{y:.2f}<extra></extra>"
+)
+fig = go.Figure(trace)
+
+fig.update_yaxes(tickformat=".0f", title="SPXL Adj Close", tickprefix="$")
+fig.update_xaxes(title="Date")
+fig.layout.template = "simple_white"
+fig.update_layout(margin=dict(l=25, r=25, t=40, b=25))
+fig.update_xaxes(title_font_size=18, showgrid=True)
+fig.update_yaxes(title_font_size=18, showgrid=True)
+fig.update_layout(font_size=18, width=1000, hovermode="x unified", showlegend=False)
+fig.show()
+```
+
+## SPXS
+
+. . .
+
+```{python}
+trace = go.Scatter(
+  x=df.Date,
+  y=df.SPXS,
+  name="SPXS",
+  hovertemplate="SPXS = $%{y:.2f}<extra></extra>"
+)
+fig = go.Figure(trace)
+
+fig.update_yaxes(tickformat=".0f", title="SPXS Adj Close", tickprefix="$")
+fig.update_xaxes(title="Date")
+fig.layout.template = "simple_white"
+fig.update_layout(margin=dict(l=25, r=25, t=40, b=25))
+fig.update_xaxes(title_font_size=18, showgrid=True)
+fig.update_yaxes(title_font_size=18, showgrid=True)
+fig.update_layout(font_size=18, width=1000, hovermode="x unified", showlegend=False)
+fig.show()
+```
+
+## Cumulative returns
+
+. . .
+
+```{python}
+for col in ["SPY", "SPXL", "SPXS"]:
+  df[col] = df[col] / df[col].iloc[0]
+
+traces = []
+trace = go.Scatter(
+  x=df.Date,
+  y=df.SPY,
+  name="SPY",
+  hovertemplate="SPY = $%{y:.2f}<extra></extra>"
+)
+traces.append(trace)
+
+trace = go.Scatter(
+  x=df.Date,
+  y=df.SPXL,
+  name="SPXL",
+  hovertemplate="SPXL = $%{y:.2f}<extra></extra>"
+)
+traces.append(trace)
+
+trace = go.Scatter(
+  x=df.Date,
+  y=df.SPXS,
+  name="SPXS",
+  hovertemplate="SPXS = $%{y:.4f}<extra></extra>"
+)
+traces.append(trace)
+
+fig = go.Figure()
+for trace in traces:
+  fig.add_trace(trace)
+
+fig.update_yaxes(tickformat=".0f", title="Accumulation", tickprefix="$")
+fig.update_xaxes(title="Date")
+fig.layout.template = "simple_white"
+fig.update_layout(margin=dict(l=25, r=25, t=40, b=25))
+fig.update_xaxes(title_font_size=18, showgrid=True)
+fig.update_yaxes(title_font_size=18, showgrid=True)
+fig.update_layout(font_size=18, width=1000, hovermode="x unified")
+fig.show()
+```
+
+## Cumulative returns (log scale)
+
+. . .
+
+```{python}
+traces = []
+trace = go.Scatter(
+  x=df.Date,
+  y=df.SPY,
+  name="SPY",
+  hovertemplate="SPY = $%{y:.2f}<extra></extra>"
+)
+traces.append(trace)
+
+trace = go.Scatter(
+  x=df.Date,
+  y=df.SPXL,
+  name="SPXL",
+  hovertemplate="SPXL = $%{y:.2f}<extra></extra>"
+)
+traces.append(trace)
+
+trace = go.Scatter(
+  x=df.Date,
+  y=df.SPXS,
+  name="SPXS",
+  hovertemplate="SPXS = $%{y:.4f}<extra></extra>"
+)
+traces.append(trace)
+
+fig = go.Figure()
+for trace in traces:
+  fig.add_trace(trace)
+
+fig.update_yaxes(tickformat=".2f", title="Accumulation", tickprefix="$")
+fig.update_xaxes(title="Date")
+fig.layout.template = "simple_white"
+fig.update_layout(margin=dict(l=25, r=25, t=40, b=25))
+fig.update_xaxes(title_font_size=18, showgrid=True)
+fig.update_yaxes(title_font_size=18, showgrid=True, type="log")
+fig.update_layout(font_size=18, width=1000, hovermode="x unified")
+fig.show()
+```
+
+## Simulated SPY and SPXL returns
+
+- simulate 1,000 10-year histories of daily SPY returns
+- assume daily SPY returns are normally distributed with the historical mean and variance
+- compute daily SPXL return as 3x SPY return
+- compound returns to calculate 1,000 (SPY, SPXL) accumulations
+
+##
+
+. . .
+
+```{python}
+mn = rets.SPY.mean()
+sd = rets.SPY.std()
+n = 10*252
+
+r = np.random.normal(loc=mn, scale=sd, size=n*1000).reshape(n, 1000)
+spy = np.prod(1+r, axis=0)
+spxl = np.prod(1+3*r, axis=0)
+trace = go.Scatter(
+    x=spy,
+    y=spxl,
+    mode="markers",
+    hovertemplate="SPY = $%{x:.2f}<br>SPXL = $%{y:.2f}<extra></extra>"
+)
+fig = go.Figure(trace)
+fig.update_yaxes(tickformat=",.0f", title="Simulated SPXL Accumulation", tickprefix="$")
+fig.update_xaxes(tickformat=".0f", title="Simulated SPY Accumulation", tickprefix="$")
+fig.layout.template = "simple_white"
+fig.update_layout(margin=dict(l=25, r=25, t=40, b=25))
+fig.update_xaxes(title_font_size=18, showgrid=True)
+fig.update_yaxes(title_font_size=18, showgrid=True)
+fig.update_layout(font_size=18, width=1000)
+fig.show()
+```

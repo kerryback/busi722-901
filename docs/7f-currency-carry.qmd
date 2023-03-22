@@ -21,6 +21,172 @@ format:
 ---
 
 
+ 
+## Currency Futures
+
+- The advantage of owning a foreign currency now is that you can invest it and earn the foreign interest rate.
+    
+- The cost of buying foreign currency now is that it ties up dollars and you lose the dollar interest rate.
+    
+- Whether it is better to buy now or buy later depends on which interest rate is higher.
+    
+- U.S. interest rate higher $\Rightarrow$ contango (like gold)
+    
+- Foreign interest rate higher $\Rightarrow$ backwardation.
+    
+## Euro Forward Curve
+    
+![](images/fig_euro.png)
+    
+    Euro forward curve on 1-24-2022
+
+
+## Peso Forward Curve
+    
+![](images/fig_peso.png)
+    
+    Mexican peso forward curve on 1-24-2022
+
+## Commodities
+
+- Commodities (energy, agricultural) are sometimes in backwardation and sometimes in contango.
+
+- Backwardation occurs 
+  - when there is nothing left in storage to sell now to cause spot prices to come down relative to futures prices.
+  - or people are hoarding.  For example, corn (and others) moved into backwardation during the pandemic.
+
+##
+
+- If a commodity is seasonal and storage is costly, futures may have seasonal spikes (e.g., natural gas and gasoline).
+    
+
+
+## Crude Oil Forward Curves
+    
+![](images/fig_crude.png)
+    
+    Backwardation and contango in 2020
+
+
+## Natural Gas
+    
+![](images/fig_ng.png)
+    
+    Natural gas forward curve on 1-24-2022
+
+
+## Gasoline
+    
+![](images/fig_rbob.png)
+    
+    Gasoline forward curve on 1-24-2022
+
+
+
+
+
+## Understanding Gold Futures
+
+- There is lots of gold in storage.  If the futures is less than the spot price, people storing gold should sell spot and buy futures.  
+  - They earn the difference between the prices plus interest that they can earn on the cash from selling spot.
+- The story is the same if the futures price at a long maturity is less than the futures price at a shorter maturity.  
+  - Buy the cheap short maturity and sell the expensive long maturity.  
+    
+##
+
+- But what everyone thinks the bottom will drop out of the gold market? 
+
+- Then the spot price will drop now.  The futures will still end up higher than the spot.
+
+
+## Gold futures
+
+- Synthetic gold futures:
+  - borrow money, buy gold spot and store it
+  - later pay today's spot price + interest and have gold
+- Futures price should equal today's spot price + interest
+  - Anyone can create synthetic futures and sell actual futures if synthetic futures is cheaper
+  - People storing gold can "sell" synthetic futures and buy actual if synthetic is more expensive
+
+## Cost of carry and convenience yield
+
+- Cost of carry = cost of owning physical = foregone interest + storage costs
+- Convenience yield = benefit of owning physical = dividends and/or profits from temporary product shortages
+
+## Contango and backwardation
+
+- Contango = upward sloping forward curve (futures > spot)
+- Cost of carry > convenience yield $\Rightarrow$ contango (like gold)
+- Backwardation = downward sloping (spot > futures)
+- Convenience yield > cost of carry $\Rightarrow$ backwardation (like peso)
+- Commodities can have high cost of carry (storage) and sometimes high convenience yield
+
+
+. . .
+
+$$\text{futures price} = \text{spot price} +
+\text{domestic interest} - \text{foreign interest}$$
+
+## Euro Futures on 1-24-2022
+
+. . .
+
+```{python}
+df = pd.read_sql(" select * from data where code like 'CME_EC%' and date='2022-01-24' ", conn)    
+df['expiry'] = df.code.apply(expiry)
+df = df.sort_values(by='expiry').set_index('expiry')
+trace = go.Scatter(
+    x=df.index.to_list(),
+    y=df.settle,
+    mode="lines",
+    hovertemplate="expiration = %{x}<br>futures price = $%{y:,.2f}<extra></extra>"
+)
+
+fig = go.Figure()
+fig.add_trace(trace)
+fig.update_layout(
+    xaxis_title="Expiration",
+    yaxis_title="Futures Price",
+    xaxis_title_font = {"size":18},
+    template="plotly_white",
+    yaxis_tickprefix="$",
+    height=600,  
+    width=1000,
+    font_size=16
+)
+fig.show()
+```
+
+## Mexican Peso Futures on 1-24-2022
+
+. . .
+
+```{python}
+df = pd.read_sql(" select * from data where code like 'CME_MP%' and date='2022-01-24' ", conn)    
+df['expiry'] = df.code.apply(expiry)
+df = df.sort_values(by='expiry').set_index('expiry')
+trace = go.Scatter(
+    x=df.index.to_list(),
+    y=df.settle,
+    mode="lines",
+    hovertemplate="expiration = %{x}<br>futures price = $%{y:,.2f}<extra></extra>"
+)
+
+fig = go.Figure()
+fig.add_trace(trace)
+fig.update_layout(
+    xaxis_title="Expiration",
+    yaxis_title="Futures Price",
+    xaxis_title_font = {"size":18},
+    template="plotly_white",
+    yaxis_tickprefix="$",
+    height=600,  
+    width=1000,
+    font_size=16
+)
+fig.show()
+```
+
 # Speculating on currencies
 
 ## Currency speculation with futures
