@@ -53,4 +53,67 @@ $$ r - [\beta r_m + (1-\beta)r_f] = \alpha + \varepsilon$$
 
 ## Example
 
-![](market.png)
+```{python}
+import pandas as pd
+import plotly.graph_objects as go
+import statsmodels.formula.api as smf
+from pandas_datareader import DataReader as pdr
+
+ret = pd.read_csv("files/rets.csv", index_col="date")
+ret = 1.5*ret.best - 0.5*ret.worst
+
+ff = pdr("F-F_Research_Data_Factors", "famafrench", start=2005)[0]/100
+ff.index = ff.index.astype(str)
+mkt_rf = ff["Mkt-RF"]
+rf = ff["RF"]
+
+df = pd.concat((ret, mkt_rf, rf), axis=1)
+df.columns = ["ret", "mkt_rf", "rf"]
+df["ret_rf"] = df.ret - df.rf
+df["mkt"] = df.mkt_rf + df.rf
+df.index.name = "date" 
+df = df.reset_index()
+df = df.dropna()
+
+result = smf.ols("ret_rf~mkt_rf", df).fit()
+beta = round(result.params["mkt_rf"], 2)
+mkt = df.rf + beta*df.mkt_rf 
+active = df.ret - mkt
+
+trace1 = go.Scatter(
+    x = df.date,
+    y = (1+df.ret).cumprod(),
+    name = "150-50 total",
+)
+trace2 = go.Scatter(
+    x = df.date,
+    y = (1+active).cumprod(),
+    name = "150-50 active",
+)
+trace3 = go.Scatter(
+    x = df.date,
+    y = (1+mkt).cumprod(),
+    name = "150-50 market",
+)
+fig = go.Figure()
+for trace in [trace1, trace3, trace2]:
+    fig.add_trace(trace)
+
+fig.update_layout(
+    yaxis_title="Accumulation",
+    xaxis_title_font = {"size":18},
+    template="plotly_white",
+    yaxis_tickprefix="$",
+    yaxis_tickformat=".2f",
+    height=600,  
+    width=1000,
+    legend=dict(
+      x = 0.01,
+      y = 0.99
+    ),
+    font_size=16
+)
+
+fig.show()
+
+```
