@@ -103,36 +103,43 @@ trace1 = go.Scatter(
     x = df.date,
     y = (1+df.ret).cumprod(),
     name = "150-50 total",
+    hovertemplate="%{x}<br>total=$%{y:.2f}<extra></extra>"
 )
 trace2 = go.Scatter(
     x = df.date,
     y = (1+mkt).cumprod(),
     name = "150-50 market",
+    hovertemplate="%{x}<br>market=$%{y:.2f}<extra></extra>"
 )
 trace3 = go.Scatter(
     x = df.date,
     y = (1+smb).cumprod(),
     name = "150-50 smb",
+    hovertemplate="%{x}<br>smb=$%{y:.2f}<extra></extra>"
 )
 trace4 = go.Scatter(
     x = df.date,
     y = (1+hml).cumprod(),
     name = "150-50 hml",
+    hovertemplate="%{x}<br>hml=$%{y:.2f}<extra></extra>"
 )
 trace5 = go.Scatter(
     x = df.date,
     y = (1+cma).cumprod(),
     name = "150-50 cma",
+    hovertemplate="%{x}<br>cma=$%{y:.2f}<extra></extra>"
 )
 trace6 = go.Scatter(
     x = df.date,
     y = (1+rmw).cumprod(),
     name = "150-50 rmw",
+    hovertemplate="%{x}<br>rmw=$%{y:.2f}<extra></extra>"
 )
 trace7 = go.Scatter(
     x = df.date,
     y = (1+active).cumprod(),
     name = "150-50 active",
+    hovertemplate="%{x}<br>active=$%{y:.2f}<extra></extra>"
 )
 fig = go.Figure()
 for trace in [trace1, trace2, trace3, trace4, trace5, trace6, trace7]:
