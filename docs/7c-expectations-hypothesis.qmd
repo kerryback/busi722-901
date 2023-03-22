@@ -31,11 +31,17 @@ format:
 
 - The front month price is the "spot price" - i.e., the price for (near) immediate delivery.
 
-##
+## Gold Forward Curve on 1-24-2022
+
+. . .
 
 ```{python}
 import pandas as pd
 import numpy as np
+import plotly.graph_objects as go
+from sqlalchemy import create_engine
+import pymssql
+from datetime import datetime
 
 
 codes = ['F','G','H','J','K','M','N','Q','U','V','X','Z']
@@ -45,43 +51,62 @@ def expiry(code) :
     year = code[-4:]
     month = codeToMonth[code[-5]]
     month = str(month) if month>=10 else '0'+str(month)
-    return datetime.datetime.strptime(year+month,'%Y%m')
+    return datetime.strptime(year+month,'%Y%m')
 
 server = 'fs.rice.edu'
 database = 'futures'
 username = 'futures'
 password = 'RCGCMO'
 string = "mssql+pymssql://" + username + ":" + password + "@" + server + "/" + database 
+conn = create_engine(string).connect()
 
-df = pd.read_sql(" select * from data where code like 'CME_CL%' and date='2022-0' and volume>0 ", conn)    
+df = pd.read_sql(" select * from data where code like 'CME_GC%' and date='2022-01-24' ", conn)    
 df['expiry'] = df.code.apply(expiry)
 df = df.sort_values(by='expiry').set_index('expiry')
-df.settle.plot()
-nothing = plt.title(df.date[0])
+trace = go.Scatter(
+    x=df.index.to_list(),
+    y=df.settle,
+    mode="lines",
+    hovertemplate="expiration = %{x}<br>futures price = $%{y:,.2f}<extra></extra>"
+)
 
-## Gold Forward Curve
+fig = go.Figure()
+fig.add_trace(trace)
+fig.update_layout(
+    xaxis_title="Expiration",
+    yaxis_title="Futures Price",
+    xaxis_title_font = {"size":18},
+    template="plotly_white",
+    yaxis_tickprefix="$",
+    height=600,  
+    width=1000,
+    font_size=16
+)
+fig.show()
+```
 
-![](images/fig_gold.png)
-    
-    Gold forward curve on 1-24-2022.
 
 ## Expectations hypothesis
 
 - The expectations hypothesis is: The futures price is equal to the market's expectation of what the spot price will become.
-- Example: maybe the market expected on 1-24-2022 that gold would hit $2,000 in 8 years.
+- Example: maybe the market expected on 1-24-2022 that gold would hit $2,000 by the end of 2028.
 - The expectations hypothesis is reasonable, though there is risk and there may be risk premia.
 
 ## Expectations and the forward curve
 
 - Expectations affect not just the futures price but also today's spot price.
-- Example: If we think gold will hit $2,000 in 8 years and it is trading at $500 today, then we should all be buying gold today (quadruple our money in 8 years).
+- Example: If we think gold will hit $2,000 in 7 years and it is trading at $500 today, then we should all be buying gold today (quadruple our money in 7 years).
 - This drives up the spot price to the point that we would only get a "normal" return on spot gold.
 
 ##
 
-- Ignoring risk and risk premia, if we think gold will hit $2,000 in 8 years, then today's spot price should be $\text{2,000} / (1+r)^8$.
-- So, futures in 8 years (2,000)should equal spot $\times (1+r)^8$
-- In fact, the forward curve should be rising by the factor $1+r$ each year.
+- Ignoring risk and risk premia, if we think gold will hit $2,000 in 7 years, then today's spot price should be $\text{2,000} / (1+r)^7$.
+
+. . .
+
+$$\text{spot}\! =\! \frac{\text{futures}}{(1+r)^7} \; \Leftrightarrow \; \text{futures} \!=\! \text{spot}\! \times\! (1+r)^7$$
+
+- In fact, futures should be higher by $1+r$ each year.
 
 ## Contango
 
@@ -99,26 +124,50 @@ nothing = plt.title(df.date[0])
 
 - A market is in backwardation in the opposite situation: the forward curve is downward sloping.
     
+## S&P 500 Index Futures on 1-22-2016
+
+. . .
+
+```{python}
+df = pd.read_sql(" select * from data where code like 'CME_ES%' and date='2016-01-22' ", conn)    
+df['expiry'] = df.code.apply(expiry)
+df = df.sort_values(by='expiry').set_index('expiry')
+trace = go.Scatter(
+    x=df.index.to_list(),
+    y=df.settle,
+    mode="lines",
+    hovertemplate="expiration = %{x}<br>futures price = $%{y:,.2f}<extra></extra>"
+)
+
+fig = go.Figure()
+fig.add_trace(trace)
+fig.update_layout(
+    xaxis_title="Expiration",
+    yaxis_title="Futures Price",
+    xaxis_title_font = {"size":18},
+    template="plotly_white",
+    yaxis_tickprefix="$",
+    height=600,  
+    width=1000,
+    font_size=16
+)
+fig.show()
+```
 
 
-## Stock Index Futures in Backwardation
-
- 
-![](images/fig_sp500.png)
-    
-    S&P 500 forward curve on 1-24-2022
 
 ## Backwardation and Expectations Hypothesis
 
-- According to the expectations hypothesis, the market expected stock prices to fall on 1-24-2022.
+- According to the expectations hypothesis, the market expected stock prices to fall on 1-22-2016.
 - Did people expect to lose money on stocks?
-- No.  Part of the stock return is the dividend.  According to the expectations hypothesis, the market expected to earn the risk-free rate on stocks as dividends + capital gain.
-- Dividends > interest $\Rightarrow$ capital gain < 0.
+- No.  Part of the stock return is the dividend.  
+- If people expect to earn the risk-free rate on stocks as dividends + capital gain and dividends > risk-free rate, then capital gain < 0.
+
 
 ## Summary
 
 - Expectations hypothesis is "futures price = expected future spot price."
 - Expectations affect both the futures price and the spot price.
-- Markets can be in contango (rising futures price and futures > spot) or backwardation (falling futures price and futures < spot).
+- Markets can be in contango (rising futures price) or backwardation (falling futures price).
 
 
