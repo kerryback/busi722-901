@@ -51,16 +51,16 @@ import pandas as pd
 import plotly.graph_objects as go
 from pandas_datareader import DataReader as pdr
 
-df = pd.read_csv("files/rets.csv", parse_dates=["date"], index_col="date")
+ret = pd.read_csv("files/rets.csv", index_col="date")
+ret = 1.5*ret.best - 0.5*ret.worst
 
-ret = 1.5*df.best - 0.5*df.worst
 ff = pdr("F-F_Research_Data_Factors", "famafrench", start=2005)[0]/100
+ff.index = ff.index.astype(str)
 mkt = ff["Mkt-RF"] + ff["RF"]
 rf = ff["RF"]
-df = pd.concat((ret, mkt, rf), axis=1)
-df.index = pd.to_datetime(df.index.astype(str))
-df.columns = ["ret", "mkt", "rf"]
 
+df = pd.concat((ret, mkt, rf), axis=1)
+df.columns = ["ret", "mkt", "rf"]
 trace1 = go.Scatter(
     x = df.index.to_list(),
     y = (1+df.ret).cumprod(),
