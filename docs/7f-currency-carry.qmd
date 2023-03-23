@@ -1,5 +1,5 @@
 ---
-title:  "Currency Carry Trade with Futures"
+title:  "Currency Carry with Futures"
 author: <br><br><br><br><span style="font-family:perpetua; font-variant:small-caps; color:#606060;">Kerry Back</span><br><br><img src="RiceBusiness-transparent-logo-sm.png"  height=80>
 execute:
   echo: false
@@ -20,292 +20,62 @@ format:
     incremental: true
 ---
 
-## Currency carry trade
-
-- The currency carry trade is to borrow in a low interest-rate currency (e.g., euro) and invest in a high interest-rate currency (e.g., peso).
-- You earn the interest differential.
-- The risk is that the high interest-rate currency may depreciate relative to the other.
-- Empirically, this has been on average a profitable trade.
-
 ## Exchange rates
 
 - It is simplest to quote foreign currency prices in the domestic currency (dollars).
 - Cost of a euro, cost of a peso, etc. is the same concept as the cost of a loaf of bread.
 - A currency appreciates (relative to the dollar) when its cost rises and depreciates when its cost falls.
 
-## Currency carry trade again
+## Currency carry trade
 
-- Borrowing in euros, exchanging to pesos, and depositing pesos can be called shorting euros and going long pesos.
+- The currency carry trade is to borrow in a low interest-rate currency (e.g., euro) and invest in a high interest-rate currency (e.g., peso).
+- You earn the interest differential.  Interest is called carry.
+- The risk is that the high interest-rate currency may depreciate relative to the other.
+- Empirically, this has been a profitable trade on average.
+
+## 
+
+- Borrowing in euros, exchanging to pesos, and depositing pesos is shorting euros and going long pesos.
 - Example: short (borrow) $100,000 of euros and go long $100,000 of pesos.  Pay euro interest rate and receive peso interest rate.  Earn the difference.
 - But when we sell the pesos and cover the euro loan, prices may have moved.
 
 ## Currency carry with futures
 
-- Synthetic long peso future = borrow $ and buy pesos
-- Synthetic short euro future = short euros and invest in $
+- Short euros and invest in $ = synthetic short euro future
+- Borrow $ and buy pesos = synthetic long peso future 
 - Combining them equals currency carry trade ($ cancel)
 - Combining actual long peso future and actual short euro future also equals currency carry trade
 
+## Backwardation and contango
 
-- 
+- Futures price = spot price + domestic interest - foreign interest
+- Low foreign interest $\Rightarrow$ contango (euros)
+- High foreign interest $\Rightarrow$ backwardation (peso)
+- So, currency carry trade = sell contango futures and buy backwardation futures
 
-- When we short one asset and go long another, we always earn the difference in returns.
-- Here, returns = interest + price changes.
-- Interest is called carry and is known.
- 
-## Currency Futures
+## Expensive and cheap futures
 
-- The advantage of owning a foreign currency now is that you can invest it and earn the foreign interest rate.
-    
-- The cost of buying foreign currency now is that it ties up dollars and you lose the dollar interest rate.
-    
-- Whether it is better to buy now or buy later depends on which interest rate is higher.
-    
-- U.S. interest rate higher $\Rightarrow$ contango (like gold)
-    
-- Foreign interest rate higher $\Rightarrow$ backwardation.
-    
-## Euro Forward Curve
-    
-![](images/fig_euro.png)
-    
-    Euro forward curve on 1-24-2022
+- Sell contango futures = sell futures when futures price is high (relative to spot)
+- Buy backwardation futures = buy futures when futures price is low (relative to spot)
+- So, currency carry trade = sell expensive futures and buy cheap futures (relative to spot)
 
+## Appreciation and returns
 
-## Peso Forward Curve
-    
-![](images/fig_peso.png)
-    
-    Mexican peso forward curve on 1-24-2022
-
-## Commodities
-
-- Commodities (energy, agricultural) are sometimes in backwardation and sometimes in contango.
-
-- Backwardation occurs 
-  - when there is nothing left in storage to sell now to cause spot prices to come down relative to futures prices.
-  - or people are hoarding.  For example, corn (and others) moved into backwardation during the pandemic.
-
-##
-
-- If a commodity is seasonal and storage is costly, futures may have seasonal spikes (e.g., natural gas and gasoline).
-    
-
-
-## Crude Oil Forward Curves
-    
-![](images/fig_crude.png)
-    
-    Backwardation and contango in 2020
-
-
-## Natural Gas
-    
-![](images/fig_ng.png)
-    
-    Natural gas forward curve on 1-24-2022
-
-
-## Gasoline
-    
-![](images/fig_rbob.png)
-    
-    Gasoline forward curve on 1-24-2022
-
-
-
-
-
-## Understanding Gold Futures
-
-- There is lots of gold in storage.  If the futures is less than the spot price, people storing gold should sell spot and buy futures.  
-  - They earn the difference between the prices plus interest that they can earn on the cash from selling spot.
-- The story is the same if the futures price at a long maturity is less than the futures price at a shorter maturity.  
-  - Buy the cheap short maturity and sell the expensive long maturity.  
-    
-##
-
-- But what everyone thinks the bottom will drop out of the gold market? 
-
-- Then the spot price will drop now.  The futures will still end up higher than the spot.
-
-
-## Gold futures
-
-- Synthetic gold futures:
-  - borrow money, buy gold spot and store it
-  - later pay today's spot price + interest and have gold
-- Futures price should equal today's spot price + interest
-  - Anyone can create synthetic futures and sell actual futures if synthetic futures is cheaper
-  - People storing gold can "sell" synthetic futures and buy actual if synthetic is more expensive
-
-## Cost of carry and convenience yield
-
-- Cost of carry = cost of owning physical = foregone interest + storage costs
-- Convenience yield = benefit of owning physical = dividends and/or profits from temporary product shortages
-
-## Contango and backwardation
-
-- Contango = upward sloping forward curve (futures > spot)
-- Cost of carry > convenience yield $\Rightarrow$ contango (like gold)
-- Backwardation = downward sloping (spot > futures)
-- Convenience yield > cost of carry $\Rightarrow$ backwardation (like peso)
-- Commodities can have high cost of carry (storage) and sometimes high convenience yield
-
+- Consider selling 2-month euro (contango) futures and buying 2-month peso (backwardation) futures at date $t$ and holding for 2 months, until futures price = spot
+- On peso, make 
 
 . . .
 
-$$\text{futures price} = \text{spot price} +
-\text{domestic interest} - \text{foreign interest}$$
+$$\text{peso-spot}_{t+2} - \text{peso-spot}_t$$
+$$+ \text{peso-spot}_{t} - \text{peso-futures}_t$$
 
-## Euro Futures on 1-24-2022
+- This is spot appreciation - forward curve slope
 
-. . .
+## Failure of expectations hypothesis
 
-```{python}
-df = pd.read_sql(" select * from data where code like 'CME_EC%' and date='2022-01-24' ", conn)    
-df['expiry'] = df.code.apply(expiry)
-df = df.sort_values(by='expiry').set_index('expiry')
-trace = go.Scatter(
-    x=df.index.to_list(),
-    y=df.settle,
-    mode="lines",
-    hovertemplate="expiration = %{x}<br>futures price = $%{y:,.2f}<extra></extra>"
-)
+- On euro, make opposite.  So, total is difference in slopes (which is positive) + difference in appreciations.
+- Expectation hypothesis implies expected difference in appreciations cancels difference in slopes.
+- Empirically, average difference in appreciations actually adds a bit to difference in slopes.
+  - Peso (backwardation) actually appreciates a little.
+  - Euro (contango) actually depreciates a little.
 
-fig = go.Figure()
-fig.add_trace(trace)
-fig.update_layout(
-    xaxis_title="Expiration",
-    yaxis_title="Futures Price",
-    xaxis_title_font = {"size":18},
-    template="plotly_white",
-    yaxis_tickprefix="$",
-    height=600,  
-    width=1000,
-    font_size=16
-)
-fig.show()
-```
-
-## Mexican Peso Futures on 1-24-2022
-
-. . .
-
-```{python}
-df = pd.read_sql(" select * from data where code like 'CME_MP%' and date='2022-01-24' ", conn)    
-df['expiry'] = df.code.apply(expiry)
-df = df.sort_values(by='expiry').set_index('expiry')
-trace = go.Scatter(
-    x=df.index.to_list(),
-    y=df.settle,
-    mode="lines",
-    hovertemplate="expiration = %{x}<br>futures price = $%{y:,.2f}<extra></extra>"
-)
-
-fig = go.Figure()
-fig.add_trace(trace)
-fig.update_layout(
-    xaxis_title="Expiration",
-    yaxis_title="Futures Price",
-    xaxis_title_font = {"size":18},
-    template="plotly_white",
-    yaxis_tickprefix="$",
-    height=600,  
-    width=1000,
-    font_size=16
-)
-fig.show()
-```
-
-# Speculating on currencies
-
-## Currency speculation with futures
-
-- Consider selling currency futures that are in contango
-- If forward curve doesn't move, forward roll will produce profits
-- Likewise, buying currency futures in backwardation may be profitable
-- What may go wrong?
-  - Spot may rise for contango futures
-  - Spot may fall for backwardation futures
-
-## Currency carry trade
-
-- Borrow in low interest rate currencies
-- Invest in high interest rate currencies
-- What may go wrong?
-  - Low interest-rate currencies may appreciate
-  - High interest-rate currencies may depreciate
-
-## Equivalence
-
-- Low interest-rate $\Leftrightarrow$ contango.  Appreciate $\Leftrightarrow$ spot rises
-- High interest-rate $\Leftrightarrow$ backwardation.  Depreciate $\Leftrightarrow$ spot falls
-
-## What do the data show?
-
-- Currency carry trade has been profitable on average
-- Equivalently, selling contango futures and buying backwardation futures has been profitable on average
-
-# Futures options
-
-## 
-    
-- A call option on a futures contract gives you the right to acquire a long position in the futures (buy the futures) at the option strike.
-    
-- A put option gives you the right to acquire a short position in the futures (sell the futures) at the option strike.
-
-- If you've sold an option and it is exercised, you are rolled into the opposite futures position.
-  - short futures if you sold a call
-  - long futures if you sold a put
-
-##
-
-- On the exercise date of a call, daily settlement produces a cash flow of futures_settlement_price - strike to the party who exercised and the opposite cash flow to the party who sold the call.
-
-- For a put, it is strike - futures_settlement_price.
-
-- Everyone who wants could unwind the futures position by making an offsetting trade on the day of exercise.  
-
-## Risk-neutral probability from before
-
-- If there were no risk premium, the call value would be the expected value discounted at the risk-free rate:
-
-. . .
-
-$$C = \frac{p \times \text{\$}5 + (1-p)\times \text{\$}0}{1.05}$$
-
-- where $p=$ prob of positive return.  
-
-##
-
-- The stock price would also be the discounted expected value:
-
-. . .
-
-$$\text{\$}100 = \frac{p \times \text{\$}110 + (1-p) \times \text{\$}90}{1.05}$$
-
-- - Solve the stock equation for $p$ and substitute into the call option equation.
-
-## Risk-neutral probability for futures options
-
-- The futures price would be the expected (not discounted, because no cash changes hands upon purchase/sale):
-
-. . .
-
-$$\text{\$}100 = p \times \text{\$}110 + (1-p) \times \text{\$}90$$
-
-## Calibrating binomial tree for futures option
-
-- Set $T=$ time to maturity in years of a futures option
-- Set $N=$ number of periods in a binomial model
-- Set $\Delta t = T/N=$ period length
-- Set the up rate of return as $e^{\sigma\sqrt{\Delta t}}-1$ and down rate of return as $e^{-\sigma\sqrt{\Delta t}} - 1$.
-
-##
-
-- The risk-neutral probability of "up" is
-
-. . .
-
-$$\frac{1 - e^{-\sigma \Delta t}}{e^{\sigma \Delta t} - e^{-\sigma \Delta t}}$$
