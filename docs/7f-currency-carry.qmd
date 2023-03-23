@@ -48,7 +48,8 @@ format:
 
 ## Backwardation and contango
 
-- Futures price = spot price + domestic interest - foreign interest
+- Futures price = spot price + cost of carry - convenience yield
+- = spot price + domestic interest - foreign interest
 - Low foreign interest $\Rightarrow$ contango (euros)
 - High foreign interest $\Rightarrow$ backwardation (peso)
 - So, currency carry trade = sell contango futures and buy backwardation futures
