@@ -220,7 +220,7 @@ fig.show()
 ## Commodities
 
 - Storage costs can be very high $\Rightarrow$ contango
-  - Example: in April 2000, the front-month crude futures contract went negative
+  - Example: in April 2020, the front-month crude futures contract went negative
   - Forward curve was very steep
   - There was no available storage in Cushing, OK
 - But convenience yield can also be very high $\Rightarrow$ backwardation
