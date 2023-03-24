@@ -89,22 +89,22 @@ fig.show()
 ## Expectations hypothesis
 
 - The expectations hypothesis is: The futures price is equal to the market's expectation of what the spot price will become.
-- Example: maybe the market expected on 1-24-2022 that gold would hit $2,000 by the end of 2028.
+- Example: maybe the market expected on 1-24-2022 that gold would hit $2,000 by the end of 2027.
 - The expectations hypothesis is reasonable, though there is risk and there may be risk premia.
 
 ## Expectations and the forward curve
 
 - Expectations affect not just the futures price but also today's spot price.
-- Example: If we think gold will hit $2,000 in 7 years and it is trading at $500 today, then we should all be buying gold today (quadruple our money in 7 years).
+- Example: If we think gold will hit $2,000 in 6 years and it is trading at $500 today, then we should all be buying gold today (quadruple our money in 6 years).
 - This drives up the spot price to the point that we would only get a "normal" return on spot gold.
 
 ##
 
-- Ignoring risk and risk premia, if we think gold will hit $2,000 in 7 years, then today's spot price should be $\text{2,000} / (1+r)^7$.
+- Ignoring risk and risk premia, if we think gold will hit $2,000 in 6 years, then today's spot price should be $\text{2,000} / (1+r)^6$.
 
 . . .
 
-$$\text{spot}\! =\! \frac{\text{futures}}{(1+r)^7} \; \Leftrightarrow \; \text{futures} \!=\! \text{spot}\! \times\! (1+r)^7$$
+$$\text{spot}\! =\! \frac{\text{futures}}{(1+r)^6} \; \Leftrightarrow \; \text{futures} \!=\! \text{spot}\! \times\! (1+r)^6$$
 
 - In fact, futures should be higher by $1+r$ each year.
 
