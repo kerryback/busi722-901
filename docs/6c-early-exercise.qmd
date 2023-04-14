@@ -77,10 +77,10 @@ v[0]
 while len(v)>1:
     v1 = (p*v[:-1]+(1-p)*v[1:]) / (1+r)
     m = len(v1) - 1            # date number
-    x = [S*(1+u)**(m-2*i) for i in range(len(m+1))]
+    x = [S*(1+u)**(m-2*i) for i in range(m+1)]
     v2 = np.maximum(0, K-np.array(x))
     v = np.maximum(v1, v2)
-v[0]
+V[0]
 ```
 
 . . .
