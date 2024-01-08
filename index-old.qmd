@@ -1,4 +1,5 @@
-## Syllabus<br>Data Driven Finance II <br><br>![](RiceBusiness-transparent-logo-sm.png){height="60"}
+## Rice Online: Data Driven Finance II <br>Spring 2023<br><br>![](RiceBusiness-transparent-logo-sm.png){height="60"}
+
 
 
 #### Instructor
@@ -8,6 +9,10 @@
 J. Howard Creekmore Professor of Finance and Professor of Economics<br>
 <a href="mailto:kerryback@gmail.com">kerryback@gmail.com</a>
 
+#### Class Meeting
+
+TTh, 10:50-12:05<br>
+Room 217, McNair Hall
 
 #### Course Description
 
@@ -40,6 +45,15 @@ Any student with a documented disability requiring accommodations in this course
 contact me outside of class. All discussions will remain confidential. Any adjustments or accommodations
 regarding assignments or the final exam must be made in advance. Students with disabilities
 should also contact Disability Support Services in the Allen Center.
+
+
+
+
+
+
+
+
+
 
 
 

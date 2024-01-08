@@ -11,6 +11,7 @@ website:
 
   navbar:
     title: BUSI 722-901
+    file: index.qmd
     link-external-newwindow: true
     search: false
     right:   
@@ -18,11 +19,13 @@ website:
       - text: Code Binder
         href: https://mybinder.org/v2/gh/kerryback/2023-722-901-binder.git/HEAD
 
+      - text: Notebook Repo
+        href: https://github.com/kerryback/2023-722-901-binder
+
       - text: Slide Decks
         file: slides.qmd
 
-      - text: Home
-        file: index.qmd
+    
 
 format: 
   html:

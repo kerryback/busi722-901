@@ -1,4 +1,4 @@
-## Slide Decks<br>BUSI 722-901<br>Data Driven Finance II<br><br>![](RiceBusiness-transparent-logo-sm.png){height="60"}<br>
+## Slide Decks<br>Data Driven Finance II<br><br>![](RiceBusiness-transparent-logo-sm.png){height="60"}<br>
 
 :::: {.columns}
 
@@ -6,59 +6,38 @@
 
 ### 1. Intro to Quant Investing
 
-[1a. Valuation Fundamentals](1a-valuation-fundamentals.html){target="_blank"}
-
-[1b. Quantitative Investing](1b-quant-investing.html){target="_blank"}
-
-[1c. Factors](1c-factors.html){target="_blank"}
-
-[1d. Green-Hand-Zhang SQL Database](1d-ghz-database.html){target="_blank"}
-
-[1e. A Simple Backtest](1e-simple-backtest.html){target="_blank"}
-
+[1a. Valuation Fundamentals](1a-valuation-fundamentals.html){target="_blank"}<br>
+[1b. Quantitative Investing](1b-quant-investing.html){target="_blank"}<br>
+[1c. Factors](1c-factors.html){target="_blank"}<br>
+[1d. Green-Hand-Zhang SQL Database](1d-ghz-database.html){target="_blank"}<br>
+[1e. A Simple Backtest](1e-simple-backtest.html){target="_blank"}<br>
 [1f. Alpaca](1f-alpaca.html){target="_blank"}
 
 ### 2: Return Prediction and Evaluation
 
-[2a. Industries](2a-industries.html){target="_blank"}
-
-[2b. Transforming Features and Target](2b-transformations.html){target="_blank"}
-
-[2c. Additional Considerations](2c-additional.html){target="_blank"}
-
-[2d. Evaluate Returns](2d-evaluate1.html){target="_blank"}
-
-[2e. Market Benchmark](2e-evaluate2.html){target="_blank"}
-
+[2a. Industries](2a-industries.html){target="_blank"}<br>
+[2b. Transforming Features and Target](2b-transformations.html){target="_blank"}<br>
+[2c. Additional Considerations](2c-additional.html){target="_blank"}<br>
+[2d. Evaluate Returns](2d-evaluate1.html){target="_blank"}<br>
+[2e. Market Benchmark](2e-evaluate2.html){target="_blank"}<br>
 [2f. Fama-French Benchmark](2f-evaluate3.html){target="_blank"}
 
 ### 3. ML Models and Hyperparameters
 
-[3a. Trees](3a-trees.html){target="_blank"}
-
-[3b. Scoring and Complexity](3b-scoring.html){target="_blank"}
-
-[3c. Forests](3c-forests.html){target="_blank"}
-
-[3d. Neural Nets](3d-neuralnets.html){target="_blank"}
-
-[3e. Cross Validation](3e-validation.html){target="_blank"}
-
+[3a. Trees](3a-trees.html){target="_blank"}<br>
+[3b. Scoring and Complexity](3b-scoring.html){target="_blank"}<br>
+[3c. Forests](3c-forests.html){target="_blank"}<br>
+[3d. Neural Nets](3d-neuralnets.html){target="_blank"}<br>
+[3e. Cross Validation](3e-validation.html){target="_blank"}<br>
 [3f. Some Validation Results](3f-validation-results.html){target="_blank"}
 
 ### 4. Backtesting and Trading
 
-[4a. Backtest Overview](4a-backtest-overview.html){target="_blank"}
-
-
-[4b. Backtest: Preprocessing](4b-preprocessing.html){target="_blank"}
-
-[4c: Backtest: Looping](4c-looping.html){target="_blank"}
-
-[4d: Backtest: Portfolio Returns](4d-portfolio-returns.html){target="_blank"}
-
-[4e. Current Predictions](4e-current-predictions.html){target="_blank"}
-
+[4a. Backtest Overview](4a-backtest-overview.html){target="_blank"}<br>
+[4b. Backtest: Preprocessing](4b-preprocessing.html){target="_blank"}<br>
+[4c: Backtest: Looping](4c-looping.html){target="_blank"}<br>
+[4d: Backtest: Portfolio Returns](4d-portfolio-returns.html){target="_blank"}<br>
+[4e. Current Predictions](4e-current-predictions.html){target="_blank"}<br>
 [4f. Trading](4f-trading.html){target="_blank"}
 
 :::
@@ -67,45 +46,30 @@
 
 ### 5. Options
 
-[5a. Introduction to Options](5a-intro-options.html){target="_blank"}
-
-[5b. Option Returns](5b-option-returns.html){target="_blank"}
-
-[5c. Hedging with Options](5c-hedging.html){target="_blank"}
-
-[5d. Put-Call Parity](5d-put-call-parity.html){target="_blank"}
-
-[5e. Early Exercise](5e-early-exercise.html){target="_blank"}
-
+[5a. Introduction to Options](5a-intro-options.html){target="_blank"}<br>
+[5b. Option Returns](5b-option-returns.html){target="_blank"}<br>
+[5c. Hedging with Options](5c-hedging.html){target="_blank"}<br>
+[5d. Put-Call Parity](5d-put-call-parity.html){target="_blank"}<br>
+[5e. Early Exercise](5e-early-exercise.html){target="_blank"}<br>
 [5f. Option Spreads](5f-option-portfolios.html){target="_blank"}
 
 
 ### 6. Valuing Options
 
-[6a. Deltas in Binomial Models](6a-binomial-deltas.html){target="_blank"}
-
-[6b. Risk-Neutral Probabilities](6b-risk-neutral-probabilities.html){target="_blank"}
-
-[6c. Early Exercise in Binomial Trees](6c-early-exercise.html){target="_blank"}
-
-[6d. Black-Scholes](6d-black-scholes.html){target="_blank"}
-
-[6e. Implied Volatility](6e-implied-vol.html){target="_blank"}
-
+[6a. Deltas in Binomial Models](6a-binomial-deltas.html){target="_blank"}<br>
+[6b. Risk-Neutral Probabilities](6b-risk-neutral-probabilities.html){target="_blank"}<br>
+[6c. Early Exercise in Binomial Trees](6c-early-exercise.html){target="_blank"}<br>
+[6d. Black-Scholes](6d-black-scholes.html){target="_blank"}<br>
+[6e. Implied Volatility](6e-implied-vol.html){target="_blank"}<br>
 [6f. Option Greeks](6f-greeks.html){target="_blank"}
 
 ### 7. Futures
 
-[7a. Introduction to Futures](7a-intro-futures.html){target="_blank"}
-
-[7b. Marking to Market](7b-marking-market.html){target="_blank"}
-
-[7c. The Expectations Hypothesis](7c-expectations-hypothesis.html){target="_blank"}
-
-[7d. Spot-Futures Parity](7d-spot-futures-parity.html){target="_blank"}
-
-[7e. Futures-Based ETFs](7e-futures-based-etfs.html){target="_blank"}
-
+[7a. Introduction to Futures](7a-intro-futures.html){target="_blank"}<br>
+[7b. Marking to Market](7b-marking-market.html){target="_blank"}<br>
+[7c. The Expectations Hypothesis](7c-expectations-hypothesis.html){target="_blank"}<br>
+[7d. Spot-Futures Parity](7d-spot-futures-parity.html){target="_blank"}<br>
+[7e. Futures-Based ETFs](7e-futures-based-etfs.html){target="_blank"}<br>
 [7f. Currency Carry Trade with Futures](7f-currency-carry.html){target="_blank"}
 
 :::
