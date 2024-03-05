@@ -3,7 +3,8 @@ project:
   output-dir: docs
   render:
     - index.qmd
-    - slides.qmd    
+    - slides.qmd   
+    - live_sessions.qmd 
       
 website:
   title: ""
@@ -24,6 +25,9 @@ website:
 
       - text: Slide Decks
         file: slides.qmd
+
+      - text: Live Session Recordings
+        file: live_sessions.qmd
 
     
 
