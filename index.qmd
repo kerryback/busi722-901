@@ -1,13 +1,11 @@
 ## Syllabus<br>Data Driven Finance II <br><br>![](RiceBusiness-transparent-logo-sm.png){height="60"}
 
 
-#### Instructors
+#### Instructor
 
 [Kerry Back](http://kerryback.com)
 <br>
-<a href="mailto:kerryback@gmail.com">keb7@rice.edu</a><br><br>
-Shmuel Baruch<br>
-<a href="sb216@rice.edu">sb216@rice.edu</a>
+<a href="mailto:kerryback@gmail.com">keb7@rice.edu</a>
 
 #### Zoom Sessions
 
@@ -18,7 +16,7 @@ Mondays, Mar 4 and Mar 18 - Apr 22<br>
 
 #### Course Description
 
-We'll cover two topics in this course: quantitative equity investing and derivative securities.  Quantitative equity investing is using quantifiable signals to select stocks via algorithms.  We'll explore machine learning methods to predict returns and classify stocks as Buy/Hold/Sell.  We'll backtest trading strategies based on the signals.  And, we will analyze the results in the way that endowments and other institutions evaluate investment managers.  We'll do a real-world implementation of our algorithms using daily updated company financials and market data from a SQL database and with paper trading via the python API at Alpaca Brokerage.
+We'll cover two topics in this course: quantitative equity investing and derivative securities.  Quantitative equity investing is using quantifiable signals to select stocks via algorithms.  We'll explore machine learning methods to predict returns and classify stocks as Buy/Hold/Sell.  We'll backtest trading strategies based on the signals.  And, we will analyze the results in the way that endowments and other institutions evaluate investment managers.  We'll do a real-world implementation of our algorithms using daily updated company financials and market data from a SQL database and with paper trading via the python API at Alpaca Markets.
 
 Derivative securities are securities whose values depend upon (are derived from) other securities.  We'll cover options and futures, which are the basic derivative securities.  Options and futures are important instruments for risk management and also for investing.  We'll explain what the securities are and how they trade, how they are used in risk management and investments, and how to value them.  
 
