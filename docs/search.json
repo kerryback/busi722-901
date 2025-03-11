@@ -81,7 +81,7 @@
     "href": "live_sessions.html",
     "title": "",
     "section": "",
-    "text": "Mar 4"
+    "text": "Mar 3"
   },
   {
     "objectID": "index.html#syllabus-data-driven-finance-ii",
@@ -96,5 +96,12 @@
     "title": "",
     "section": "",
     "text": "1a. Valuation Fundamentals 1b. Quantitative Investing 1c. Factors 1d. Green-Hand-Zhang SQL Database 1e. A Simple Backtest 1f. Alpaca\n\n\n\n2a. Industries 2b. Transforming Features and Target 2c. Additional Considerations 2d. Evaluate Returns 2e. Market Benchmark 2f. Fama-French Benchmark\n\n\n\n3a. Trees 3b. Scoring and Complexity 3c. Forests 3d. Neural Nets 3e. Cross Validation 3f. Some Validation Results\n\n\n\n4a. Backtest Overview 4b. Backtest: Preprocessing 4c: Backtest: Looping 4d: Backtest: Portfolio Returns 4e. Current Predictions 4f. Trading\n\n\n\n\n5a. Introduction to Options 5b. Option Returns 5c. Hedging with Options 5d. Put-Call Parity 5e. Early Exercise 5f. Option Spreads\n\n\n\n6a. Deltas in Binomial Models 6b. Risk-Neutral Probabilities 6c. Early Exercise in Binomial Trees 6d. Black-Scholes 6e. Implied Volatility 6f. Option Greeks\n\n\n\n7a. Introduction to Futures 7b. Marking to Market 7c. The Expectations Hypothesis 7d. Spot-Futures Parity 7e. Futures-Based ETFs 7f. Currency Carry Trade with Futures"
+  },
+  {
+    "objectID": "live_sessions.html#live-session-recordings-data-driven-finance-ii",
+    "href": "live_sessions.html#live-session-recordings-data-driven-finance-ii",
+    "title": "",
+    "section": "",
+    "text": "Mar 3"
   }
 ]
