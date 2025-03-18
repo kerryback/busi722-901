@@ -26,6 +26,9 @@ website:
       - text: Slide Decks
         file: slides.qmd
 
+      - text: Solutions 
+        href: https://github.com/kerryback/722-901/solutions
+        
       - text: Live Session Recordings
         file: live_sessions.qmd
 
