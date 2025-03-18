@@ -27,7 +27,7 @@ website:
         file: slides.qmd
 
       - text: Solutions 
-        href: https://github.com/kerryback/busi722-901/solutions
+        href: https://github.com/kerryback/busi722-901/tree/main/solutions
 
       - text: Live Session Recordings
         file: live_sessions.qmd
