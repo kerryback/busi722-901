@@ -17,10 +17,10 @@ website:
     search: false
     right:   
 
-      - text: Notebook Repo
+      - text: Notebooks
         href: https://github.com/kerryback/2023-722-901-binder
 
-      - text: Slide Decks
+      - text: Slides
         file: slides.qmd
 
       - text: Solutions 
