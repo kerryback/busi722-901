@@ -31,10 +31,11 @@ website:
 
     
 
-format: 
+format:
   html:
-    theme: yeti
-    scss: styles.css
+    theme:
+      light: flatly
+      dark: superhero
     link-external-newwindow: true
       
 
